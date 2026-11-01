@@ -1,0 +1,51 @@
+/* ==========================================================================
+   variables.css  |  structural tokens only
+   Colours live in css/themes/<theme>.css, fonts in css/fonts.css.
+   ========================================================================== */
+
+:root {
+  /* spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 7rem;
+
+  --gutter: clamp(1.25rem, 5vw, 4.5rem);
+  --section-pad: clamp(5rem, 13vw, 10rem);
+  --measure: 52ch;
+  --max-width: 84rem;
+
+  /* radii */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
+
+  /* fluid type scale */
+  --step--1: clamp(0.8rem, 0.77rem + 0.15vw, 0.9rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1: clamp(1.3rem, 1.15rem + 0.7vw, 1.75rem);
+  --step-2: clamp(1.7rem, 1.35rem + 1.6vw, 2.8rem);
+  --step-3: clamp(2.4rem, 1.7rem + 3.2vw, 4.6rem);
+  --step-4: clamp(3.2rem, 2rem + 5.6vw, 7.5rem);
+
+  /* motion */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);      /* entrances, settling */
+  --ease-wipe: cubic-bezier(0.77, 0, 0.18, 1);     /* wipes and transitions */
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 200ms;
+  --dur-base: 500ms;
+  --dur-slow: 1100ms;
+
+  /* layers */
+  --z-date: 2;
+  --z-nav: 50;
+  --z-cursor: 95;
+  --z-lightbox: 100;
+  --z-envelope: 200;
+}

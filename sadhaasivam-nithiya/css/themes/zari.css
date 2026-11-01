@@ -1,0 +1,71 @@
+/* ==========================================================================
+   Theme: Zari
+   Palette sampled from the dress-code photo: the wine sherwani, the champagne
+   zari lehenga and the blush flowers of the venue.
+
+   Semantic tokens (--bg, --text, --accent ...) are what components use.
+   Scopes such as .on-wine re-point them, so a whole chapter changes colour
+   without any component knowing.
+   ========================================================================== */
+
+[data-theme="zari"] {
+  color-scheme: light;
+
+  /* raw palette */
+  --paper: #f7ede0;
+  --paper-2: #efdcc4;
+  --pearl: #fff8ee;
+  --ink: #2b0b12;
+  --wine: #5b2327;
+  --wine-deep: #3a1218;
+  --plum: #572432;
+  --zari: #c9a06a;
+  --zari-hi: #e6c888;
+  --zari-ink: #7a5a26;
+  --blush: #e8c4b4;
+  --glow: #f6ca8f;
+
+  /* semantic, on paper */
+  --bg: var(--paper);
+  --surface: var(--pearl);
+  --text: var(--ink);
+  --text-soft: #6a4a47;
+  --line: color-mix(in srgb, var(--ink) 16%, transparent);
+  --line-strong: color-mix(in srgb, var(--ink) 34%, transparent);
+  --accent: var(--wine);
+  --on-accent: #fbebd6;
+  --focus: var(--wine);
+  --name-ink: var(--wine);
+  --ornament: var(--zari);
+  --ornament-ink: var(--zari-ink);
+
+  /* signature settings read by JS and CSS */
+  --gallery-transition: wipe;
+  --gallery-interval: 5200ms;
+}
+
+/* a chapter on the deep wine of the sherwani */
+.on-wine {
+  --bg: var(--wine-deep);
+  --surface: var(--wine);
+  --text: #f4e3cb;
+  --text-soft: #d6bd9d;
+  --line: color-mix(in srgb, #f4e3cb 24%, transparent);
+  --line-strong: color-mix(in srgb, #f4e3cb 45%, transparent);
+  --accent: var(--zari-hi);
+  --on-accent: var(--wine-deep);
+  --focus: var(--zari-hi);
+  --name-ink: #f4e3cb;
+  --ornament: var(--zari-hi);
+  --ornament-ink: var(--zari-hi);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* a chapter on deeper champagne */
+.on-champagne {
+  --bg: var(--paper-2);
+  --surface: var(--paper);
+  --line: color-mix(in srgb, var(--ink) 18%, transparent);
+  background: var(--bg);
+}

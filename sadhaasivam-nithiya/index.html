@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="zari" data-font="editorial">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sadhaasivam &amp; Nithiya | Wedding Reception</title>
+  <meta name="description" content="You are warmly invited to the wedding reception of Sadhaasivam and Nithiya.">
+  <meta name="theme-color" content="#F7EDE0">
+
+  <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml">
+
+  <!-- One OG block only. At deploy time set og:url and an absolute og:image on the real domain. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Sadhaasivam &amp; Nithiya | Wedding Reception">
+  <meta property="og:description" content="You are warmly invited to our wedding reception.">
+  <meta property="og:image" content="assets/og/og-banner.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Every candidate font set loads while we compare (?font=editorial|classic|soft).
+       Once one is chosen, delete the families it does not use. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Gilda+Display&family=Hanken+Grotesk:wght@300..700&family=Instrument+Sans:wght@400..600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/themes/zari.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/sections.css">
+  <link rel="stylesheet" href="css/gallery.css">
+  <link rel="stylesheet" href="css/guestbook.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <div class="progress" aria-hidden="true"><span class="progress__bar" id="progress"></span></div>
+  <div class="cursor" id="cursor" aria-hidden="true"><span>Open</span></div>
+
+  <main>
+
+    <!-- Hero: names and the kolam. The date is held for the next chapter. -->
+    <header class="hero" id="hero">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="hero__glow hero__glow--blush" aria-hidden="true"></div>
+      <div class="hero__mandala" id="hero-mandala" aria-hidden="true"></div>
+
+      <p class="hero__lead hero__fade">Together with their families</p>
+
+      <h1 class="names" aria-label="Sadhaasivam and Nithiya">
+        <span class="names__line names__line--1" aria-hidden="true"><span class="mask"><span class="names__word" data-wedding="partner1">Sadhaasivam</span></span></span>
+        <span class="names__line names__line--2" aria-hidden="true"><span class="names__amp hero__fade">&amp;</span><span class="mask"><span class="names__word" data-wedding="partner2">Nithiya</span></span></span>
+      </h1>
+
+      <div class="hero__foot">
+        <p class="hero__invite hero__fade">invite you to their wedding reception</p>
+        <a class="hero__cue hero__fade" href="#date" aria-label="Scroll down to the date"><span class="hero__cue-line"></span></a>
+      </div>
+    </header>
+
+    <!-- Date: scrolling draws the kolam, then the date appears inside it -->
+    <section class="date on-wine" id="date" aria-labelledby="date-title">
+      <div class="date__sticky">
+        <div class="date__mandala" id="date-mandala" aria-hidden="true"></div>
+        <h2 class="date__title display" id="date-title">Save the date</h2>
+        <div class="date__card" id="date-card"></div>
+        <p class="date__hint" id="date-hint">Keep scrolling</p>
+      </div>
+    </section>
+
+    <!-- Countdown -->
+    <section class="countdown" id="countdown" aria-labelledby="cd-title">
+      <div class="wrap">
+        <div class="countdown__head">
+          <h2 id="cd-title">Until we celebrate together</h2>
+          <p class="countdown__note" id="cd-note"></p>
+        </div>
+
+        <div class="cd" id="cd" data-state="pending" aria-hidden="true">
+          <div class="cd__unit" data-unit="days"><div class="cd__digits"></div><span class="cd__label">Days</span></div>
+          <div class="cd__unit" data-unit="hours"><div class="cd__digits"></div><span class="cd__label">Hours</span></div>
+          <div class="cd__unit" data-unit="minutes"><div class="cd__digits"></div><span class="cd__label">Minutes</span></div>
+          <div class="cd__unit" data-unit="seconds"><div class="cd__digits"></div><span class="cd__label">Seconds</span></div>
+        </div>
+        <span class="sr-only" id="cd-sr" role="status"></span>
+      </div>
+    </section>
+
+    <!-- Reception: details, calendar, map in an arch -->
+    <section class="reception on-champagne" id="reception" aria-labelledby="rec-title">
+      <div class="wrap reception__grid">
+        <div class="reception__info">
+          <div>
+            <h2 class="reception__title" id="rec-title">The reception</h2>
+          </div>
+
+          <dl class="facts">
+            <div class="facts__row"><dt>When</dt><dd id="rec-when"></dd></div>
+            <div class="facts__row"><dt>Where</dt><dd id="rec-where"></dd></div>
+          </dl>
+
+          <div class="reception__actions" id="rec-actions"></div>
+          <p class="soft reception__note" id="rec-note"></p>
+        </div>
+
+        <div class="reception__map" id="rec-map"></div>
+      </div>
+    </section>
+
+    <!-- Gallery: portrait coverflow, click the centre photo to maximise -->
+    <section class="gallery" id="gallery" aria-labelledby="gal-title">
+      <div class="wrap">
+        <div class="gallery__head">
+          <h2 id="gal-title">Moments</h2>
+          <p class="soft">Tap a photo to bring it forward. Tap the centre one to see it larger.</p>
+        </div>
+
+        <div class="slideshow" id="slideshow" role="region" aria-roledescription="carousel" aria-label="Photo gallery">
+          <div class="coverflow" id="gal-stage">
+            <div class="coverflow__track" id="gal-slides"></div>
+            <button class="coverflow__nav coverflow__nav--prev" id="gal-prev" type="button" aria-label="Previous photo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>
+            </button>
+            <button class="coverflow__nav coverflow__nav--next" id="gal-next" type="button" aria-label="Next photo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <div class="slideshow__meta">
+            <p class="slideshow__count"><span id="gal-cur">1</span> / <span id="gal-total">1</span></p>
+            <button class="round round--sm slideshow__play" id="gal-play" type="button" aria-label="Pause slideshow" data-state="playing">
+              <svg data-icon="play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+              <svg data-icon="pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
+            </button>
+          </div>
+          <div class="slideshow__progress" aria-hidden="true"><span id="gal-progress"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guestbook -->
+    <section class="guestbook on-champagne" id="guestbook" aria-labelledby="gb-title">
+      <div class="wrap guestbook__grid">
+        <div class="guestbook__side">
+          <div class="guestbook__head">
+            <h2 id="gb-title">Guestbook</h2>
+            <p class="soft">Leave a few words for Sadhaasivam and Nithiya. Your message appears here for everyone to read.</p>
+          </div>
+
+          <form class="gb-form" id="gb-form" novalidate>
+            <div class="gb-field-wrap">
+              <label class="sr-only" for="gb-name">Your name</label>
+              <input class="gb-field" id="gb-name" name="name" type="text" maxlength="60" placeholder="Your name" autocomplete="name" required>
+            </div>
+            <div class="gb-field-wrap">
+              <label class="sr-only" for="gb-message">Your wishes</label>
+              <textarea class="gb-field" id="gb-message" name="message" rows="5" maxlength="500" placeholder="Your wishes" required></textarea>
+            </div>
+            <input class="gb-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <div class="gb-form__row">
+              <button class="round round--sm" id="gb-suggest" type="button" aria-label="Suggest a wish" title="Suggest a wish">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></svg>
+              </button>
+              <span class="gb-count" id="gb-count" aria-hidden="true">0 / 500</span>
+              <button class="btn btn--solid" id="gb-send" type="submit">Send wishes</button>
+            </div>
+            <p class="gb-status" id="gb-status" role="status"></p>
+          </form>
+        </div>
+
+        <div class="guestbook__main">
+          <p class="gb-note" id="gb-note" hidden></p>
+          <div class="gb-list" id="gb-list" data-lenis-prevent tabindex="0" role="region" aria-label="Guest messages"></div>
+          <button class="btn gb-more" id="gb-more" type="button" hidden>Show earlier messages</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer on-wine">
+    <div class="wrap">
+      <div class="footer__top">
+        <p class="soft">We look forward to celebrating with you.</p>
+      </div>
+      <p class="footer__names" aria-label="Sadhaasivam and Nithiya">
+        <span class="footer__name" data-wedding="partner1">Sadhaasivam</span>
+        <span class="footer__name footer__name--2" data-wedding="partner2">Nithiya</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Shown only when music is enabled in config.js -->
+  <button class="music" id="music-toggle" type="button" aria-pressed="false" aria-label="Play music" data-state="off" hidden>
+    <svg data-icon="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>
+    <svg data-icon="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/><path d="M3 3l18 18"/></svg>
+  </button>
+
+  <script src="js/config.js"></script>
+  <script src="js/guests.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/vendor/lenis.min.js"></script>
+  <script src="js/motion.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/envelope.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/touch-magic.js"></script>
+  <script src="js/mandala.js"></script>
+  <script src="js/hero.js"></script>
+  <script src="js/reveal.js"></script>
+  <script src="js/countdown.js"></script>
+  <script src="js/reception.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/guestbook.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/lightbox.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

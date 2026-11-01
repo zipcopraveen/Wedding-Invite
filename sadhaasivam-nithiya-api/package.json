@@ -1,0 +1,9 @@
+{
+  "name": "sadhaasivam-nithiya-guestbook",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Guestbook service for the reception invitation. No dependencies.",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
