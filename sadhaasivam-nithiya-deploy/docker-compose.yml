@@ -1,0 +1,39 @@
+# Static site served by nginx, plus a small guestbook service.
+# The site folder is mounted read-only, so nothing is ever edited on the
+# server: change files in git, then git pull.
+#
+# NGINX_MODE=http-only  first boot, used to get the TLS certificate
+# NGINX_MODE=https      normal running (default)
+
+services:
+  web:
+    image: nginx:alpine
+    container_name: sadhaasivam-nithiya-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+    volumes:
+      - ../sadhaasivam-nithiya:/usr/share/nginx/html:ro
+      - ./nginx/${NGINX_MODE:-https}.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./certbot/www:/var/www/certbot:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+
+  # Reachable only from nginx (no published ports).
+  api:
+    build: ../sadhaasivam-nithiya-api
+    container_name: sadhaasivam-nithiya-api
+    restart: unless-stopped
+    environment:
+      ADMIN_KEY: ${ADMIN_KEY:?set ADMIN_KEY in .env}
+      IP_SALT: ${IP_SALT:?set IP_SALT in .env}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-}
+    volumes:
+      - guestbook-data:/data
+
+volumes:
+  guestbook-data:

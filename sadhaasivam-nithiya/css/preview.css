@@ -1,0 +1,8 @@
+/* preview.css  |  dev-only style guide. Delete with preview.html before launch. */
+.pv { padding: var(--section-pad) 0; }
+.pv + .pv { border-top: 1px solid var(--line); }
+.pv .wrap { display: grid; gap: var(--space-6); }
+.pv-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: var(--space-4); }
+.pv-swatch__chip { height: 5.5rem; border-radius: var(--radius-md); border: 1px solid var(--line); margin-bottom: var(--space-2); }
+.pv-swatch small { color: var(--text-soft); display: block; }
+.pv-row { display: flex; flex-wrap: wrap; gap: var(--space-4); }

@@ -1,0 +1,79 @@
+/* ==========================================================================
+   guestbook.css  |  form and message list
+   Modelled on the reference invitation: outlined fields, a pill button and
+   translucent bordered message boxes with the name left and time right.
+   ========================================================================== */
+
+.guestbook { padding-block: var(--section-pad) calc(var(--section-pad) + 5vw); }
+.guestbook__grid { display: grid; gap: clamp(2.5rem, 6vw, 5rem); }
+@media (min-width: 60rem) {
+  .guestbook__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: start; }
+}
+.guestbook__side { display: grid; gap: var(--space-6); }
+.guestbook__head { display: grid; gap: var(--space-3); }
+.guestbook__head h2 { font-size: var(--step-4); line-height: 0.9; }
+
+.gb-form { display: grid; gap: var(--space-4); }
+.gb-field {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--name-ink);
+  font: inherit;
+  font-size: var(--step-0);
+  line-height: 1.5;
+}
+.gb-field::placeholder { color: var(--text-soft); opacity: 1; }
+.gb-field:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+textarea.gb-field { min-height: 9rem; resize: vertical; }
+.gb-field[aria-invalid="true"] { border-color: #8c1d2b; border-width: 2px; }
+
+.gb-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+.gb-form__row { display: flex; align-items: center; gap: var(--space-4); }
+.gb-count { margin-inline-start: auto; font-size: var(--step--1); color: var(--text-soft); font-variant-numeric: tabular-nums; }
+.gb-status { min-height: 1.5em; font-size: var(--step--1); color: var(--text-soft); }
+.gb-status[data-tone="error"] { color: #8c1d2b; }
+.gb-status[data-tone="ok"] { color: var(--accent); }
+
+.guestbook__main { display: grid; gap: var(--space-4); justify-items: stretch; }
+.gb-note {
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--zari) 22%, transparent);
+  color: var(--ink);
+  font-size: var(--step--1);
+}
+.gb-note[hidden], .gb-more[hidden] { display: none; }
+
+.gb-list {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  max-height: 34rem;
+  overflow-y: auto;
+  padding-inline-end: 0.5rem;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--zari) transparent;
+}
+.gb-entry {
+  padding: 1rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  border-radius: 6px;
+  background: rgb(255 255 255 / 0.55);
+}
+.gb-entry__head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
+.gb-entry__name { font-weight: 600; color: var(--name-ink); overflow-wrap: anywhere; }
+.gb-entry__time { flex: none; font-size: var(--step--1); color: var(--text-soft); }
+.gb-entry__text { margin-top: 0.5rem; max-width: none; white-space: pre-line; overflow-wrap: anywhere; line-height: 1.65; }
+.gb-entry.is-new { animation: fade-in 700ms var(--ease-soft) both; }
+.gb-empty { padding: var(--space-6) var(--space-4); text-align: center; color: var(--text-soft); border: 1px dashed var(--line-strong); border-radius: 6px; max-width: none; }
+.gb-more { justify-self: center; }
+
+@media (max-width: 40rem) {
+  .gb-list { max-height: 30rem; }
+  .gb-entry__head { flex-direction: column; gap: 0.15rem; }
+}

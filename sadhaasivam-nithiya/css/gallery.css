@@ -1,0 +1,249 @@
+/* ==========================================================================
+   gallery.css  |  portrait coverflow slideshow and lightbox
+   The slideshow follows the reference invitation: portrait 3:4 cards on a
+   shared stage. The centre card faces forward; neighbours turn away and
+   shrink; photos further out fade. Cards move with a 1.1 s ease.
+   ========================================================================== */
+
+.gallery { padding-block: var(--section-pad); overflow-x: clip; }
+.gallery__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-4);
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+.gallery__head h2 { font-size: var(--step-4); line-height: 0.9; }
+.gallery__head p { max-width: 30ch; }
+
+.slideshow { display: grid; justify-items: center; gap: var(--space-3); }
+
+.coverflow {
+  --cf-h: clamp(23rem, 70vw, 35rem);
+  position: relative;
+  width: 100%;
+  height: var(--cf-h);
+  perspective: 2400px;
+  touch-action: pan-y;
+}
+.coverflow__track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  pointer-events: none;            /* its flat plane would sit in front of cards pushed back in 3D */
+}
+.card {
+  position: absolute;
+  height: 92%;
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--paper-2);
+  cursor: pointer;
+  box-shadow: 0 24px 44px -22px rgb(43 11 18 / 0.5);
+  transition:
+    transform 1100ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 1100ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  -webkit-tap-highlight-color: transparent;
+}
+.card.is-active {
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 0.4), 0 30px 54px -22px rgb(43 11 18 / 0.55);
+}
+.card:focus-visible { outline-offset: 4px; border-radius: 16px; }
+.coverflow.no-anim .card { transition: none; }
+.card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.card__img.is-loaded { opacity: 1; }
+
+.coverflow__nav {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 200;
+  display: none;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--paper-2) 80%, transparent);
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.3s var(--ease-soft);
+}
+.coverflow__nav:hover { background: var(--paper-2); }
+.coverflow__nav:focus-visible { border-radius: var(--radius-full); }
+.coverflow__nav svg { width: 1.1rem; height: 1.1rem; }
+.coverflow__nav--prev { left: 0; }
+.coverflow__nav--next { right: 0; }
+@media (min-width: 48rem) { .coverflow__nav { display: grid; } }
+
+.slideshow__meta { display: flex; align-items: center; gap: var(--space-3); }
+.slideshow__count {
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-soft);
+}
+
+.round {
+  width: 3.25rem;
+  height: 3.25rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.35s var(--ease-soft), color 0.35s var(--ease-soft), transform 0.2s var(--ease-expo);
+}
+.round--sm { width: 2.5rem; height: 2.5rem; }
+.round:hover { background: var(--accent); color: var(--on-accent); }
+.round:active { transform: scale(0.94); }
+.round:focus-visible { border-radius: var(--radius-full); }
+.round svg { width: 1.1rem; height: 1.1rem; }
+.slideshow__play [data-icon="pause"] { display: none; }
+.slideshow__play[data-state="playing"] [data-icon="pause"] { display: block; }
+.slideshow__play[data-state="playing"] [data-icon="play"] { display: none; }
+
+/* time left on the current photo; its animationend moves to the next one */
+.slideshow__progress {
+  width: min(10rem, 40%);
+  height: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+.slideshow__progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.slideshow.is-playing .slideshow__progress span {
+  animation: gal-progress var(--gallery-interval, 5200ms) linear forwards;
+}
+.slideshow.is-playing.is-paused .slideshow__progress span { animation-play-state: paused; }
+
+/* Lightbox: always dark so photos sit on a neutral ground ------------------ */
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-lightbox);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  background: #12060a;
+  color: #f4e3cb;
+}
+.lb[hidden] { display: none; }
+.lb__backdrop {
+  position: absolute;
+  inset: -10%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(46px) saturate(1.2);
+  opacity: 0.3;
+  pointer-events: none;
+}
+.lb__top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem clamp(0.75rem, 3vw, 1.5rem);
+}
+.lb__count { font-variant-numeric: tabular-nums; color: #e6c888; }
+.lb__tools { display: flex; gap: 0.6rem; }
+.lb__btn {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgb(244 227 203 / 0.3);
+  border-radius: var(--radius-full);
+  background: rgb(244 227 203 / 0.08);
+  color: #f4e3cb;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s var(--ease-expo);
+}
+.lb__btn:hover { background: rgb(244 227 203 / 0.2); }
+.lb__btn:active { transform: scale(0.94); }
+.lb__btn:focus-visible { outline: 2px solid #e6c888; border-radius: var(--radius-full); }
+.lb__btn svg { width: 1.3rem; height: 1.3rem; }
+
+.lb__stage {
+  position: relative;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  touch-action: none;
+  margin-inline: clamp(0.5rem, 3vw, 5rem);
+}
+.lb__img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  cursor: zoom-in;
+  will-change: transform;
+}
+.lb__nav { position: absolute; top: 50%; translate: 0 -50%; z-index: 2; }
+.lb__nav--prev { left: 0.25rem; }
+.lb__nav--next { right: 0.25rem; }
+
+.lb__thumbs {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.75rem clamp(0.75rem, 3vw, 1.5rem) 1rem;
+  scrollbar-width: none;
+}
+.lb__thumbs > :first-child { margin-inline-start: auto; }
+.lb__thumbs > :last-child { margin-inline-end: auto; }
+.lb__thumb {
+  flex: 0 0 3.4rem;
+  aspect-ratio: 4 / 5;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  background: rgb(244 227 203 / 0.08);
+  opacity: 0.5;
+  cursor: pointer;
+}
+.lb__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.lb__thumb[aria-current="true"] { opacity: 1; border-color: #e6c888; }
+.lb__thumb:focus-visible { outline: 2px solid #e6c888; border-radius: var(--radius-sm); }
+
+/* the photo grows out of the slideshow and back (View Transitions) --------- */
+::view-transition-group(gal-photo) {
+  animation-duration: 800ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+::view-transition-old(gal-photo),
+::view-transition-new(gal-photo) { height: 100%; object-fit: cover; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 350ms; }
+.has-cursor .card { cursor: none; }
