@@ -1,24 +1,45 @@
 /* ==========================================================================
    responsive.css  |  breakpoint exceptions only (layout is fluid via clamp())
+   Phones are the main audience for an invitation, so this file is mobile-first
+   in spirit: safe areas, 44px touch targets, stacked buttons, short screens.
    ========================================================================== */
 
+/* Phones ------------------------------------------------------------------- */
 @media (max-width: 40rem) {
-  .names { font-size: calc(20vw * var(--names-scale, 1)); }
+  .names { font-size: calc(min(21vw, 17svh) * var(--names-scale, 1)); }
   .footer__names { font-size: calc(20vw * var(--names-scale, 1)); }
-  .hero__mandala { right: -62vmin; top: 60%; width: 150vmin; opacity: 0.3; }
-  .hero__foot { flex-direction: column; align-items: flex-start; }
-  .hero__invite { max-width: 26ch; }
-  .hero__cue { display: none; }
+  .hero__mandala { width: 150vmin; opacity: 0.3; }
+  .hero__lead, .hero__invite { max-width: 24ch; }
 
   .cd { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cd__unit:nth-child(odd) { border-left: 0; padding-left: 0; }
   .cd__unit:nth-child(n + 3) { border-top: 1px solid var(--line); margin-top: var(--space-5); }
   .cd__digits { font-size: clamp(4.2rem, 24vw, 7rem); }
 
+  .reception__actions { flex-direction: column; align-items: stretch; }
+  .reception__actions .btn { width: 100%; }
   .reception__map { aspect-ratio: 4 / 5; }
   .facts__row { grid-template-columns: 4rem minmax(0, 1fr); }
 
+  .gallery__head p { max-width: none; }
+  .gb-more { width: 100%; }
 
   .lb__nav { display: none; }       /* swipe on touch screens */
   .lb__stage { margin-inline: 0; }
+}
+
+/* Touch screens: every control at least 44px --------------------------------- */
+@media (hover: none) {
+  .round--sm { width: 2.75rem; height: 2.75rem; }
+  .btn { min-height: 3rem; }
+  .gb-field { font-size: 1rem; }    /* 16px stops iOS from zooming into the field */
+}
+
+/* Phones turned sideways, or any very short window --------------------------- */
+@media (max-height: 30rem) {
+  .hero { padding-block: 1rem calc(5vw + 4rem); }
+  .hero__stack { gap: 0.5rem; }
+  .hero__cue { height: 2.5rem; }
+  .date__title, .date__hint { display: none; }
+  .coverflow { --cf-h: clamp(16rem, 80svh, 24rem); }
 }
