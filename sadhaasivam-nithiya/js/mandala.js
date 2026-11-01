@@ -102,8 +102,8 @@
     const rings = svg._rings;
     const R = rings.length;
     rings.forEach((item, i) => {
-      const start = (i / R) * 0.74;
-      const t = clamp((p - start) / 0.3);
+      const start = (i / R) * 0.62;
+      const t = clamp((p - start) / 0.38);
       const e = 1 - Math.pow(1 - t, 3);
       if (item.last === e) return;
       item.last = e;

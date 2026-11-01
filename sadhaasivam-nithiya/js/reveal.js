@@ -72,10 +72,10 @@
     const r = sec.getBoundingClientRect();
     const total = r.height - s.vh;
     const target = clamp(-r.top / total);
-    p += (target - p) * 0.16;
+    p += (target - p) * 0.24;
     if (Math.abs(target - p) < 0.0004) p = target;
 
-    const draw = clamp(p / 0.72);
+    const draw = clamp(p / 0.5);
     if (draw === lastDraw) return;
     lastDraw = draw;
 

@@ -16,7 +16,7 @@
 .mandala path.is-fill {
   fill: currentColor;
   fill-opacity: 0;
-  transition: fill-opacity 1.8s var(--ease-soft) 0.3s;
+  transition: fill-opacity 1.1s var(--ease-soft) 0.1s;
 }
 .mandala__dot { fill: currentColor; opacity: 0; }
 
@@ -25,8 +25,11 @@
   position: relative;
   min-height: 100svh;
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  padding: clamp(1.5rem, 5vh, 3.5rem) var(--gutter) calc(5vw + clamp(1.5rem, 4vh, 2.5rem));
+  place-items: center;
+  padding:
+    calc(clamp(1.5rem, 5vh, 3.5rem) + env(safe-area-inset-top))
+    var(--gutter)
+    calc(5vw + 5.5rem + env(safe-area-inset-bottom));
   isolation: isolate;
   overflow: hidden;
 }
@@ -47,29 +50,40 @@
   bottom: -46vmax;
   background: radial-gradient(closest-side, color-mix(in srgb, var(--blush) 75%, transparent), transparent 72%);
 }
+
+/* the kolam sits centred behind the names, faint, and fades away where the
+   names are so the lines never fight the letters */
 .hero__mandala {
   position: absolute;
   z-index: -1;
-  right: -24vmin;
-  top: 54%;
-  width: min(112vmin, 100rem);
+  left: 50%;
+  top: 50%;
+  width: min(125vmin, 100rem);
   aspect-ratio: 1;
   color: var(--ornament);
-  opacity: 0.38;
-  -webkit-mask-image: linear-gradient(90deg, transparent 12%, #000 58%);
-  mask-image: linear-gradient(90deg, transparent 12%, #000 58%);
-  transform: translate3d(0, calc(-50% + var(--lift, 0px)), 0) rotate(var(--rot, 0deg));
+  opacity: 0.34;
+  -webkit-mask-image: radial-gradient(closest-side, transparent 38%, #000 74%);
+  mask-image: radial-gradient(closest-side, transparent 38%, #000 74%);
+  transform: translate3d(-50%, calc(-50% + var(--lift, 0px)), 0) rotate(var(--rot, 0deg));
   pointer-events: none;
 }
-.hero__lead { color: var(--text-soft); }
+
+/* one centred stack: the lines above and below stay close to the names */
+.hero__stack {
+  display: grid;
+  justify-items: center;
+  gap: clamp(0.9rem, 3vh, 1.9rem);
+  width: 100%;
+  text-align: center;
+}
+.hero__lead, .hero__invite { color: var(--text-soft); max-width: 28ch; }
 
 .names {
-  align-self: center;
   display: grid;
-  justify-items: start;
-  margin-block: clamp(1.5rem, 5vh, 4rem);
+  justify-items: center;
   font-family: var(--font-names);
-  font-size: calc(clamp(3.8rem, 14vw, 14.5rem) * var(--names-scale, 1));
+  /* sized by width AND height, so very wide or very short screens never blow it up */
+  font-size: calc(clamp(3.6rem, min(15vw, 27svh), 14.5rem) * var(--names-scale, 1));
   font-style: var(--names-style, normal);
   font-weight: 400;
   line-height: var(--names-leading, 0.84);
@@ -77,17 +91,10 @@
   color: var(--name-ink);
 }
 .names__line { display: block; }
-.names__line--2 {
-  justify-self: stretch;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-5);
-}
 .names__amp {
-  margin-inline-start: 0.12em;
+  margin-block: 0.12em;
   font-family: var(--font-display);
-  font-size: 0.5em;
+  font-size: 0.4em;
   font-style: italic;
   line-height: 1;
   letter-spacing: 0;
@@ -103,40 +110,34 @@
 }
 .hero.is-ready .ch {
   transform: none;
-  transition: transform 1.5s var(--ease-expo) calc(350ms + var(--i) * 60ms);
+  transition: transform 1.2s var(--ease-expo) calc(250ms + var(--i) * 45ms);
 }
 
-/* supporting lines arrive after the names settle: opacity only */
+/* supporting lines arrive just after the names: opacity only */
 .hero__fade { opacity: 0; }
 .hero.is-ready .hero__fade {
   opacity: 1;
-  transition: opacity 1.4s var(--ease-soft) 1.7s;
+  transition: opacity 1s var(--ease-soft) 1.1s;
 }
 
-/* the kolam behind the names draws itself once */
+/* the kolam behind the names draws itself once, quickly */
 .hero .mandala__dot { opacity: 0; }
 .hero.is-ready .mandala path {
-  animation: draw 2.8s var(--ease-expo) both;
-  animation-delay: calc(250ms + var(--r) * 180ms);
+  animation: draw 1.8s var(--ease-expo) both;
+  animation-delay: calc(150ms + var(--r) * 100ms);
 }
 .hero.is-ready .mandala__dot {
-  animation: fade-in 1s ease both;
-  animation-delay: calc(700ms + var(--r) * 180ms + var(--k) * 14ms);
+  animation: fade-in 0.7s ease both;
+  animation-delay: calc(400ms + var(--r) * 100ms + var(--k) * 8ms);
 }
-
-.hero__foot {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--space-5) var(--space-7);
-}
-.hero__invite { max-width: 24ch; color: var(--text-soft); }
 
 .hero__cue {
-  align-self: flex-end;
-  width: 1.5rem;
-  height: 4.5rem;
+  position: absolute;
+  left: 50%;
+  bottom: calc(5vw + 1rem + env(safe-area-inset-bottom));
+  translate: -50% 0;
+  width: 2.75rem;
+  height: 3.5rem;
   display: grid;
   place-items: center;
 }
@@ -159,7 +160,7 @@
 .date {
   position: relative;
   z-index: var(--z-date);
-  height: 360svh;
+  height: 175svh;                /* short on purpose: about three flicks of the wheel */
   margin-top: -5vw;
   border-radius: 50% 50% 0 0 / 5vw 5vw 0 0;
   overflow: clip;
@@ -218,7 +219,7 @@
 .date__card .mask > span { transform: translate3d(0, 160%, 0); }
 .date.is-complete .date__card .mask > span {
   transform: none;
-  transition: transform 1.4s var(--ease-expo) calc(var(--d, 0) * 1ms);
+  transition: transform 1s var(--ease-expo) calc(var(--d, 0) * 0.7ms);
 }
 .date.is-complete .mandala path.is-fill { fill-opacity: 0.16; }
 
@@ -333,7 +334,7 @@
 .footer {
   position: relative;
   margin-top: -5vw;
-  padding: calc(5vw + var(--space-8)) 0 var(--space-7);
+  padding: calc(5vw + var(--space-8)) 0 calc(var(--space-7) + env(safe-area-inset-bottom));
   border-radius: 50% 50% 0 0 / 5vw 5vw 0 0;
   overflow: clip;
 }
