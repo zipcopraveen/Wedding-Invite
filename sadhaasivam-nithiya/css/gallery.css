@@ -15,7 +15,7 @@
   margin-bottom: clamp(2rem, 5vw, 3.5rem);
 }
 .gallery__head h2 { font-size: var(--step-4); line-height: 0.9; }
-.gallery__head p { max-width: 30ch; }
+.gallery__head p { max-width: 30ch; font-size: var(--step-0); color: var(--text); }
 
 .slideshow { display: grid; justify-items: center; gap: var(--space-3); }
 
@@ -40,23 +40,19 @@
   position: absolute;
   height: 92%;
   aspect-ratio: 3 / 4;
-  padding: 0;
+  padding: clamp(0.4rem, 1.2vw, 0.65rem);          /* the pearl mount of a printed photograph */
   border: 0;
-  border-radius: 16px;
+  border-radius: 0;
   overflow: hidden;
-  background: var(--paper-2);
+  background: var(--pearl);
   cursor: pointer;
-  box-shadow: 0 24px 44px -22px rgb(43 11 18 / 0.5);
   transition:
     transform 1100ms cubic-bezier(0.4, 0, 0.2, 1),
     opacity 1100ms cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform, opacity;
   -webkit-tap-highlight-color: transparent;
 }
-.card.is-active {
-  box-shadow: 0 0 0 2px rgb(255 255 255 / 0.4), 0 30px 54px -22px rgb(43 11 18 / 0.55);
-}
-.card:focus-visible { outline-offset: 4px; border-radius: 16px; }
+.card:focus-visible { outline: 3px solid var(--zari-hi); outline-offset: 4px; border-radius: 0; }
 .coverflow.no-anim .card { transition: none; }
 .card__img {
   width: 100%;
@@ -77,18 +73,19 @@
   z-index: 200;
   display: none;
   place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3rem;
+  height: 3rem;
   padding: 0;
   border: 0;
   border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--paper-2) 80%, transparent);
-  color: var(--accent);
+  background: var(--pearl);
+  color: var(--wine);
   cursor: pointer;
-  transition: background 0.3s var(--ease-soft);
+  transition: background 0.3s var(--ease-soft), transform 0.2s var(--ease-expo);
 }
-.coverflow__nav:hover { background: var(--paper-2); }
-.coverflow__nav:focus-visible { border-radius: var(--radius-full); }
+.coverflow__nav:hover { background: var(--zari-hi); }
+.coverflow__nav:active { transform: scale(0.94); }
+.coverflow__nav:focus-visible { border-radius: var(--radius-full); outline: 3px solid var(--zari-hi); }
 .coverflow__nav svg { width: 1.1rem; height: 1.1rem; }
 .coverflow__nav--prev { left: 0; }
 .coverflow__nav--next { right: 0; }
@@ -96,9 +93,9 @@
 
 .slideshow__meta { display: flex; align-items: center; gap: var(--space-3); }
 .slideshow__count {
-  font-size: var(--step--1);
+  font-size: var(--step-0);
   font-variant-numeric: tabular-nums;
-  color: var(--text-soft);
+  color: var(--text);
 }
 
 .round {
@@ -107,14 +104,14 @@
   display: grid;
   place-items: center;
   padding: 0;
-  border: 1px solid var(--accent);
+  border: 0;
   border-radius: var(--radius-full);
-  background: transparent;
-  color: var(--accent);
+  background: color-mix(in srgb, var(--text) 16%, transparent);
+  color: var(--text);
   cursor: pointer;
   transition: background 0.35s var(--ease-soft), color 0.35s var(--ease-soft), transform 0.2s var(--ease-expo);
 }
-.round--sm { width: 2.5rem; height: 2.5rem; }
+.round--sm { width: 2.75rem; height: 2.75rem; }
 .round:hover { background: var(--accent); color: var(--on-accent); }
 .round:active { transform: scale(0.94); }
 .round:focus-visible { border-radius: var(--radius-full); }
@@ -126,8 +123,8 @@
 /* time left on the current photo; its animationend moves to the next one */
 .slideshow__progress {
   width: min(10rem, 40%);
-  height: 2px;
-  background: var(--line);
+  height: 4px;
+  background: color-mix(in srgb, var(--text) 22%, transparent);
   overflow: hidden;
 }
 .slideshow__progress span {
@@ -177,14 +174,14 @@
   display: grid;
   place-items: center;
   padding: 0;
-  border: 1px solid rgb(244 227 203 / 0.3);
+  border: 0;
   border-radius: var(--radius-full);
-  background: rgb(244 227 203 / 0.08);
+  background: rgb(244 227 203 / 0.14);
   color: #f4e3cb;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s var(--ease-expo);
 }
-.lb__btn:hover { background: rgb(244 227 203 / 0.2); }
+.lb__btn:hover { background: rgb(244 227 203 / 0.26); }
 .lb__btn:active { transform: scale(0.94); }
 .lb__btn:focus-visible { outline: 2px solid #e6c888; border-radius: var(--radius-full); }
 .lb__btn svg { width: 1.3rem; height: 1.3rem; }
