@@ -24,7 +24,7 @@ window.WEDDING = {
     durationMinutes: 210,
     venueName: "",
     venueAddress: "",
-    mapEmbedUrl: <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.1228446935493!2d78.74330259999999!3d10.8019023!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3baaf49f00000001%3A0xe099c86e11b6197e!2sMuthumani%20Mahal!5e0!3m2!1sen!2sin!4v1793614093350!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>,          // Google Maps embed URL
+    mapEmbedUrl: "",          // Google Maps embed URL
     mapLinkUrl: ""            // Google Maps share or directions link
   },
 
