@@ -19,10 +19,13 @@
      gallery.js     wipe-transition slideshow
      cursor.js      round "Open" label that follows the mouse
      lightbox.js    maximised viewer (view-transition morph)
+     nav.js         the bar at the top: monogram, section links, calendar action
+     enter.js       parts of a section arrive one after another
 
-   Styles: variables.css (tokens), themes/zari.css (palette and .on-wine),
-   fonts.css (font sets), base.css, components.css, animations.css,
-   sections.css, gallery.css, responsive.css.
+   Styles: variables.css (tokens), themes/zari.css (palette, the .on-wine /
+   .on-champagne / .on-pearl scopes, the karai and scallop tiles),
+   fonts.css (font sets), base.css, components.css (buttons, the bar),
+   animations.css, sections.css, gallery.css, guestbook.css, responsive.css.
    preview.html and css/preview.css are a dev-only style guide, blocked by
    the nginx config and safe to delete before launch.
    ========================================================================== */

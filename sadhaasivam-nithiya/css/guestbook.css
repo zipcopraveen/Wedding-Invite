@@ -1,48 +1,77 @@
 /* ==========================================================================
-   guestbook.css  |  form and message list
-   Modelled on the reference invitation: outlined fields, a pill button and
-   translucent bordered message boxes with the name left and time right.
+   guestbook.css  |  a coupon to cut out, and the messages guests left
+   The form is one pearl card with a perforation between its heading and its
+   fields: two punched notches at the edges, a row of round holes across.
+   The fields are filled blocks, not outlined boxes.
    ========================================================================== */
 
-.guestbook { padding-block: var(--section-pad) calc(var(--section-pad) + 5vw); }
+.guestbook { padding-block: var(--section-pad) calc(var(--section-pad) + 24px); }
 .guestbook__grid { display: grid; gap: clamp(2.5rem, 6vw, 5rem); }
 @media (min-width: 60rem) {
   .guestbook__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: start; }
 }
-.guestbook__side { display: grid; gap: var(--space-6); }
-.guestbook__head { display: grid; gap: var(--space-3); }
-.guestbook__head h2 { font-size: var(--step-4); line-height: 0.9; }
 
-.gb-form { display: grid; gap: var(--space-4); }
+/* the coupon */
+.guestbook__side {
+  --p: clamp(1.5rem, 3.4vw, 2.5rem);
+  display: grid;
+  gap: var(--space-6);
+  padding: var(--p);
+  background: var(--surface);
+}
+.guestbook__head {
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+  padding-bottom: var(--space-6);
+  border-bottom: 5px dotted var(--bg);          /* the perforation: round holes */
+}
+.guestbook__head::before,
+.guestbook__head::after {                       /* the two notches punched at its ends */
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg);
+}
+.guestbook__head::before { left: calc(-1 * var(--p) - 14px); }
+.guestbook__head::after { right: calc(-1 * var(--p) - 14px); }
+.guestbook__head h2 { font-size: var(--step-4); line-height: 0.9; }
+.guestbook__head p { font-size: var(--step-0); color: var(--text); }
+
+.gb-form { display: grid; gap: var(--space-3); }
 .gb-field {
   width: 100%;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--accent);
-  border-radius: 6px;
-  background: transparent;
+  padding: 1rem 1.1rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--paper-2);
   color: var(--name-ink);
   font: inherit;
   font-size: var(--step-0);
   line-height: 1.5;
 }
 .gb-field::placeholder { color: var(--text-soft); opacity: 1; }
-.gb-field:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+.gb-field:focus-visible { outline: 3px solid var(--focus); outline-offset: 0; border-radius: 0; }
 textarea.gb-field { min-height: 9rem; resize: vertical; }
-.gb-field[aria-invalid="true"] { border-color: #8c1d2b; border-width: 2px; }
+.gb-field[aria-invalid="true"] { outline: 3px solid #8c1d2b; outline-offset: 0; }
 
-.gb-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.gb-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }   /* taste-skill-ignore: the hidden spam trap, not a rule */
 
-.gb-form__row { display: flex; align-items: center; gap: var(--space-4); }
+.gb-form__row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); }
 .gb-count { margin-inline-start: auto; font-size: var(--step--1); color: var(--text-soft); font-variant-numeric: tabular-nums; }
+.gb-send { flex: 1 1 100%; min-height: 3.5rem; }
 .gb-status { min-height: 1.5em; font-size: var(--step--1); color: var(--text-soft); }
 .gb-status[data-tone="error"] { color: #8c1d2b; }
 .gb-status[data-tone="ok"] { color: var(--accent); }
 
+/* what guests wrote */
 .guestbook__main { display: grid; gap: var(--space-4); justify-items: stretch; }
 .gb-note {
-  padding: 0.7rem 1rem;
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--zari) 22%, transparent);
+  padding: 0.8rem 1.1rem;
+  background: color-mix(in srgb, var(--zari) 30%, transparent);
   color: var(--ink);
   font-size: var(--step--1);
 }
@@ -59,18 +88,17 @@ textarea.gb-field { min-height: 9rem; resize: vertical; }
   scrollbar-width: thin;
   scrollbar-color: var(--zari) transparent;
 }
+.gb-list:focus-visible { outline-offset: 4px; }
 .gb-entry {
-  padding: 1rem 1.1rem;
-  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
-  border-radius: 6px;
-  background: rgb(255 255 255 / 0.55);
+  padding: 1.1rem 1.25rem;
+  background: var(--surface);
 }
 .gb-entry__head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
-.gb-entry__name { font-weight: 600; color: var(--name-ink); overflow-wrap: anywhere; }
+.gb-entry__name { font-family: var(--font-display); font-size: var(--step-1); line-height: 1.1; color: var(--name-ink); overflow-wrap: anywhere; }
 .gb-entry__time { flex: none; font-size: var(--step--1); color: var(--text-soft); }
-.gb-entry__text { margin-top: 0.5rem; max-width: none; white-space: pre-line; overflow-wrap: anywhere; line-height: 1.65; }
+.gb-entry__text { margin-top: 0.5rem; max-width: none; font-size: var(--step-0); white-space: pre-line; overflow-wrap: anywhere; line-height: 1.65; }
 .gb-entry.is-new { animation: fade-in 700ms var(--ease-soft) both; }
-.gb-empty { padding: var(--space-6) var(--space-4); text-align: center; color: var(--text-soft); border: 1px dashed var(--line-strong); border-radius: 6px; max-width: none; }
+.gb-empty { padding: var(--space-7) var(--space-4); text-align: center; color: var(--text); background: var(--surface); max-width: none; }
 .gb-more { justify-self: center; }
 
 @media (max-width: 40rem) {

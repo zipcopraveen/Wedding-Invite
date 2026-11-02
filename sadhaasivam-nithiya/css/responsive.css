@@ -6,23 +6,35 @@
 
 /* Phones ------------------------------------------------------------------- */
 @media (max-width: 40rem) {
-  .names { font-size: calc(min(21vw, 17svh) * var(--names-scale, 1)); }
+  .nav { gap: var(--space-3); padding-inline: 1rem; }
+  .nav__mark { font-size: 1.5rem; }
+  .nav__links { gap: 0; margin-right: -0.5rem; }
+  .nav__links a { font-size: 0.9375rem; padding-inline: 0.45rem; }
+  .nav__action { display: none; }
+
+  /* the card fills the screen like a held invitation */
+  .hero__card { min-height: 0; }
+  .hero__face { padding-inline: 1rem; }
+  .names { font-size: calc(min(19vw, 14svh) * var(--names-scale, 1)); }
   .footer__names { font-size: calc(20vw * var(--names-scale, 1)); }
-  .hero__mandala { width: 150vmin; opacity: 0.3; }
   .hero__lead, .hero__invite { max-width: 24ch; }
 
-  .cd { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cd__unit:nth-child(odd) { border-left: 0; padding-left: 0; }
-  .cd__unit:nth-child(n + 3) { border-top: 1px solid var(--line); margin-top: var(--space-5); }
-  .cd__digits { font-size: clamp(4.2rem, 24vw, 7rem); }
+  .cd { justify-self: start; width: 100%; font-size: clamp(4.4rem, 24vw, 7rem); }
+
+  /* the date has to sit inside the kolam's open centre */
+  .date__mandala { width: max(100vmin, 38rem); }
+  .date__day { font-size: 4.6rem; }
+  .date__month { font-size: 1.4rem; }
+  .date__event, .date__time { font-size: var(--step--1); }
 
   .reception__actions { flex-direction: column; align-items: stretch; }
   .reception__actions .btn { width: 100%; }
   .reception__map { aspect-ratio: 4 / 5; }
-  .facts__row { grid-template-columns: 4rem minmax(0, 1fr); }
+  .facts__row { grid-template-columns: 4.25rem minmax(0, 1fr); gap: var(--space-3); }
 
   .gallery__head p { max-width: none; }
   .gb-more { width: 100%; }
+  .footer__top .btn { width: 100%; }
 
   .lb__nav { display: none; }       /* swipe on touch screens */
   .lb__stage { margin-inline: 0; }
@@ -32,14 +44,20 @@
 @media (hover: none) {
   .round--sm { width: 2.75rem; height: 2.75rem; }
   .btn { min-height: 3rem; }
+  .btn--sm { min-height: 2.75rem; }
   .gb-field { font-size: 1rem; }    /* 16px stops iOS from zooming into the field */
 }
 
 /* Phones turned sideways, or any very short window --------------------------- */
 @media (max-height: 30rem) {
-  .hero { padding-block: 1rem calc(5vw + 4rem); }
+  .nav { height: calc(2.75rem + env(safe-area-inset-top)); }
+  :root { --nav-h: calc(2.75rem + env(safe-area-inset-top)); }
+  .hero__card { min-height: 0; }
+  .hero__face { padding-block: 0.75rem; }
   .hero__stack { gap: 0.5rem; }
-  .hero__cue { height: 2.5rem; }
+  .names { font-size: calc(min(12.5vw, 15svh) * var(--names-scale, 1)); }
+  .hero__invite { font-size: var(--step-0); }
+  .hero__cue { min-height: 2.5rem; }
   .date__title, .date__hint { display: none; }
   .coverflow { --cf-h: clamp(16rem, 80svh, 24rem); }
 }

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Sadhaasivam &amp; Nithiya | Wedding Reception</title>
   <meta name="description" content="You are warmly invited to the wedding reception of Sadhaasivam and Nithiya.">
-  <meta name="theme-color" content="#F7EDE0">
+  <meta name="theme-color" content="#3A1218">
 
   <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml">
 
@@ -40,27 +40,48 @@
   <div class="progress" aria-hidden="true"><span class="progress__bar" id="progress"></span></div>
   <div class="cursor" id="cursor" aria-hidden="true"><span>Open</span></div>
 
+  <!-- Plain bar: monogram, the four places to go, one action (nav.js) -->
+  <nav class="nav on-wine" id="nav" aria-label="Sections">
+    <a class="nav__mark" href="#hero" aria-label="Back to the top"><span id="nav-mark">S &amp; N</span></a>
+    <ul class="nav__links">
+      <li><a href="#date-end" data-section="date" data-also="countdown">Date</a></li>
+      <li><a href="#reception" data-section="reception">Venue</a></li>
+      <li><a href="#gallery" data-section="gallery">Photos</a></li>
+      <li><a href="#guestbook" data-section="guestbook">Wishes</a></li>
+    </ul>
+    <button class="btn btn--solid nav__action" id="nav-action" type="button" hidden>Add to calendar</button>
+  </nav>
+
   <main>
 
-    <!-- Hero: names and the kolam. The date is held for the next chapter. -->
-    <header class="hero" id="hero">
-      <div class="hero__glow" aria-hidden="true"></div>
-      <div class="hero__glow hero__glow--blush" aria-hidden="true"></div>
-      <div class="hero__mandala" id="hero-mandala" aria-hidden="true"></div>
+    <!-- Hero: the invitation card on deep wine. The date is held for the next chapter. -->
+    <header class="hero on-wine" id="hero">
+      <div class="hero__card on-pearl">
+        <div class="hero__karai" aria-hidden="true"></div>
 
-      <div class="hero__stack">
-        <p class="hero__lead hero__fade">Together with their families</p>
+        <div class="hero__face">
+          <div class="hero__mandala" id="hero-mandala" aria-hidden="true"></div>
 
-        <h1 class="names" aria-label="Sadhaasivam and Nithiya">
-          <span class="names__line" aria-hidden="true"><span class="mask"><span class="names__word" data-wedding="partner1">Sadhaasivam</span></span></span>
-          <span class="names__amp hero__fade" aria-hidden="true">&amp;</span>
-          <span class="names__line" aria-hidden="true"><span class="mask"><span class="names__word" data-wedding="partner2">Nithiya</span></span></span>
-        </h1>
+          <div class="hero__stack">
+            <p class="hero__lead hero__fade">Together with their families</p>
 
-        <p class="hero__invite hero__fade">invite you to their wedding reception</p>
+            <h1 class="names" aria-label="Sadhaasivam and Nithiya">
+              <span class="names__line" aria-hidden="true"><span class="mask"><span class="names__word" data-wedding="partner1">Sadhaasivam</span></span></span>
+              <span class="names__amp hero__fade" aria-hidden="true">&amp;</span>
+              <span class="names__line" aria-hidden="true"><span class="mask"><span class="names__word" data-wedding="partner2">Nithiya</span></span></span>
+            </h1>
+
+            <p class="hero__invite hero__fade">invite you to their wedding reception</p>
+          </div>
+        </div>
+
+        <div class="hero__karai" aria-hidden="true"></div>
       </div>
 
-      <a class="hero__cue hero__fade" href="#date" aria-label="Scroll down to the date"><span class="hero__cue-line"></span></a>
+      <a class="hero__cue hero__fade" href="#date">
+        <span>Scroll for the date</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+      </a>
     </header>
 
     <!-- Date: scrolling draws the kolam, then the date appears inside it -->
@@ -71,17 +92,19 @@
         <div class="date__card" id="date-card"></div>
         <p class="date__hint" id="date-hint">Keep scrolling</p>
       </div>
+      <!-- the point where the kolam is complete: the "Date" link in the bar lands here -->
+      <span class="date__end" id="date-end" aria-hidden="true"></span>
     </section>
 
     <!-- Countdown -->
     <section class="countdown" id="countdown" aria-labelledby="cd-title">
-      <div class="wrap">
-        <div class="countdown__head">
+      <div class="wrap countdown__grid">
+        <div class="countdown__head" data-enter>
           <h2 id="cd-title">Until we celebrate together</h2>
           <p class="countdown__note" id="cd-note"></p>
         </div>
 
-        <div class="cd" id="cd" data-state="pending" aria-hidden="true">
+        <div class="cd" id="cd" data-state="pending" aria-hidden="true" data-enter>
           <div class="cd__unit" data-unit="days"><div class="cd__digits"></div><span class="cd__label">Days</span></div>
           <div class="cd__unit" data-unit="hours"><div class="cd__digits"></div><span class="cd__label">Hours</span></div>
           <div class="cd__unit" data-unit="minutes"><div class="cd__digits"></div><span class="cd__label">Minutes</span></div>
@@ -91,33 +114,33 @@
       </div>
     </section>
 
-    <!-- Reception: details, calendar, map in an arch -->
+    <!-- Reception: details on a ticket, calendar, map in an arch -->
     <section class="reception on-champagne" id="reception" aria-labelledby="rec-title">
       <div class="wrap reception__grid">
         <div class="reception__info">
-          <div>
+          <div data-enter>
             <h2 class="reception__title" id="rec-title">The reception</h2>
           </div>
 
-          <dl class="facts">
+          <dl class="facts" data-enter>
             <div class="facts__row"><dt>When</dt><dd id="rec-when"></dd></div>
             <div class="facts__row"><dt>Where</dt><dd id="rec-where"></dd></div>
           </dl>
 
-          <div class="reception__actions" id="rec-actions"></div>
+          <div class="reception__actions" id="rec-actions" data-enter></div>
           <p class="soft reception__note" id="rec-note"></p>
         </div>
 
-        <div class="reception__map" id="rec-map"></div>
+        <div class="reception__map" id="rec-map" data-enter></div>
       </div>
     </section>
 
     <!-- Gallery: portrait coverflow, click the centre photo to maximise -->
-    <section class="gallery" id="gallery" aria-labelledby="gal-title">
+    <section class="gallery on-wine" id="gallery" aria-labelledby="gal-title">
       <div class="wrap">
-        <div class="gallery__head">
+        <div class="gallery__head" data-enter>
           <h2 id="gal-title">Moments</h2>
-          <p class="soft">Tap a photo to bring it forward. Tap the centre one to see it larger.</p>
+          <p>Tap the centre photo to see it larger.</p>
         </div>
 
         <div class="slideshow" id="slideshow" role="region" aria-roledescription="carousel" aria-label="Photo gallery">
@@ -143,13 +166,13 @@
       </div>
     </section>
 
-    <!-- Guestbook -->
+    <!-- Guestbook: a coupon to cut out -->
     <section class="guestbook on-champagne" id="guestbook" aria-labelledby="gb-title">
       <div class="wrap guestbook__grid">
-        <div class="guestbook__side">
+        <div class="guestbook__side" data-enter>
           <div class="guestbook__head">
             <h2 id="gb-title">Guestbook</h2>
-            <p class="soft">Leave a few words for Sadhaasivam and Nithiya. Your message appears here for everyone to read.</p>
+            <p>Leave a few words for Sadhaasivam and Nithiya. Your message appears here for everyone to read.</p>
           </div>
 
           <form class="gb-form" id="gb-form" novalidate>
@@ -164,17 +187,18 @@
             <input class="gb-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
 
             <div class="gb-form__row">
-              <button class="round round--sm" id="gb-suggest" type="button" aria-label="Suggest a wish" title="Suggest a wish">
+              <button class="btn btn--sm" id="gb-suggest" type="button">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></svg>
+                Suggest a wish
               </button>
               <span class="gb-count" id="gb-count" aria-hidden="true">0 / 500</span>
-              <button class="btn btn--solid" id="gb-send" type="submit">Send wishes</button>
+              <button class="btn btn--solid gb-send" id="gb-send" type="submit">Send wishes</button>
             </div>
             <p class="gb-status" id="gb-status" role="status"></p>
           </form>
         </div>
 
-        <div class="guestbook__main">
+        <div class="guestbook__main" data-enter>
           <p class="gb-note" id="gb-note" hidden></p>
           <div class="gb-list" id="gb-list" data-lenis-prevent tabindex="0" role="region" aria-label="Guest messages"></div>
           <button class="btn gb-more" id="gb-more" type="button" hidden>Show earlier messages</button>
@@ -184,10 +208,13 @@
 
   </main>
 
+  <!-- The back of the card -->
   <footer class="footer on-wine">
     <div class="wrap">
+      <div class="footer__karai" aria-hidden="true"></div>
       <div class="footer__top">
-        <p class="soft">We look forward to celebrating with you.</p>
+        <p class="footer__note">We look forward to celebrating with you.</p>
+        <a class="btn" href="#hero">Back to the top</a>
       </div>
       <p class="footer__names" aria-label="Sadhaasivam and Nithiya">
         <span class="footer__name" data-wedding="partner1">Sadhaasivam</span>
@@ -221,6 +248,8 @@
   <script src="js/guestbook.js"></script>
   <script src="js/cursor.js"></script>
   <script src="js/lightbox.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/enter.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

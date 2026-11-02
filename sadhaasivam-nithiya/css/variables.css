@@ -19,15 +19,16 @@
   --section-pad: clamp(5rem, 13vw, 10rem);
   --measure: 52ch;
   --max-width: 84rem;
+  --nav-h: calc(3.5rem + env(safe-area-inset-top));
 
-  /* radii */
+  /* radii: cards are square, buttons are round, the map keeps its arch */
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 24px;
   --radius-full: 999px;
 
-  /* fluid type scale */
-  --step--1: clamp(0.8rem, 0.77rem + 0.15vw, 0.9rem);
+  /* fluid type scale (nothing under 14px) */
+  --step--1: clamp(0.875rem, 0.85rem + 0.15vw, 1rem);
   --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
   --step-1: clamp(1.3rem, 1.15rem + 0.7vw, 1.75rem);
   --step-2: clamp(1.7rem, 1.35rem + 1.6vw, 2.8rem);

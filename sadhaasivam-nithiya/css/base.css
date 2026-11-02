@@ -8,6 +8,7 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-behavior: auto;          /* smoothing is handled by motion.js */
+  scroll-padding-top: var(--nav-h);   /* only matters without smooth scroll */
 }
 
 /* Lenis (smooth scroll) hooks */
@@ -17,7 +18,7 @@ html.lenis, html.lenis body { height: auto; }
 
 body {
   margin: 0;
-  min-height: 100vh;
+  min-height: 100svh;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);

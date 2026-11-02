@@ -1,6 +1,10 @@
 /* ==========================================================================
-   sections.css  |  kolam mandala, hero, date chapter, countdown, reception,
-   footer, envelope. The gallery has its own file (gallery.css).
+   sections.css  |  kolam mandala, hero card, date chapter, countdown ledger,
+   reception ticket, footer, envelope. The gallery has its own file.
+
+   The idea: the page is the invitation card. A pearl card on deep wine, the
+   zari karai border at its edges, the kolam drawn on it; further down the
+   stationery continues (a ticket, a coupon) and the footer is the card's back.
    ========================================================================== */
 
 /* Kolam (mandala.js) ------------------------------------------------------- */
@@ -20,70 +24,86 @@
 }
 .mandala__dot { fill: currentColor; opacity: 0; }
 
-/* Hero ------------------------------------------------------------------------ */
+/* The karai band: the woven zari border, a flat strip ------------------------ */
+.hero__karai, .footer__karai {
+  height: 16px;
+  background: var(--karai) repeat-x center / auto 100%;
+}
+
+/* Hero: a pearl card on deep wine ----------------------------------------------- */
 .hero {
+  --pad: clamp(0.75rem, 2vw, 1.5rem);
   position: relative;
   min-height: 100svh;
   display: grid;
-  place-items: center;
+  grid-template-rows: minmax(0, 1fr) auto;
+  justify-items: center;
   padding:
-    calc(clamp(1.5rem, 5vh, 3.5rem) + env(safe-area-inset-top))
-    var(--gutter)
-    calc(5vw + 5.5rem + env(safe-area-inset-bottom));
+    calc(var(--nav-h) + var(--pad))
+    var(--pad)
+    calc(var(--pad) + env(safe-area-inset-bottom));
   isolation: isolate;
   overflow: hidden;
 }
-.hero__glow {
-  position: absolute;
-  z-index: -2;
-  width: 80vmax;
-  height: 80vmax;
-  right: -32vmax;
-  top: -38vmax;
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--glow) 62%, transparent), transparent 72%);
-  pointer-events: none;
+.hero__card {
+  position: relative;
+  width: 100%;
+  max-width: 72rem;
+  min-height: 26rem;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: clip;
 }
-.hero__glow--blush {
-  right: auto;
-  top: auto;
-  left: -34vmax;
-  bottom: -46vmax;
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--blush) 75%, transparent), transparent 72%);
+.hero__face {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: clamp(1.25rem, 4vh, 3rem) var(--gutter);
 }
 
-/* the kolam sits centred behind the names, faint, and fades away where the
-   names are so the lines never fight the letters */
+/* the kolam is printed on the card, faint, and clears where the names are */
 .hero__mandala {
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   left: 50%;
   top: 50%;
-  width: min(125vmin, 100rem);
+  height: 150%;
   aspect-ratio: 1;
   color: var(--ornament);
-  opacity: 0.34;
-  -webkit-mask-image: radial-gradient(closest-side, transparent 38%, #000 74%);
-  mask-image: radial-gradient(closest-side, transparent 38%, #000 74%);
+  opacity: 0.6;
+  /* a mask that clears the kolam where the names sit; nothing is painted with it */
+  -webkit-mask-image: radial-gradient(closest-side, transparent 38%, #000 74%); /* taste-skill-ignore */
+  mask-image: radial-gradient(closest-side, transparent 38%, #000 74%); /* taste-skill-ignore */
   transform: translate3d(-50%, calc(-50% + var(--lift, 0px)), 0) rotate(var(--rot, 0deg));
   pointer-events: none;
 }
 
-/* one centred stack: the lines above and below stay close to the names */
+/* one centred stack, symmetrical like a printed invitation */
 .hero__stack {
+  position: relative;
+  z-index: 1;
   display: grid;
   justify-items: center;
   gap: clamp(0.9rem, 3vh, 1.9rem);
   width: 100%;
   text-align: center;
 }
-.hero__lead, .hero__invite { color: var(--text-soft); max-width: 28ch; }
+.hero__lead { max-width: 28ch; font-size: var(--step-0); color: var(--text-soft); }
+.hero__invite {
+  max-width: 34ch;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-style: italic;
+  line-height: 1.2;
+  color: var(--name-ink);
+}
 
 .names {
   display: grid;
   justify-items: center;
   font-family: var(--font-names);
   /* sized by width AND height, so very wide or very short screens never blow it up */
-  font-size: calc(clamp(3.6rem, min(15vw, 27svh), 14.5rem) * var(--names-scale, 1));
+  font-size: calc(clamp(3.4rem, min(12.5vw, 24svh), 12rem) * var(--names-scale, 1));
   font-style: var(--names-style, normal);
   font-weight: 400;
   line-height: var(--names-leading, 0.84);
@@ -120,7 +140,7 @@
   transition: opacity 1s var(--ease-soft) 1.1s;
 }
 
-/* the kolam behind the names draws itself once, quickly */
+/* the kolam on the card draws itself once, quickly */
 .hero .mandala__dot { opacity: 0; }
 .hero.is-ready .mandala path {
   animation: draw 1.8s var(--ease-expo) both;
@@ -131,38 +151,24 @@
   animation-delay: calc(400ms + var(--r) * 100ms + var(--k) * 8ms);
 }
 
+/* the cue says what scrolling does */
 .hero__cue {
-  position: absolute;
-  left: 50%;
-  bottom: calc(5vw + 1rem + env(safe-area-inset-bottom));
-  translate: -50% 0;
-  width: 2.75rem;
-  height: 3.5rem;
-  display: grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 3.25rem;
+  padding-top: var(--space-2);
+  color: var(--accent);
+  font-size: var(--step-0);
+  text-decoration: none;
 }
-.hero__cue-line {
-  position: relative;
-  width: 1px;
-  height: 100%;
-  overflow: hidden;
-  background: var(--line-strong);
-}
-.hero__cue-line::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--accent);
-  animation: cue-travel 2.4s var(--ease-soft) infinite;
-}
+.hero__cue svg { width: 1.25rem; height: 1.25rem; animation: cue-bob 2.2s var(--ease-soft) infinite; }
 
 /* Date chapter: scroll draws the kolam ------------------------------------ */
 .date {
   position: relative;
   z-index: var(--z-date);
   height: 175svh;                /* short on purpose: about three flicks of the wheel */
-  margin-top: -5vw;
-  border-radius: 50% 50% 0 0 / 5vw 5vw 0 0;
   overflow: clip;
 }
 .date__sticky {
@@ -175,8 +181,8 @@
 .date__mandala {
   position: absolute;
   left: 50%;
-  top: 50%;
-  width: min(max(100vmin, 36rem), 68rem);
+  top: calc(50% - 2.5vw);               /* clear of the countdown's arch */
+  width: min(max(92vmin, 34rem), 66rem);
   aspect-ratio: 1;
   translate: -50% -50%;
   color: var(--ornament);
@@ -186,7 +192,7 @@
 .date__title {
   position: absolute;
   left: var(--gutter);
-  top: clamp(1.5rem, 6vh, 3.5rem);
+  top: calc(var(--nav-h) + clamp(1rem, 3vh, 2rem));
   font-size: var(--step-2);
   font-style: italic;
   color: var(--text);
@@ -195,8 +201,11 @@
   position: absolute;
   left: var(--gutter);
   bottom: clamp(1.5rem, 6vh, 3.5rem);
+  font-size: var(--step-0);
   color: var(--text-soft);
 }
+/* where the kolam is complete; the bar's Date link scrolls to it */
+.date__end { position: absolute; left: 0; top: calc(100% - 100svh); width: 1px; height: 1px; pointer-events: none; }   /* taste-skill-ignore: an invisible anchor, not a rule */
 
 .date__card {
   position: relative;
@@ -206,15 +215,15 @@
   gap: 0.4rem;
   text-align: center;
 }
-.date__event { font-size: var(--step--1); color: var(--text-soft); }
+.date__event { font-size: var(--step-0); color: var(--ornament-ink); }
 .date__day {
-  font-size: clamp(4.8rem, 15vmin, 11rem);
+  font-size: clamp(5.2rem, 17vmin, 12rem);
   line-height: 0.9;
   color: var(--name-ink);
 }
-.date__month { font-size: clamp(1.3rem, 3.4vmin, 2.3rem); line-height: 1.1; }
-.date__time { font-size: var(--step--1); color: var(--text-soft); }
-.date__pending { max-width: 7ch; font-size: clamp(1.8rem, 5vmin, 3rem); line-height: 1.05; color: var(--name-ink); }
+.date__month { font-size: clamp(1.4rem, 3.8vmin, 2.6rem); line-height: 1.1; }
+.date__time { font-size: var(--step-0); color: var(--text-soft); }
+.date__pending { max-width: 10ch; font-size: clamp(1.8rem, 5vmin, 3rem); line-height: 1.05; color: var(--name-ink); }
 
 .date__card .mask > span { transform: translate3d(0, 160%, 0); }
 .date.is-complete .date__card .mask > span {
@@ -226,36 +235,44 @@
 /* reduced motion: no pinning, everything already shown */
 .date.is-static { height: auto; }
 .date.is-static .date__sticky { position: relative; height: auto; min-height: 100svh; padding-block: 6rem; }
+.date.is-static .date__end { top: 0; }
 
-/* Countdown ----------------------------------------------------------------- */
-.countdown { padding-block: var(--section-pad); }
-.countdown__head {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--space-5);
-  margin-bottom: clamp(2rem, 6vw, 4.5rem);
+/* Countdown: a ledger. Figures align on the right, their words on the baseline. */
+.countdown {
+  position: relative;
+  z-index: calc(var(--z-date) + 1);
+  margin-top: -5vw;
+  padding-block: calc(5vw + var(--section-pad)) var(--section-pad);
+  border-radius: 50% 50% 0 0 / 5vw 5vw 0 0;
+  background: var(--bg);
 }
-.countdown__head h2 { max-width: 15ch; }
-.countdown__note { color: var(--text-soft); max-width: 30ch; }
+.countdown__grid { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+@media (min-width: 60rem) {
+  .countdown__grid { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); }
+}
+.countdown__head { display: grid; gap: var(--space-4); align-content: center; }
+.countdown__head h2 { font-size: var(--step-3); }
+.countdown__note { font-size: var(--step-0); color: var(--text-soft); max-width: 30ch; }
 
 .cd {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-top: 1px solid var(--line-strong);
+  gap: clamp(0.25rem, 1vw, 0.75rem);
+  justify-self: start;
+  width: min(100%, 36rem);
+  font-size: clamp(4.25rem, 12vw, 11rem);         /* the figures set the scale of each row */
 }
+@media (min-width: 60rem) { .cd { justify-self: end; } }
 .cd__unit {
   display: grid;
-  gap: 0.6rem;
-  padding: clamp(1rem, 2.5vw, 2rem) clamp(0.5rem, 2vw, 2rem) 0;
-  border-left: 1px solid var(--line);
+  grid-template-columns: 1.5em minmax(0, 1fr);       /* room for three digits of days */
+  align-items: end;
+  column-gap: clamp(0.9rem, 2vw, 1.5rem);
 }
-.cd__unit:first-child { border-left: 0; padding-left: 0; }
 .cd__digits {
   display: flex;
+  justify-content: flex-end;
   font-family: var(--font-display);
-  font-size: clamp(3.4rem, 12.5vw, 12rem);
+  font-size: 1em;
   line-height: 1;
   letter-spacing: -0.04em;
   color: var(--name-ink);
@@ -269,10 +286,10 @@
   transition: transform 0.9s var(--ease-expo);
 }
 .cd__roll span { display: block; height: 1em; }
-.cd__label { color: var(--text-soft); font-size: var(--step--1); }
+.cd__label { padding-bottom: 0.2em; color: var(--text); font-size: var(--step-0); line-height: 1.2; }
 .cd[data-state="pending"] .cd__digits { opacity: 0.28; }
 
-/* Reception ------------------------------------------------------------------ */
+/* Reception: details on a ticket ------------------------------------------------ */
 .reception { padding-block: var(--section-pad); }
 .reception__grid {
   display: grid;
@@ -285,36 +302,42 @@
 .reception__info { display: grid; gap: var(--space-6); align-content: start; }
 .reception__title { font-size: var(--step-4); line-height: 0.9; }
 
-.facts { display: grid; }
+/* the ticket: pearl stock, a karai strip along its top, a punched line between */
+.facts { display: grid; background: var(--surface); }
+.facts::before {
+  content: "";
+  height: 16px;
+  background: var(--karai) repeat-x center / auto 100%;
+}
 .facts__row {
   display: grid;
-  grid-template-columns: 5rem minmax(0, 1fr);
+  grid-template-columns: 5.5rem minmax(0, 1fr);
   gap: var(--space-4);
-  padding-block: var(--space-5);
-  border-top: 1px solid var(--line-strong);
+  padding: var(--space-5) clamp(1.25rem, 3vw, 2rem);
 }
-.facts__row:last-child { border-bottom: 1px solid var(--line-strong); }
-.facts dt { color: var(--text-soft); font-size: var(--step--1); padding-top: 0.6em; }
-.facts dd { display: grid; gap: 0.25rem; }
+.facts__row + .facts__row { border-top: 5px dotted var(--bg); }
+.facts dt { color: var(--text-soft); font-size: var(--step-0); padding-top: 0.5em; }
+.facts dd { display: grid; gap: 0.25rem; font-size: var(--step-0); }
 .facts__main {
   font-family: var(--font-display);
   font-size: var(--step-2);
   line-height: 1.1;
   color: var(--name-ink);
 }
+.facts dd .soft { color: var(--text); }
 .is-pending { color: var(--text-soft); font-style: italic; }
 .reception__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-.reception__note { font-size: var(--step--1); }
+.reception__note { font-size: var(--step-0); }
 
 /* the map sits in an arch, like the mehrab of a hall */
 .reception__map {
   position: relative;
   aspect-ratio: 3 / 4;
   overflow: hidden;
-  border-radius: 50% 50% 1.25rem 1.25rem / 37.5% 37.5% 1.25rem 1.25rem;
+  border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
   background: var(--surface);
-  border: 1px solid var(--line-strong);
 }
+@media (max-width: 59.99rem) and (min-width: 40.01rem) { .reception__map { width: min(100%, 30rem); justify-self: center; } }
 .reception__map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .map__empty {
   position: absolute;
@@ -325,27 +348,36 @@
   gap: var(--space-3);
   padding: var(--space-6);
   text-align: center;
-  color: var(--text-soft);
+  color: var(--text);
 }
-.map__empty svg { width: 2.6rem; height: 2.6rem; color: var(--ornament-ink); }
-.map__empty p { max-width: 22ch; }
+.map__empty svg { width: 3rem; height: 3rem; color: var(--ornament-ink); }
+.map__empty p { max-width: 20ch; font-size: var(--step-0); }
 
-/* Footer --------------------------------------------------------------------- */
+/* Footer: the back of the card ------------------------------------------------------ */
 .footer {
   position: relative;
-  margin-top: -5vw;
-  padding: calc(5vw + var(--space-8)) 0 calc(var(--space-7) + env(safe-area-inset-bottom));
-  border-radius: 50% 50% 0 0 / 5vw 5vw 0 0;
-  overflow: clip;
+  padding: var(--space-8) 0 calc(var(--space-7) + env(safe-area-inset-bottom));
 }
+/* the card's cut edge: scallops standing on the footer's top */
+.footer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 24px;
+  background: var(--scallop) repeat-x left bottom / 48px 24px;
+}
+.footer__karai { margin-bottom: var(--space-7); }
 .footer__top {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   gap: var(--space-4) var(--space-6);
   margin-bottom: var(--space-7);
 }
+.footer__note { font-size: var(--step-1); line-height: 1.25; max-width: 24ch; color: var(--text); }
 .footer__names {
   display: grid;
   font-family: var(--font-names);
@@ -357,8 +389,8 @@
 }
 .footer__name--2 { justify-self: end; }
 
-/* Personalised-link envelope ----------------------------------------------- */
-.zari-rule { width: 6rem; height: 1px; background: var(--zari); }
+/* Personalised-link envelope: the card on deep wine, as the page opens ----- */
+.zari-rule { width: 9rem; height: 16px; background: var(--karai) repeat-x center / auto 100%; }
 .envelope {
   position: fixed;
   inset: 0;
@@ -366,14 +398,8 @@
   display: grid;
   place-items: center;
   padding: var(--gutter);
-  background: var(--bg);
+  background: var(--wine-deep);
   transition: opacity 0.7s var(--ease-soft), visibility 0s linear 0.7s;
-}
-.envelope::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(60% 70% at 50% 0%, color-mix(in srgb, var(--glow) 50%, transparent), transparent 70%);
 }
 .envelope.is-leaving { opacity: 0; visibility: hidden; }
 .envelope__card {
@@ -384,10 +410,9 @@
   justify-items: center;
   text-align: center;
   padding: clamp(2rem, 6vw, 3.5rem) var(--space-5);
-  background: var(--surface);
-  border-radius: 12rem 12rem var(--radius-lg) var(--radius-lg);
+  background: var(--pearl);
+  border-radius: 12rem 12rem 0 0;
   padding-top: clamp(4rem, 12vw, 6rem);
-  border: 1px solid var(--line-strong);
   animation: card-in 1s var(--ease-expo) both;
 }
 .envelope__dear { color: var(--text-soft); }
