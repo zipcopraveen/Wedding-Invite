@@ -20,8 +20,8 @@ window.WEDDING = {
   // The only event: the wedding reception.
   reception: {
     title: "Wedding Reception",
-    datetimeIST: null,        // "YYYY-MM-DDTHH:mm:00", for example "2027-01-15T18:30:00"
-    durationMinutes: 180,
+    datetimeIST: "2026-11-30T18:30:00",        // "YYYY-MM-DDTHH:mm:00", for example "2027-01-15T18:30:00"
+    durationMinutes: 210,
     venueName: "",
     venueAddress: "",
     mapEmbedUrl: "",          // Google Maps embed URL
