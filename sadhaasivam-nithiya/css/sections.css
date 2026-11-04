@@ -1,6 +1,6 @@
 /* ==========================================================================
    sections.css  |  kolam mandala, hero card, date chapter, countdown ledger,
-   reception ticket, footer, envelope. The gallery has its own file.
+   reception ticket, footer. The gallery has its own file; the guest envelope is envelope.css.
 
    The idea: the page is the invitation card. A pearl card on deep wine, the
    zari karai border at its edges, the kolam drawn on it; further down the
@@ -380,39 +380,3 @@
   color: var(--name-ink);
 }
 .footer__name--2 { justify-self: end; }
-
-/* Personalised-link envelope: the card on deep wine, as the page opens ----- */
-.zari-rule { width: 9rem; height: 16px; background: var(--karai) repeat-x center / auto 100%; }
-.envelope {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-envelope);
-  display: grid;
-  place-items: center;
-  padding: var(--gutter);
-  background: var(--wine-deep);
-  transition: opacity 0.7s var(--ease-soft), visibility 0s linear 0.7s;
-}
-.envelope.is-leaving { opacity: 0; visibility: hidden; }
-.envelope__card {
-  position: relative;
-  width: min(100%, 30rem);
-  display: grid;
-  gap: var(--space-4);
-  justify-items: center;
-  text-align: center;
-  padding: clamp(2rem, 6vw, 3.5rem) var(--space-5);
-  background: var(--pearl);
-  border-radius: 12rem 12rem 0 0;
-  padding-top: clamp(4rem, 12vw, 6rem);
-  animation: card-in 1s var(--ease-expo) both;
-}
-.envelope__dear { color: var(--text-soft); }
-.envelope__guest { font-size: var(--step-3); color: var(--name-ink); overflow-wrap: anywhere; }
-.envelope__names {
-  font-family: var(--font-names);
-  font-size: calc(var(--step-2) * var(--names-scale, 1));
-  font-style: var(--names-style, normal);
-  color: var(--name-ink);
-  line-height: 1.1;
-}
