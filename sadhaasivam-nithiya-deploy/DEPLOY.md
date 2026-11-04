@@ -12,11 +12,14 @@ repo/
 
 ## 1. Before you start
 
-- DNS: plain **A records** for `DOMAIN` and `www.DOMAIN` pointing at the VPS IP.
+- DNS (at the registrar, e.g. BigRock's DNS manager): plain **A records** for
+  `@` (the bare domain) and `www` pointing at the VPS IP.
   Remove any registrar parking CNAME or URL-redirect records first, or the
-  certificate request will fail.
+  certificate request will fail. Check with `dig +short yourdomain.com`.
 - On the VPS: Docker with the compose plugin, and Certbot (`sudo apt install certbot`).
-- Ports 80 and 443 open.
+- Firewall: `sudo ufw allow OpenSSH && sudo ufw allow 80,443/tcp && sudo ufw enable`.
+  Allow SSH first or you lock yourself out.
+- A 2 GB swap file, so a memory spike cannot kill the containers.
 
 ## 2. First boot (HTTP only)
 
@@ -58,7 +61,17 @@ Add a cron entry (as root) so nginx picks up renewed certificates:
 Messages are kept by the `api` container in the `guestbook-data` volume, and
 nginx forwards `/api/` to it. To read or remove messages, see
 `sadhaasivam-nithiya-api/README.md`. Back up by copying
-`/data/guestbook.json` out of that volume. Test it after deploying: open the
+`/data/guestbook.json` out of that volume, for example nightly from cron:
+
+```
+0 2 * * * docker cp sadhaasivam-nithiya-api:/data/guestbook.json $HOME/guestbook-$(date +\%F).json
+```
+
+Moderate with the admin key in a header, never in the URL:
+`curl -H "X-Admin-Key: $KEY" https://yourdomain.com/api/guestbook/admin`.
+Reads are limited to 300 per minute per address and posts to 10 per minute
+(see the nginx templates), so a venue full of phones on one Wi-Fi is fine.
+Test it after deploying: open the
 site, post a message, then open the site in a private window and check it
 appears there too.
 

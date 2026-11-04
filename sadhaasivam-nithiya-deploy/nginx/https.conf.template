@@ -1,7 +1,12 @@
 # Normal running: HTTP only serves the certificate check and redirects.
 # ${DOMAIN} is filled in from the container environment.
 
-limit_req_zone $binary_remote_addr zone=guestbook:10m rate=30r/m;
+# Reads are generous (a whole venue can share one Wi-Fi address); posts are tight.
+# An empty key is not counted, so each zone only sees its own method.
+map $request_method $gb_get_key  { GET $binary_remote_addr; HEAD $binary_remote_addr; default ""; }
+map $request_method $gb_post_key { POST $binary_remote_addr; default ""; }
+limit_req_zone $gb_get_key  zone=gb_get:10m  rate=300r/m;
+limit_req_zone $gb_post_key zone=gb_post:10m rate=10r/m;
 
 server {
     listen 80;
@@ -71,11 +76,21 @@ server {
         resolver 127.0.0.11 valid=10s;
         set $api http://api:3000;
         client_max_body_size 8k;
-        limit_req zone=guestbook burst=20 nodelay;
+        limit_req zone=gb_get  burst=60 nodelay;
+        limit_req zone=gb_post burst=5  nodelay;
+        limit_req_status 429;
+        error_page 429 = @rate_limited;
         proxy_pass $api;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_read_timeout 15s;
+    }
+
+    # the page's script expects JSON, so answer the limit in JSON
+    location @rate_limited {
+        default_type application/json;
+        add_header Cache-Control "no-store" always;
+        return 429 '{"error":"rate_limited"}';
     }
 
     location / {

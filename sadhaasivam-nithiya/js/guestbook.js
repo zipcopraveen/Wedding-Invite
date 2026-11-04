@@ -165,7 +165,7 @@
         if (empty) empty.remove();
         fresh.slice().reverse().forEach((e) => listEl.prepend(entryEl(e, true)));
       } catch (e) { /* try again next time */ }
-    }, 45000);
+    }, 60000);
   }
 
   /* Form ------------------------------------------------------------------------ */

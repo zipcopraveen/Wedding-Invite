@@ -10,6 +10,8 @@ services:
     image: nginx:alpine
     container_name: sadhaasivam-nithiya-web
     restart: unless-stopped
+    mem_limit: 128m
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }
     depends_on:
       - api
     ports:
@@ -28,6 +30,8 @@ services:
     build: ../sadhaasivam-nithiya-api
     container_name: sadhaasivam-nithiya-api
     restart: unless-stopped
+    mem_limit: 128m
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }
     environment:
       ADMIN_KEY: ${ADMIN_KEY:?set ADMIN_KEY in .env}
       IP_SALT: ${IP_SALT:?set IP_SALT in .env}

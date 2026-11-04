@@ -33,10 +33,10 @@ forwards `/api/` to this service, so no cross-site setting is needed.
 
 ```bash
 # list everything, newest first
-curl "https://yourdomain.com/api/guestbook/admin?key=YOUR_ADMIN_KEY"
+curl -H "X-Admin-Key: YOUR_ADMIN_KEY" "https://yourdomain.com/api/guestbook/admin"
 
 # remove message 12
-curl -X DELETE "https://yourdomain.com/api/guestbook/12?key=YOUR_ADMIN_KEY"
+curl -X DELETE -H "X-Admin-Key: YOUR_ADMIN_KEY" "https://yourdomain.com/api/guestbook/12"
 ```
 
 A wrong or missing key gets a 404, as if the address did not exist.
