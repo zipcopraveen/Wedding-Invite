@@ -29,6 +29,8 @@
   height: 16px;
   background: var(--karai) repeat-x center / auto 100%;
 }
+/* top border removed at MPU's request; kept at zero height so the hero's grid rows stay in place */
+.hero__karai { height: 0; background: none; }
 
 /* Hero: the invitation, edge to edge ---------------------------------------------- */
 .hero {
@@ -77,24 +79,30 @@
   width: 100%;
   text-align: center;
 }
-.hero__lead { max-width: 28ch; font-size: var(--step-0); color: var(--text-soft); }
+.hero__lead { translate: 0 -5svh; max-width: 28ch; font-size: var(--step-0); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-soft); }
+/* same look as the first line: bold body font */
 .hero__invite {
+  translate: 0 8svh;
   max-width: 34ch;
-  font-family: var(--font-display);
-  font-size: var(--step-1);
-  font-style: italic;
-  line-height: 1.2;
-  color: var(--name-ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-style: normal;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  color: var(--text-soft);
 }
 
 .names {
+  translate: 0 1.7svh;   /* centres the names on the kolam */
   display: grid;
   justify-items: center;
   font-family: var(--font-names);
   /* sized by width AND height, so very wide or very short screens never blow it up */
   font-size: calc(clamp(3.4rem, min(14vw, 25svh), 13rem) * var(--names-scale, 1));
   font-style: var(--names-style, normal);
-  font-weight: 400;
+  font-weight: 500;
   line-height: var(--names-leading, 0.84);
   letter-spacing: var(--names-tracking, -0.035em);
   color: var(--name-ink);
@@ -186,19 +194,24 @@
 }
 .date__mandala .mandala { will-change: transform; }
 
-.date__title {
+.date__title.display {
   position: absolute;
   left: 0;
   right: 0;
   top: calc(var(--nav-h) + clamp(0.75rem, 2.5svh, 1.5rem));
   text-align: center;
-  font-size: var(--step-2);
-  font-style: italic;
-  color: var(--text);
+  /* same look as the hero's first line: bold body font */
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-style: normal;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-soft);
   transition: opacity 1.4s var(--ease-soft), translate 1.4s var(--ease-expo);
 }
 /* the moment the date is revealed, the title slowly lets go (and returns if you scroll back) */
-.date:not(.is-static).is-complete .date__title { opacity: 0; translate: 0 -0.75rem; }
+.date:not(.is-static).is-complete .date__title.display { opacity: 0; translate: 0 -0.75rem; }
 .date__hint {
   position: absolute;
   left: 0;

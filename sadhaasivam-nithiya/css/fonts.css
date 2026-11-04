@@ -13,11 +13,11 @@
 [data-font="editorial"] {
   --font-display: "Instrument Serif", Georgia, serif;
   --font-body: "Instrument Sans", system-ui, sans-serif;
-  --font-names: "Instrument Serif", Georgia, serif;
+  --font-names: "Instrument Sans", system-ui, sans-serif;   /* simple, clean names */
   --names-style: normal;
-  --names-scale: 1;
-  --names-leading: 0.84;
-  --names-tracking: -0.035em;
+  --names-scale: 0.62;
+  --names-leading: 0.95;
+  --names-tracking: -0.02em;
 }
 
 /* classic: Roman headings with a flowing script for the names */

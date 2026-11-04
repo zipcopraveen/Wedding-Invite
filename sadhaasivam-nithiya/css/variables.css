@@ -19,7 +19,7 @@
   --section-pad: clamp(5rem, 13vw, 10rem);
   --measure: 52ch;
   --max-width: 84rem;
-  --nav-h: calc(3.5rem + env(safe-area-inset-top));
+  --nav-h: env(safe-area-inset-top, 0px);   /* no top bar */
 
   /* radii: cards are square, buttons are round, the map keeps its arch */
   --radius-sm: 6px;

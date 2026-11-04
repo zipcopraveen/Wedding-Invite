@@ -10,7 +10,7 @@ window.WEDDING = {
   theme: "zari",              // "zari" (light, default) or "aubergine" (dark). Try ?theme=aubergine
 
   couple: {
-    partner1: { name: "Sadhaasivam" },
+    partner1: { name: "Sadhasivam" },
     partner2: { name: "Nithiya" }
   },
 
@@ -22,8 +22,8 @@ window.WEDDING = {
     title: "Wedding Reception",
     datetimeIST: "2026-11-30T18:30:00",        // "YYYY-MM-DDTHH:mm:00", for example "2027-01-15T18:30:00"
     durationMinutes: 210,
-    venueName: "",
-    venueAddress: "",
+    venueName: "Muthumani Mahal",
+    venueAddress: "Near Kattur Bus Stop, Trichy - 19",
     mapEmbedUrl: "https://maps.google.com/maps?q=Muthumani+Mahal&cid=16184187111001692542&ll=10.8019023,78.7433026&z=17&output=embed",   // Google Maps embed URL
     mapLinkUrl: "https://maps.app.goo.gl/wHzWXtdm4Qt3cAdj9"   // Google Maps share or directions link
   },

@@ -132,11 +132,11 @@
   transition: transform 0.95s var(--ease-expo) 0.5s;
   pointer-events: none;
 }
+/* the strip that matched the page's top border is gone, so the card's top is plain too */
 .envelope__card::before {
   content: "";
   display: block;
-  height: 16px;
-  background: var(--karai) repeat-x center / auto 100%;
+  height: 0;
 }
 
 /* Opening: flap lifts, seal lets go, the writing clears, the card rises ------ */
