@@ -1,0 +1,160 @@
+/* ==========================================================================
+   envelope.css  |  the screen a personalised link opens on (js/envelope.js)
+
+   The page is the invitation, so first it arrives in its envelope: wine paper
+   with the flap shut, a seal made from the kolam's lotus, and the guest's own
+   name written on the front. Opening lifts the flap and the cream card rises
+   to become the page. Flat shapes only: tone steps, no lines, no shadows.
+   ========================================================================== */
+
+.envelope {
+  --flap-h: clamp(10rem, 38svh, 28rem);
+  --seal: clamp(5.25rem, 13svh, 7.5rem);
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-envelope);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transition: opacity 0.7s var(--ease-soft), visibility 0s linear 0.7s;
+}
+.envelope.is-leaving { opacity: 0; visibility: hidden; }
+
+/* the paper: two folds rising from the bottom corners, and the flap shut over the top */
+.envelope__fold {
+  position: fixed;
+  bottom: 0;
+  z-index: 0;
+  width: 50%;
+  height: clamp(9rem, 34svh, 26rem);
+  background: var(--surface);
+  transition: opacity 0.4s var(--ease-soft);
+}
+.envelope__fold--l { left: 0; clip-path: polygon(0 0, 100% 100%, 0 100%); }
+.envelope__fold--r { right: 0; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+
+.envelope__flap {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 1;
+  height: var(--flap-h);
+  background: var(--surface);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: 50% 0;
+  transform: perspective(1400px) rotateX(0deg);
+  transition: transform 0.85s var(--ease-wipe);
+}
+
+/* the seal sits on the flap's tip; it breathes until the envelope is opened */
+.envelope__seal {
+  position: absolute;
+  left: 50%;
+  top: var(--flap-h);
+  z-index: 2;
+  width: var(--seal);
+  height: var(--seal);
+  translate: -50% -50%;
+  animation: seal-breathe 3.4s var(--ease-soft) infinite;
+  transition: opacity 0.3s var(--ease-soft), scale 0.4s var(--ease-expo);
+}
+.envelope__petal { fill: var(--zari-hi); }
+.envelope__petal--in { fill: var(--zari); }
+.envelope__core { fill: var(--wine); }
+.envelope__initials {
+  fill: var(--zari-hi);
+  font-family: var(--font-display);
+  font-size: 36px;
+  letter-spacing: -0.02em;
+}
+
+/* what is written on the front */
+.envelope__front {
+  position: relative;
+  z-index: 2;
+  min-height: 100%;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: clamp(0.6rem, 2svh, 1.25rem);
+  text-align: center;
+  padding:
+    calc(var(--flap-h) + var(--seal) / 2 + clamp(1rem, 3svh, 2rem))
+    var(--gutter)
+    calc(16px + clamp(1.25rem, 4svh, 2.5rem) + env(safe-area-inset-bottom));
+  transition: opacity 0.4s var(--ease-soft), translate 0.5s var(--ease-expo);
+}
+.envelope__front > * { animation: card-in 1s var(--ease-expo) calc(150ms + var(--i, 0) * 90ms) both; }
+
+.envelope__dear {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-style: italic;
+  line-height: 1;
+  color: var(--accent);
+}
+.envelope__guest {
+  max-width: 100%;
+  font-size: clamp(3rem, min(11vw, 13svh), 8rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.envelope__lead { margin-top: clamp(0.25rem, 1.5svh, 1rem); font-size: var(--step-0); color: var(--text); }
+.envelope__names {
+  font-family: var(--font-names);
+  font-size: calc(var(--step-2) * var(--names-scale, 1));
+  font-style: var(--names-style, normal);
+  line-height: 1.1;
+  color: var(--accent);
+}
+.envelope__open { margin-top: clamp(0.5rem, 2svh, 1.25rem); }
+
+/* the woven border runs along the bottom edge */
+.envelope__karai {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  height: 16px;
+  background: var(--karai) repeat-x center / auto 100%;
+}
+
+/* the cream card, waiting below the screen; its top matches the page's own header */
+.envelope__card {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  padding-top: var(--nav-h);
+  background: var(--pearl);
+  transform: translate3d(0, 101%, 0);
+  transition: transform 0.95s var(--ease-expo) 0.5s;
+  pointer-events: none;
+}
+.envelope__card::before {
+  content: "";
+  display: block;
+  height: 16px;
+  background: var(--karai) repeat-x center / auto 100%;
+}
+
+/* Opening: flap lifts, seal lets go, the writing clears, the card rises ------ */
+.envelope.is-opening .envelope__flap { transform: perspective(1400px) rotateX(180deg); }
+.envelope.is-opening .envelope__seal { opacity: 0; scale: 0.6; animation: none; }
+.envelope.is-opening .envelope__front { opacity: 0; translate: 0 -1rem; }
+.envelope.is-opening .envelope__fold { opacity: 0; }
+.envelope.is-opening .envelope__card { transform: none; }
+
+/* short windows and phones turned sideways: a flatter flap so everything fits */
+@media (max-height: 36rem) {
+  .envelope { --flap-h: 6.5rem; --seal: 3.75rem; }
+  .envelope__front {
+    gap: 0.4rem;
+    padding-top: calc(var(--flap-h) + var(--seal) / 2 + 0.5rem);
+    padding-bottom: calc(16px + 0.5rem + env(safe-area-inset-bottom));
+  }
+  .envelope__guest { font-size: clamp(2.4rem, 12svh, 4.5rem); }
+  .envelope__lead { margin-top: 0; }
+  .envelope__open { margin-top: 0.4rem; }
+}

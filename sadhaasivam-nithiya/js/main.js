@@ -7,7 +7,7 @@
      vendor/lenis   smooth scrolling (MIT licence)
      motion.js      smooth scroll + one shared animation frame
      theme.js       applies theme and font set, fills names and title
-     envelope.js    optional "Dear <Name>" gate for personalised links
+     envelope.js    the guest's own envelope, for personalised links (css/envelope.css)
      animations.js  scroll progress line
      audio.js       background music (off until enabled in config.js)
      touch-magic.js tap sparkles
