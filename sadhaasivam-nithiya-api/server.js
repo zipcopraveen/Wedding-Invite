@@ -5,8 +5,10 @@
    GET    /api/health
    GET    /api/guestbook?limit=30&before=<id>    newest first
    POST   /api/guestbook   { name, message, website }   website is a trap field
-   GET    /api/guestbook/admin?key=ADMIN_KEY     everything, with hashed IPs
-   DELETE /api/guestbook/<id>?key=ADMIN_KEY      remove a message
+   GET    /api/guestbook/admin     everything, with hashed IPs
+   DELETE /api/guestbook/<id>      remove a message
+   Both admin calls need the header  X-Admin-Key: <ADMIN_KEY>  (never in the URL,
+   which would end up in access logs).
 
    Environment: PORT, DATA_DIR, ADMIN_KEY, IP_SALT, ALLOWED_ORIGINS
    Never put ADMIN_KEY or IP_SALT in code or in git.
@@ -98,8 +100,8 @@ const cleanMessage = (s) => String(s)
 const hasLink = (s) => /(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|io|in|co|xyz|ru|link|top)\b)/i.test(s);
 const publicEntry = (e) => ({ id: e.id, name: e.name, message: e.message, createdAt: e.createdAt });
 
-function adminOk(url) {
-  const key = url.searchParams.get("key") || "";
+function adminOk(req) {
+  const key = String(req.headers["x-admin-key"] || "");
   if (!ADMIN_KEY || !key) return false;
   const a = Buffer.from(key), b = Buffer.from(ADMIN_KEY);
   return a.length === b.length && crypto.timingSafeEqual(a, b);
@@ -157,13 +159,13 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (route === "/api/guestbook/admin" && req.method === "GET") {
-      if (!adminOk(url)) return send(req, res, 404, { error: "not_found" });
+      if (!adminOk(req)) return send(req, res, 404, { error: "not_found" });
       return send(req, res, 200, { entries: db.entries.slice().sort((a, b) => b.id - a.id) });
     }
 
     const del = route.match(/^\/api\/guestbook\/(\d+)$/);
     if (del && req.method === "DELETE") {
-      if (!adminOk(url)) return send(req, res, 404, { error: "not_found" });
+      if (!adminOk(req)) return send(req, res, 404, { error: "not_found" });
       const id = Number(del[1]);
       const before = db.entries.length;
       db.entries = db.entries.filter((e) => e.id !== id);
