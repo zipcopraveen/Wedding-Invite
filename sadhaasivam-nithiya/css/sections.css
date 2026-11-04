@@ -30,38 +30,27 @@
   background: var(--karai) repeat-x center / auto 100%;
 }
 
-/* Hero: a pearl card on deep wine ----------------------------------------------- */
+/* Hero: the invitation, edge to edge ---------------------------------------------- */
 .hero {
-  --pad: clamp(0.75rem, 2vw, 1.5rem);
   position: relative;
   min-height: 100svh;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  justify-items: center;
-  padding:
-    calc(var(--nav-h) + var(--pad))
-    var(--pad)
-    calc(var(--pad) + env(safe-area-inset-bottom));
+  grid-template-rows: auto minmax(0, 1fr);
+  padding: var(--nav-h) 0 5vw;           /* the date chapter's arch rises over the last 5vw */
   isolation: isolate;
-  overflow: hidden;
-}
-.hero__card {
-  position: relative;
-  width: 100%;
-  max-width: 72rem;
-  min-height: 26rem;
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: clip;
 }
 .hero__face {
   position: relative;
   display: grid;
-  place-items: center;
-  padding: clamp(1.25rem, 4vh, 3rem) var(--gutter);
+  grid-template-rows: minmax(0, 1fr) auto;
+  justify-items: center;
+  align-items: center;
+  padding: clamp(1.25rem, 4vh, 3rem) var(--gutter) clamp(0.5rem, 2vh, 1.25rem);
+  overflow: clip;
 }
 
-/* the kolam is printed on the card, faint, and clears where the names are */
+/* the kolam is printed on the page, faint, and clears where the names are */
 .hero__mandala {
   position: absolute;
   z-index: 0;
@@ -103,7 +92,7 @@
   justify-items: center;
   font-family: var(--font-names);
   /* sized by width AND height, so very wide or very short screens never blow it up */
-  font-size: calc(clamp(3.4rem, min(12.5vw, 24svh), 12rem) * var(--names-scale, 1));
+  font-size: calc(clamp(3.4rem, min(14vw, 25svh), 13rem) * var(--names-scale, 1));
   font-style: var(--names-style, normal);
   font-weight: 400;
   line-height: var(--names-leading, 0.84);
@@ -140,7 +129,7 @@
   transition: opacity 1s var(--ease-soft) 1.1s;
 }
 
-/* the kolam on the card draws itself once, quickly */
+/* the kolam draws itself once, quickly */
 .hero .mandala__dot { opacity: 0; }
 .hero.is-ready .mandala path {
   animation: draw 1.8s var(--ease-expo) both;
@@ -157,7 +146,8 @@
   align-items: center;
   gap: 0.6rem;
   min-height: 3.25rem;
-  padding-top: var(--space-2);
+  position: relative;
+  z-index: 1;
   color: var(--accent);
   font-size: var(--step-0);
   text-decoration: none;
@@ -169,6 +159,8 @@
   position: relative;
   z-index: var(--z-date);
   height: 175svh;                /* short on purpose: about three flicks of the wheel */
+  margin-top: -5vw;
+  border-radius: 50% 50% 0 0 / 5vw 5vw 0 0;
   overflow: clip;
 }
 .date__sticky {
