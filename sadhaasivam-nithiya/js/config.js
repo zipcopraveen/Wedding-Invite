@@ -49,5 +49,5 @@ window.WEDDING = {
   // works in preview mode and saves messages on that device only.
   guestbook: { enabled: true, api: "/api/guestbook" },
 
-  music: { src: "assets/audio/background.mp3", enabled: false }
+  music: { src: "assets/audio/background.mp3", enabled: true }
 };
