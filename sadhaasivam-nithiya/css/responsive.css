@@ -46,7 +46,7 @@
 /* Phones turned sideways, or any very short window --------------------------- */
 @media (max-height: 30rem) {
   .nav { height: calc(2.75rem + env(safe-area-inset-top)); }
-  :root { --nav-h: calc(2.75rem + env(safe-area-inset-top)); }
+  :root { --nav-h: env(safe-area-inset-top, 0px); }   /* no top bar */
   .hero__face { padding-block: 0.75rem 0.5rem; }
   .hero__stack { gap: 0.5rem; }
   .names { font-size: calc(min(14vw, 15svh) * var(--names-scale, 1)); }

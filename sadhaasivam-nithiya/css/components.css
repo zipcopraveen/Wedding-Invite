@@ -57,6 +57,8 @@
 }
 
 /* The bar: monogram, four places to go, one action ------------------------- */
+/* top bar removed at MPU's request: hidden, not deleted, so the page script keeps working */
+.nav { display: none !important; }
 .nav {
   position: fixed;
   inset: 0 0 auto 0;
