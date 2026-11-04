@@ -164,35 +164,48 @@
   overflow: clip;
 }
 .date__sticky {
+  /* the title gets its own band at the top; the kolam is sized to the space left below it,
+     so the two never touch and the date always sits inside the kolam's open centre */
+  --title-zone: clamp(4rem, 9svh, 5.5rem);
+  --pad-top: calc(var(--nav-h) + var(--title-zone));
+  --pad-bottom: 5vw;                    /* clear of the countdown's arch */
+  --ring: min(max(92vmin, 34rem), 66rem, calc(100svh - var(--pad-top) - var(--pad-bottom)));
   position: sticky;
   top: 0;
   height: 100svh;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);    /* exactly the screen wide, so a wider kolam stays centred */
   place-items: center;
+  padding: var(--pad-top) 0 var(--pad-bottom);
 }
 .date__mandala {
-  position: absolute;
-  left: 50%;
-  top: calc(50% - 2.5vw);               /* clear of the countdown's arch */
-  width: min(max(92vmin, 34rem), 66rem);
+  grid-area: 1 / 1;
+  width: var(--ring);
   aspect-ratio: 1;
-  translate: -50% -50%;
   color: var(--ornament);
 }
 .date__mandala .mandala { will-change: transform; }
 
 .date__title {
   position: absolute;
-  left: var(--gutter);
-  top: calc(var(--nav-h) + clamp(1rem, 3vh, 2rem));
+  left: 0;
+  right: 0;
+  top: calc(var(--nav-h) + clamp(0.75rem, 2.5svh, 1.5rem));
+  text-align: center;
   font-size: var(--step-2);
   font-style: italic;
   color: var(--text);
+  transition: opacity 1.4s var(--ease-soft), translate 1.4s var(--ease-expo);
 }
+/* the moment the date is revealed, the title slowly lets go (and returns if you scroll back) */
+.date:not(.is-static).is-complete .date__title { opacity: 0; translate: 0 -0.75rem; }
 .date__hint {
   position: absolute;
-  left: var(--gutter);
+  left: 0;
+  right: 0;
   bottom: clamp(1.5rem, 6vh, 3.5rem);
+  margin-inline: auto;                  /* paragraphs have a max width; this keeps it centred */
+  text-align: center;
   font-size: var(--step-0);
   color: var(--text-soft);
 }
@@ -200,6 +213,7 @@
 .date__end { position: absolute; left: 0; top: calc(100% - 100svh); width: 1px; height: 1px; pointer-events: none; }   /* taste-skill-ignore: an invisible anchor, not a rule */
 
 .date__card {
+  grid-area: 1 / 1;
   position: relative;
   z-index: 1;
   display: grid;
@@ -207,15 +221,15 @@
   gap: 0.4rem;
   text-align: center;
 }
-.date__event { font-size: var(--step-0); color: var(--ornament-ink); }
+.date__event { font-size: max(0.875rem, calc(var(--ring) * 0.026)); color: var(--ornament-ink); }
 .date__day {
-  font-size: clamp(5.2rem, 17vmin, 12rem);
+  font-size: calc(var(--ring) * 0.17);
   line-height: 0.9;
   color: var(--name-ink);
 }
-.date__month { font-size: clamp(1.4rem, 3.8vmin, 2.6rem); line-height: 1.1; }
-.date__time { font-size: var(--step-0); color: var(--text-soft); }
-.date__pending { max-width: 10ch; font-size: clamp(1.8rem, 5vmin, 3rem); line-height: 1.05; color: var(--name-ink); }
+.date__month { font-size: max(1.15rem, calc(var(--ring) * 0.045)); line-height: 1.1; }
+.date__time { font-size: max(0.875rem, calc(var(--ring) * 0.026)); color: var(--text-soft); }
+.date__pending { max-width: 10ch; font-size: calc(var(--ring) * 0.07); line-height: 1.05; color: var(--name-ink); }
 
 .date__card .mask > span { transform: translate3d(0, 160%, 0); }
 .date.is-complete .date__card .mask > span {
@@ -226,7 +240,7 @@
 
 /* reduced motion: no pinning, everything already shown */
 .date.is-static { height: auto; }
-.date.is-static .date__sticky { position: relative; height: auto; min-height: 100svh; padding-block: 6rem; }
+.date.is-static .date__sticky { position: relative; height: auto; min-height: 100svh; }
 .date.is-static .date__end { top: 0; }
 
 /* Countdown: a ledger. Figures align on the right, their words on the baseline. */
