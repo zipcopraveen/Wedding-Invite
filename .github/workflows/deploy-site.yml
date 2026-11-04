@@ -1,0 +1,77 @@
+name: Deploy site
+
+# Runs only when files inside the website folder change on main.
+# sadhaasivam-nithiya-api/ and sadhaasivam-nithiya-deploy/ never trigger it
+# (the pattern needs a slash right after "sadhaasivam-nithiya").
+on:
+  push:
+    branches: [main]
+    paths:
+      - "sadhaasivam-nithiya/**"
+  workflow_dispatch:
+
+# One deploy at a time; a newer push waits instead of racing the older one.
+concurrency:
+  group: deploy-site
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: JavaScript syntax
+        run: find sadhaasivam-nithiya/js -name '*.js' -not -path '*/vendor/*' -print0 | xargs -0 -n1 node --check
+
+      - name: HTML
+        run: npx --yes htmlhint@1.1.4 --config .github/htmlhintrc.json "sadhaasivam-nithiya/*.html"
+
+      - name: CSS
+        run: npx --yes stylelint@16.10.0 --config .github/stylelintrc.json "sadhaasivam-nithiya/css/**/*.css"
+
+      # The server is case-sensitive: a wrong filename works on a Mac and breaks live.
+      - name: Local files referenced by index.html exist
+        run: |
+          node -e '
+            const fs = require("fs"), path = require("path");
+            const dir = "sadhaasivam-nithiya";
+            const html = fs.readFileSync(path.join(dir, "index.html"), "utf8");
+            const refs = [...html.matchAll(/(?:src|href)="([^"#?]+)"/g)].map(m => m[1])
+              .filter(r => !/^(https?:|\/\/|mailto:|tel:|data:)/.test(r));
+            const missing = refs.filter(r => !fs.existsSync(path.join(dir, r.replace(/^\//, ""))));
+            if (missing.length) { console.error("Missing files:\n" + missing.join("\n")); process.exit(1); }
+            console.log("checked " + refs.length + " references, all present");
+          '
+
+  deploy:
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Pull on the server
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          # The server's authorized_keys pins this key to one command
+          # (git pull --ff-only in the repo folder), so nothing is sent here.
+          ssh -i ~/.ssh/deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes \
+              "$SSH_USER@$SSH_HOST" true
+
+      - name: Check the live site
+        run: curl -fsS --retry 3 --retry-delay 5 -o /dev/null https://nithiyawedssadhasivam.in/
