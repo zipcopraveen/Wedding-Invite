@@ -12,10 +12,8 @@
   .nav__links a { font-size: 0.9375rem; padding-inline: 0.45rem; }
   .nav__action { display: none; }
 
-  /* the card fills the screen like a held invitation */
-  .hero__card { min-height: 0; }
   .hero__face { padding-inline: 1rem; }
-  .names { font-size: calc(min(19vw, 14svh) * var(--names-scale, 1)); }
+  .names { font-size: calc(min(20vw, 14svh) * var(--names-scale, 1)); }
   .footer__names { font-size: calc(20vw * var(--names-scale, 1)); }
   .hero__lead, .hero__invite { max-width: 24ch; }
 
@@ -52,10 +50,9 @@
 @media (max-height: 30rem) {
   .nav { height: calc(2.75rem + env(safe-area-inset-top)); }
   :root { --nav-h: calc(2.75rem + env(safe-area-inset-top)); }
-  .hero__card { min-height: 0; }
-  .hero__face { padding-block: 0.75rem; }
+  .hero__face { padding-block: 0.75rem 0.5rem; }
   .hero__stack { gap: 0.5rem; }
-  .names { font-size: calc(min(12.5vw, 15svh) * var(--names-scale, 1)); }
+  .names { font-size: calc(min(14vw, 15svh) * var(--names-scale, 1)); }
   .hero__invite { font-size: var(--step-0); }
   .hero__cue { min-height: 2.5rem; }
   .date__title, .date__hint { display: none; }
