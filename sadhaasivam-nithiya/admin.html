@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Guestbook admin</title>
+<style>
+  :root { --bg:#faf8f5; --card:#fff; --text:#2a2320; --muted:#7a6f68; --line:#e6dfd8; --accent:#6b2d4a; --danger:#b3261e; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1b1715; --card:#26211e; --text:#f1ebe6; --muted:#a89d95; --line:#3a332f; --accent:#d9a7bf; --danger:#f2b8b5; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.5 system-ui, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 1.4rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 20px; font-size: .9rem; }
+  .bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 16px; }
+  input[type=password] { flex:1 1 220px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--text); font:inherit; }
+  button { padding:10px 14px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--text); font:inherit; cursor:pointer; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  @media (prefers-color-scheme: dark) { button.primary { color:#1b1715; } }
+  button:disabled { opacity:.5; cursor:default; }
+  #status { min-height:1.4em; color:var(--muted); font-size:.9rem; margin: 0 0 12px; }
+  #status[data-tone=error] { color: var(--danger); }
+  .entry { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:10px; }
+  .head { display:flex; justify-content:space-between; gap:8px; align-items:baseline; flex-wrap:wrap; }
+  .name { font-weight:600; }
+  .meta { color:var(--muted); font-size:.8rem; }
+  .text { margin:6px 0 10px; white-space:pre-wrap; overflow-wrap:anywhere; }
+  .row { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .del { color:var(--danger); border-color:var(--danger); padding:6px 10px; font-size:.85rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Guestbook admin</h1>
+  <p class="sub">Your admin key stays in this page's memory and is sent as a header. It is never put in the address.</p>
+
+  <form class="bar" id="login" autocomplete="off">
+    <input type="password" id="key" placeholder="Admin key" aria-label="Admin key" required>
+    <button class="primary" id="load" type="submit">Load messages</button>
+    <button type="button" id="export" disabled>Download backup</button>
+  </form>
+
+  <p id="status" role="status"></p>
+  <div id="list"></div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  const API = "/api/guestbook";
+  const keyEl = document.getElementById("key");
+  const statusEl = document.getElementById("status");
+  const listEl = document.getElementById("list");
+  const loadBtn = document.getElementById("load");
+  const exportBtn = document.getElementById("export");
+  const fmt = new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata", day: "numeric", month: "short", year: "numeric",
+    hour: "numeric", minute: "2-digit", hour12: true
+  });
+  let key = "";
+  let entries = [];
+
+  function setStatus(text, tone) {
+    statusEl.textContent = text || "";
+    if (tone) statusEl.dataset.tone = tone; else delete statusEl.dataset.tone;
+  }
+
+  async function call(path, method) {
+    const res = await fetch(API + path, { method, headers: { "X-Admin-Key": key, Accept: "application/json" } });
+    const type = res.headers.get("content-type") || "";
+    const data = type.includes("application/json") ? await res.json() : null;
+    return { status: res.status, ok: res.ok, data };
+  }
+
+  function render() {
+    listEl.replaceChildren();
+    entries.forEach((e) => {
+      const box = document.createElement("article");
+      box.className = "entry";
+
+      const head = document.createElement("div");
+      head.className = "head";
+      const name = document.createElement("span");
+      name.className = "name";
+      name.textContent = e.name;
+      const time = document.createElement("span");
+      time.className = "meta";
+      time.textContent = fmt.format(new Date(e.createdAt));
+      head.append(name, time);
+
+      const text = document.createElement("p");
+      text.className = "text";
+      text.textContent = e.message;
+
+      const row = document.createElement("div");
+      row.className = "row";
+      const meta = document.createElement("span");
+      meta.className = "meta";
+      meta.textContent = "#" + e.id + (e.ipHash ? "  ·  ip " + e.ipHash.slice(0, 8) : "");
+      const del = document.createElement("button");
+      del.type = "button";
+      del.className = "del";
+      del.textContent = "Delete";
+      del.addEventListener("click", () => remove(e, del));
+      row.append(meta, del);
+
+      box.append(head, text, row);
+      listEl.appendChild(box);
+    });
+    exportBtn.disabled = !entries.length;
+  }
+
+  async function load() {
+    loadBtn.disabled = true;
+    setStatus("Loading.");
+    try {
+      const r = await call("/admin", "GET");
+      if (r.status === 404) { setStatus("Wrong key.", "error"); entries = []; render(); return; }
+      if (r.status === 429) { setStatus("Too many requests. Wait a moment and try again.", "error"); return; }
+      if (!r.ok || !r.data) { setStatus("Could not load messages.", "error"); return; }
+      entries = r.data.entries || [];
+      render();
+      setStatus(entries.length + (entries.length === 1 ? " message." : " messages."));
+    } catch (e) {
+      setStatus("Could not reach the server.", "error");
+    } finally {
+      loadBtn.disabled = false;
+    }
+  }
+
+  async function remove(e, btn) {
+    if (!confirm("Delete this message from " + e.name + "? This cannot be undone.")) return;
+    btn.disabled = true;
+    try {
+      const r = await call("/" + encodeURIComponent(e.id), "DELETE");
+      if (!r.ok) { setStatus("Could not delete message #" + e.id + ".", "error"); btn.disabled = false; return; }
+      entries = entries.filter((x) => x.id !== e.id);
+      render();
+      setStatus("Deleted. " + entries.length + (entries.length === 1 ? " message left." : " messages left."));
+    } catch (err) {
+      setStatus("Could not reach the server.", "error");
+      btn.disabled = false;
+    }
+  }
+
+  document.getElementById("login").addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    key = keyEl.value.trim();
+    if (key) load();
+  });
+
+  exportBtn.addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(entries, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "guestbook-" + new Date().toISOString().slice(0, 10) + ".json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+})();
+</script>
+</body>
+</html>
