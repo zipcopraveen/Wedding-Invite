@@ -24,8 +24,8 @@ window.WEDDING = {
     durationMinutes: 210,
     venueName: "",
     venueAddress: "",
-    mapEmbedUrl: "",          // Google Maps embed URL
-    mapLinkUrl: ""            // Google Maps share or directions link
+    mapEmbedUrl: "https://maps.google.com/maps?q=Muthumani+Mahal&cid=16184187111001692542&ll=10.8019023,78.7433026&z=17&output=embed",   // Google Maps embed URL
+    mapLinkUrl: "https://maps.app.goo.gl/wHzWXtdm4Qt3cAdj9"   // Google Maps share or directions link
   },
 
   // Gallery photos: { src, thumb, alt, focus }. focus is the CSS object-position

@@ -46,9 +46,9 @@
     <a class="nav__mark" href="#hero" aria-label="Back to the top"><span id="nav-mark">S &amp; N</span></a>
     <ul class="nav__links">
       <li><a href="#date-end" data-section="date" data-also="countdown">Date</a></li>
-      <li><a href="#reception" data-section="reception">Venue</a></li>
       <li><a href="#gallery" data-section="gallery">Photos</a></li>
       <li><a href="#guestbook" data-section="guestbook">Wishes</a></li>
+      <li><a href="#reception" data-section="reception">Venue</a></li>
     </ul>
     <button class="btn btn--solid nav__action" id="nav-action" type="button" hidden>Add to calendar</button>
   </nav>
@@ -108,27 +108,6 @@
           <div class="cd__unit" data-unit="seconds"><div class="cd__digits"></div><span class="cd__label">Seconds</span></div>
         </div>
         <span class="sr-only" id="cd-sr" role="status"></span>
-      </div>
-    </section>
-
-    <!-- Reception: details on a ticket, calendar, map in an arch -->
-    <section class="reception on-champagne" id="reception" aria-labelledby="rec-title">
-      <div class="wrap reception__grid">
-        <div class="reception__info">
-          <div data-enter>
-            <h2 class="reception__title" id="rec-title">The reception</h2>
-          </div>
-
-          <dl class="facts" data-enter>
-            <div class="facts__row"><dt>When</dt><dd id="rec-when"></dd></div>
-            <div class="facts__row"><dt>Where</dt><dd id="rec-where"></dd></div>
-          </dl>
-
-          <div class="reception__actions" id="rec-actions" data-enter></div>
-          <p class="soft reception__note" id="rec-note"></p>
-        </div>
-
-        <div class="reception__map" id="rec-map" data-enter></div>
       </div>
     </section>
 
@@ -200,6 +179,27 @@
           <div class="gb-list" id="gb-list" data-lenis-prevent tabindex="0" role="region" aria-label="Guest messages"></div>
           <button class="btn gb-more" id="gb-more" type="button" hidden>Show earlier messages</button>
         </div>
+      </div>
+    </section>
+
+    <!-- Reception: details on a ticket, calendar, map in an arch -->
+    <section class="reception on-pearl" id="reception" aria-labelledby="rec-title">
+      <div class="wrap reception__grid">
+        <div class="reception__info">
+          <div data-enter>
+            <h2 class="reception__title" id="rec-title">The reception</h2>
+          </div>
+
+          <dl class="facts" data-enter>
+            <div class="facts__row"><dt>When</dt><dd id="rec-when"></dd></div>
+            <div class="facts__row"><dt>Where</dt><dd id="rec-where"></dd></div>
+          </dl>
+
+          <div class="reception__actions" id="rec-actions" data-enter></div>
+          <p class="soft reception__note" id="rec-note"></p>
+        </div>
+
+        <div class="reception__map" id="rec-map" data-enter></div>
       </div>
     </section>
 
