@@ -140,6 +140,65 @@
     note.textContent = "Calendar and directions appear here once the date and venue are shared.";
   }
 
+
+  /* The arch's border: kolam line art. A chain of small loops follows the arch
+     (as the scalloped ring does in the date kolam), with a pulli dot at every
+     join. It is measured from the real box, so it fits at any width. */
+  function kolamFrame(box) {
+    const NS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("class", "map__kolam");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    box.appendChild(svg);
+
+    const GAP = 14;          // distance from the map's edge to the pulli dots (px)
+    const STEP = 22;         // distance between dots along the edge (px)
+    const f = (n) => n.toFixed(1);
+
+    function draw() {
+      const W = box.clientWidth, H = box.clientHeight;
+      if (!W || !H) return;
+      const rx = W / 2, ry = H * 0.375;
+      // the arch's edge as a dense walk from the bottom-left, over the top, to the bottom-right
+      const pts = [];
+      for (let y = H; y > ry; y -= 1) pts.push([0, y, -1, 0]);
+      for (let i = 0; i <= 360; i++) {
+        const t = Math.PI + (Math.PI * i) / 360;
+        const nx = Math.cos(t) / rx, ny = Math.sin(t) / ry, n = Math.hypot(nx, ny);
+        pts.push([rx + rx * Math.cos(t), ry + ry * Math.sin(t), nx / n, ny / n]);
+      }
+      for (let y = ry; y <= H; y += 1) pts.push([W, y, 1, 0]);
+      // walk it at equal arc lengths
+      const marks = [];
+      let acc = 0, next = 0;
+      for (let i = 0; i < pts.length; i++) {
+        if (i) acc += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+        if (acc >= next) { marks.push(pts[i]); next += STEP; }
+      }
+      const out = (m, d) => [m[0] + m[2] * d, m[1] + m[3] * d];
+      let loops = "", dots = "";
+      for (let i = 0; i < marks.length; i++) {
+        const [x, y] = out(marks[i], GAP);
+        dots += `<circle cx="${f(x)}" cy="${f(y)}" r="2.2"/>`;
+        if (i + 1 < marks.length) {
+          const [x2, y2] = out(marks[i + 1], GAP);
+          const r = Math.hypot(x2 - x, y2 - y) * 0.62;
+          // each loop is a lens (a petal) from one pulli to the next, and a small dot rides outside its tip
+          loops += `M${f(x)} ${f(y)}A${f(r)} ${f(r)} 0 0 1 ${f(x2)} ${f(y2)}A${f(r)} ${f(r)} 0 0 1 ${f(x)} ${f(y)}`;
+          const mid = [(marks[i][0] + marks[i + 1][0]) / 2, (marks[i][1] + marks[i + 1][1]) / 2, marks[i][2], marks[i][3]];
+          const [mx, my] = out(mid, GAP + 12);
+          dots += `<circle class="map__kolam-tip" cx="${f(mx)}" cy="${f(my)}" r="1.4"/>`;
+        }
+      }
+      svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+      svg.innerHTML = `<path d="${loops}"/>${dots}`;
+    }
+    draw();
+    if ("ResizeObserver" in window) new ResizeObserver(draw).observe(box);
+    else window.addEventListener("resize", draw);
+  }
+
   /* Map: the iframe loads only when it is near the viewport --------------- */
   mapBox.textContent = "";
   if (ev.mapEmbedUrl) {
@@ -150,6 +209,7 @@
     frame.setAttribute("allowfullscreen", "");
     mapBox.appendChild(frame);
     U.observeOnce(mapBox, () => { frame.src = ev.mapEmbedUrl; }, { rootMargin: "300px 0px" });
+    kolamFrame(mapBox);
   } else {
     const empty = document.createElement("div");
     empty.className = "map__empty";

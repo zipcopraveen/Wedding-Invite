@@ -335,19 +335,28 @@
 .reception__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .reception__note { font-size: var(--step-0); }
 
-/* the map sits in an arch, like the mehrab of a hall */
+/* the map sits in an arch, like the mehrab of a hall; a kolam line (reception.js) runs round it */
 .reception__map {
   position: relative;
   aspect-ratio: 3 / 4;
-  overflow: hidden;
+  width: min(calc(100% - 4rem), 25rem);
+  justify-self: center;
+  margin: 2rem;
+}
+.reception__map iframe,
+.reception__map .map__empty {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
   border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
   background: var(--surface);
 }
-@media (max-width: 59.99rem) and (min-width: 40.01rem) { .reception__map { width: min(100%, 30rem); justify-self: center; } }
-.reception__map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.map__kolam { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.map__kolam path { fill: none; stroke: var(--ornament-ink); stroke-width: 1.5; stroke-linecap: round; }
+.map__kolam circle { fill: var(--wine); }
 .map__empty {
-  position: absolute;
-  inset: 0;
   display: grid;
   place-content: center;
   justify-items: center;
