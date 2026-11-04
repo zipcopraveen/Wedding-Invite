@@ -9,5 +9,5 @@
 
 window.WEDDING_GUESTS = {
   // "priya-and-family": "Priya and family",
-  // "arun": "Arun",
+   "arun": "Arun",
 };
