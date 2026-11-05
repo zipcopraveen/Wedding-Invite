@@ -201,10 +201,10 @@
   top: calc(var(--nav-h) + clamp(0.75rem, 2.5svh, 1.5rem) + 3svh);   /* 3% lower than the original (moved up 5% from 8%) */
   text-align: center;
   /* same look as the hero's first line: bold body font */
-  font-family: var(--font-body);
+  font-family: "Cinzel", var(--font-body);
   font-size: calc(var(--step-0) * 1.1025);   /* 10% larger in total (5% twice) */
   font-style: normal;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-soft);

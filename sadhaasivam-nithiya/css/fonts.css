@@ -19,6 +19,22 @@
   font-display: swap;
 }
 
+/* Cinzel (Natanael Gama, from dafont.com): the "Save the date" caption. Open Font Licence, free to use. */
+@font-face {
+  font-family: "Cinzel";
+  src: url("../assets/fonts/Cinzel-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cinzel";
+  src: url("../assets/fonts/Cinzel-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Nexa (Fontfabric, from dafont.com): the time line on the Save the date page.
    Free for PERSONAL use only; Fontfabric sells a commercial licence. */
 @font-face {
