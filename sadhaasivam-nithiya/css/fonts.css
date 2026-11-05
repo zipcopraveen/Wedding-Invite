@@ -9,15 +9,43 @@
    --names-scale   size multiplier          --names-leading / --names-tracking
    ========================================================================== */
 
+/* Aurora (Storytype Studio, from dafont.com): the couple's names.
+   Demo font, free for PERSONAL use only; a commercial licence is sold by the author. */
+@font-face {
+  font-family: "Aurora";
+  src: url("../assets/fonts/Aurora.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Nexa (Fontfabric, from dafont.com): the time line on the Save the date page.
+   Free for PERSONAL use only; Fontfabric sells a commercial licence. */
+@font-face {
+  font-family: "Nexa";
+  src: url("../assets/fonts/Nexa-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nexa";
+  src: url("../assets/fonts/Nexa-Heavy.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* editorial: one tall, tight display serif and a quiet grotesque */
 [data-font="editorial"] {
   --font-display: "Instrument Serif", Georgia, serif;
   --font-body: "Instrument Sans", system-ui, sans-serif;
-  --font-names: "Instrument Sans", system-ui, sans-serif;   /* simple, clean names */
+  --font-names: "Aurora", "Instrument Serif", Georgia, serif;
+  --names-weight: 400;
   --names-style: normal;
-  --names-scale: 0.62;
+  --names-scale: 0.55;   /* sized so "Sadhasivam" fills about 80% of a phone's width */
   --names-leading: 0.95;
-  --names-tracking: -0.02em;
+  --names-tracking: 0;
 }
 
 /* classic: Roman headings with a flowing script for the names */

@@ -79,15 +79,15 @@
   width: 100%;
   text-align: center;
 }
-.hero__lead { translate: 0 -5svh; max-width: 28ch; font-size: var(--step-0); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-soft); }
+.hero__lead { translate: 0 -5svh; max-width: 28ch; font-size: var(--step-0); font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-soft); }
 /* same look as the first line: bold body font */
 .hero__invite {
-  translate: 0 8svh;
+  translate: 0 14.5svh;
   max-width: 34ch;
   font-family: var(--font-body);
   font-size: var(--step-0);
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   line-height: 1.4;
@@ -95,23 +95,23 @@
 }
 
 .names {
-  translate: 0 1.7svh;   /* centres the names on the kolam */
+  translate: 0 3.65svh;   /* centres the whole names block (both names and the &) on the kolam */
   display: grid;
   justify-items: center;
   font-family: var(--font-names);
   /* sized by width AND height, so very wide or very short screens never blow it up */
   font-size: calc(clamp(3.4rem, min(14vw, 25svh), 13rem) * var(--names-scale, 1));
   font-style: var(--names-style, normal);
-  font-weight: 500;
+  font-weight: var(--names-weight, 500);
   line-height: var(--names-leading, 0.84);
   letter-spacing: var(--names-tracking, -0.035em);
   color: var(--name-ink);
 }
 .names__line { display: block; }
 .names__amp {
-  margin-block: 0.12em;
+  margin-block: 1.4em;   /* room above and below the "&" so each name stands apart */
   font-family: var(--font-display);
-  font-size: 0.4em;
+  font-size: 0.408em;   /* 2% larger */
   font-style: italic;
   line-height: 1;
   letter-spacing: 0;
@@ -198,11 +198,11 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(var(--nav-h) + clamp(0.75rem, 2.5svh, 1.5rem));
+  top: calc(var(--nav-h) + clamp(0.75rem, 2.5svh, 1.5rem) + 3svh);   /* 3% lower than the original (moved up 5% from 8%) */
   text-align: center;
   /* same look as the hero's first line: bold body font */
   font-family: var(--font-body);
-  font-size: var(--step-0);
+  font-size: calc(var(--step-0) * 1.1025);   /* 10% larger in total (5% twice) */
   font-style: normal;
   font-weight: 600;
   text-transform: uppercase;
@@ -234,14 +234,19 @@
   gap: 0.4rem;
   text-align: center;
 }
-.date__event { font-size: max(0.875rem, calc(var(--ring) * 0.026)); color: var(--ornament-ink); }
+.date__event { display: none; }   /* "Wedding Reception" line removed at MPU's request */
 .date__day {
   font-size: calc(var(--ring) * 0.17);
   line-height: 0.9;
   color: var(--name-ink);
 }
 .date__month { font-size: max(1.15rem, calc(var(--ring) * 0.045)); line-height: 1.1; }
-.date__time { font-size: max(0.875rem, calc(var(--ring) * 0.026)); color: var(--text-soft); }
+.date__time { font-family: "Nexa", var(--font-body); font-weight: 200; font-size: max(0.875rem, calc(var(--ring) * 0.026)); color: var(--text-soft); }
+/* the date and month use Aurora, the same font as the couple's names */
+.date__card .date__day,
+.date__card .date__month { font-family: "Aurora", "Instrument Serif", Georgia, serif; font-weight: 400; }
+/* Aurora runs wider than the old font, so the month line is a little smaller to stay inside the inner ring */
+.date__card .date__month { font-size: max(1rem, calc(var(--ring) * 0.036)); }
 .date__pending { max-width: 10ch; font-size: calc(var(--ring) * 0.07); line-height: 1.05; color: var(--name-ink); }
 
 .date__card .mask > span { transform: translate3d(0, 160%, 0); }

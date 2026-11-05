@@ -193,11 +193,15 @@
   pointer-events: none;
   width: 10px;
   height: 10px;
-  background: var(--zari);
+  /* red hearts instead of gold sparkles: the shape is a mask, so only styling changed */
+  background: #d92b45;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21.5 3.2 12.6A5.6 5.6 0 0 1 11.1 4.7L12 5.6l.9-.9a5.6 5.6 0 0 1 7.9 7.9z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21.5 3.2 12.6A5.6 5.6 0 0 1 11.1 4.7L12 5.6l.9-.9a5.6 5.6 0 0 1 7.9 7.9z'/%3E%3C/svg%3E") center / contain no-repeat;
+  scale: 1.7;
   will-change: transform, opacity;
 }
-.spark--diamond { transform: rotate(45deg); }
-.spark--star { clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); }
+.spark--diamond { transform: rotate(45deg); rotate: -45deg; }   /* cancels the diamond's tilt so hearts stand upright */
+.spark--star { clip-path: none; }
 
 /* Parts of a section arrive one after another (enter.js) ----------------------- */
 .has-enter [data-enter] {

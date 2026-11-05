@@ -57,9 +57,7 @@
   .coverflow { --cf-h: clamp(16rem, 80svh, 24rem); }
 }
 
-/* short windows: the kolam is small, so the date drops its caption line and sits a little high
-   (its widest line is then the lowest, where the circle is narrowest) */
+/* short windows: the date used to sit a little high; now it is centred in the circle like everywhere else */
 @media (max-height: 50rem) {
   .date__event { display: none; }
-  .date__card { translate: 0 calc(var(--ring) * -0.04); }
 }
