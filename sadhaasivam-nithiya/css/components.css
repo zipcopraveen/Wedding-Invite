@@ -164,10 +164,10 @@
 .music {
   position: fixed;
   right: clamp(0.75rem, 3vw, 1.5rem);
-  bottom: clamp(0.75rem, 3vw, 1.5rem);
+  bottom: calc(clamp(0.75rem, 3vw, 1.5rem) + env(safe-area-inset-bottom, 0px));   /* bottom right corner (moved back from the top at MPU's request) */
   z-index: var(--z-nav);
-  width: 3.25rem;
-  height: 3.25rem;
+  width: 3.026rem;   /* the circle alone: 4% then 3% smaller than 3.25rem; the note icon keeps its size */
+  height: 3.026rem;
   display: grid;
   place-items: center;
   padding: 0;

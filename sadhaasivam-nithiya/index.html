@@ -24,7 +24,7 @@
        Once one is chosen, delete the families it does not use. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Gilda+Display&family=Hanken+Grotesk:wght@300..700&family=Instrument+Sans:wght@400..600&family=Instrument+Serif:ital@0;1&family=Lexend:wght@300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Gilda+Display&family=Hanken+Grotesk:wght@300..700&family=Instrument+Sans:wght@400..600&family=Instrument+Serif:ital@0;1&family=Lexend:wght@300&family=Tenor+Sans&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/themes/zari.css">
@@ -64,6 +64,28 @@
       <div class="hero__face">
         <div class="hero__mandala" id="hero-mandala" aria-hidden="true"></div>
 
+        <!-- Incense haze: soft saffron and peach smoke that rises and curls; decoration only, pure CSS (sections.css) -->
+        <div class="hero__haze" aria-hidden="true">
+          <i class="wisp" style="--x:-30%;--y:62svh;--m:1.15;--c:rgba(238,170,110,.38);--d:0s;--t:14s"></i>
+          <i class="wisp" style="--x:40%;--y:58svh;--m:.95;--c:rgba(244,190,150,.34);--d:-3s;--t:17s"></i>
+          <i class="wisp" style="--x:-10%;--y:48svh;--m:1.05;--c:rgba(232,196,128,.32);--d:-6s;--t:15s"></i>
+          <i class="wisp" style="--x:60%;--y:68svh;--m:.85;--c:rgba(240,176,140,.3);--d:-9s;--t:19s"></i>
+        </div>
+
+        <!-- Falling petals: decoration only, pure CSS (sections.css) -->
+        <div class="petals" aria-hidden="true">
+          <i class="petal petal--back" style="--x:8;--s:14px;--c:#e7b6a8;--t:13s;--d:-2s"></i>
+          <i class="petal petal--back" style="--x:46;--s:16px;--c:#f3d9cf;--t:15s;--d:-8s"></i>
+          <i class="petal petal--back" style="--x:80;--s:13px;--c:#e7b6a8;--t:14s;--d:-5s"></i>
+          <i class="petal" style="--x:14;--s:10px;--c:#d9847d;--t:10s;--d:0s"></i>
+          <i class="petal" style="--x:30;--s:9px;--c:#fff;--t:11s;--d:-3s"></i>
+          <i class="petal" style="--x:52;--s:11px;--c:#e29c92;--t:9s;--d:-6s"></i>
+          <i class="petal" style="--x:68;--s:8px;--c:#fff;--t:12s;--d:-1s"></i>
+          <i class="petal" style="--x:86;--s:10px;--c:#d9847d;--t:10.5s;--d:-7s"></i>
+          <i class="petal" style="--x:22;--s:8px;--c:#f3c9c0;--t:13s;--d:-9s"></i>
+          <i class="petal" style="--x:60;--s:9px;--c:#fff;--t:9.5s;--d:-4s"></i>
+        </div>
+
         <div class="hero__stack">
           <p class="hero__lead hero__fade">Love in every chapter</p>
 
@@ -77,7 +99,7 @@
         </div>
 
         <a class="hero__cue hero__fade" href="#date">
-          <span>Scroll for the date</span>
+          <span>SCROLL</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
         </a>
       </div>

@@ -15,7 +15,8 @@
   .hero__face { padding-inline: 1rem; }
   .names { font-size: calc(min(20vw, 14svh) * var(--names-scale, 1)); }
   .footer__names { font-size: calc(20vw * var(--names-scale, 1)); }
-  .hero__lead, .hero__invite { max-width: 24ch; }
+  .hero__lead { max-width: 32ch; }   /* Tenor Sans is a little wider, so "Love in every chapter" keeps to one line */
+  .hero__invite { max-width: 24ch; }
 
   .cd { justify-self: center; width: 100%; font-size: clamp(1.425rem, 7.6vw, 2.28rem); }
 

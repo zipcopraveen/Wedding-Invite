@@ -106,11 +106,11 @@
   --names-tracking: -0.03em;
 }
 
-/* Type Machine (Levi Szekeres, from dafont.com): the "Reception" heading.
-   Free for personal and non-profit use; Levi sells a commercial licence (loremipsum.ro). */
+/* Big Larian Customs (Måns Grebäck, from dafont.com): the "Reception" heading.
+   PERSONAL USE ONLY: a licence is required for public use (mansgreback.com). */
 @font-face {
-  font-family: "Type Machine";
-  src: url("../assets/fonts/Type-Machine.ttf") format("truetype");
+  font-family: "Big Larian Customs";
+  src: url("../assets/fonts/Big-Larian-Customs.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
