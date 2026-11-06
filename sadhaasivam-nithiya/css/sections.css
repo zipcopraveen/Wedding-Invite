@@ -361,7 +361,7 @@
   .reception__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; }
 }
 .reception__info { display: grid; gap: var(--space-6); align-content: start; }
-.reception__title { font-family: "Cream Cake", var(--font-display); font-weight: 400; font-size: var(--step-4); line-height: 0.9; }
+.reception__title { font-family: "Type Machine", var(--font-display); font-weight: 400; font-size: calc(var(--step-4) * 0.8); line-height: 0.9; }   /* 20% smaller */
 
 /* the ticket: pearl stock, a karai strip along its top, a punched line between */
 .facts { display: grid; background: var(--surface); }
@@ -416,8 +416,9 @@
 }
 /* the map's own "Open in Maps" card sat in the arch's top corner and was cut off, so the map is nudged up and cropped
    to hide it; the link now lives under the picture, centred */
-.reception__mapcol { display: grid; justify-items: center; }
-.reception__maplink { margin-top: -0.75rem; }
+.reception__mapcol { display: grid; justify-items: center; width: 100%; min-width: 0; margin-inline: auto; padding-bottom: var(--space-6); }   /* the map and its button share one centred column, with air below before the next section */
+.reception__mapcol .reception__map { margin-inline: auto; justify-self: center; }
+.reception__maplink { margin-top: -0.75rem; position: relative; z-index: 1; }
 .reception__map iframe {
   top: -3.5rem;
   height: calc(100% + 3.5rem);
@@ -454,7 +455,32 @@
   height: 24px;
   background: var(--scallop) repeat-x left bottom / 48px 24px;
 }
-.footer__karai { margin-bottom: var(--space-7); }
+.footer__karai { display: none; }   /* the gold pattern strip at the top of the closing section is removed */
+/* a round S & N monogram: a soft disc, a thin gold ring around it, the letters in gold script */
+.footer__monogram {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(46vw, 10.5rem);
+  aspect-ratio: 1;
+  margin: 0 auto var(--space-7);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--text) 9%, var(--bg));
+}
+.footer__monogram::before {
+  content: "";
+  position: absolute;
+  inset: -0.6rem;
+  border: 1px solid var(--zari);
+  border-radius: 50%;
+}
+.footer__monogram span {
+  font-family: "Allura", "Instrument Serif", Georgia, cursive;
+  font-size: clamp(3rem, 15vw, 4.4rem);
+  line-height: 1;
+  color: var(--zari-hi);
+  padding-right: 0.06em;
+}
 .footer__top {
   display: flex;
   flex-wrap: wrap;
@@ -463,6 +489,8 @@
   gap: var(--space-4) var(--space-6);
   margin-bottom: var(--space-7);
 }
+/* "Back to the top" is a small round arrow on the right */
+.footer__top a.footer__topbtn { flex: none; width: 2.75rem; min-height: 0; height: 2.75rem; padding: 0; margin-left: auto; }
 .footer__note { font-size: var(--step-1); line-height: 1.25; max-width: 24ch; color: var(--text); }
 .footer__names {
   display: grid;
