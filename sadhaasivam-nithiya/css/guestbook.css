@@ -42,7 +42,9 @@
 .guestbook__head::before { left: calc(-1 * var(--p) - 14px); }
 .guestbook__head::after { right: calc(-1 * var(--p) - 14px); }
 .guestbook__head h2 { font-family: "Lexend", var(--font-display); font-weight: 300; text-transform: uppercase; font-size: min(calc(var(--step-4) * 0.69192), 15.2cqi); line-height: 0.9; }   /* a wide font, so smaller to keep it on one line: 0.8 made 7% smaller, twice */
-.guestbook__head p { font-size: var(--step-0); color: var(--text); }
+.guestbook__head p { font-family: "Josefin Sans", var(--font-body); font-weight: 300; font-size: calc(var(--step-0) * 0.95); letter-spacing: 0.02em; line-height: 1.65; color: var(--text); }   /* the "Years from now" line: 15% smaller (0.85), then x1.12 because Josefin Sans has small letters, in Josefin Sans Light (MPU's pick, a free Google font) */
+/* the sub heading under "Guestbook": a small spaced line in the same Tenor Sans as the first page's lines */
+.guestbook__head p.guestbook__sub { font-family: "Tenor Sans", var(--font-body); font-size: calc(var(--step-0) * 0.9); text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-soft); }
 
 .gb-form { display: grid; gap: var(--space-3); }
 .gb-field {

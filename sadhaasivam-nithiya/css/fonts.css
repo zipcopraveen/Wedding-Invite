@@ -155,3 +155,13 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* Hearth Stone (mightype, from dafont.com): the S & N monogram in the closing section.
+   The dafont page gives no licence text, so check before public use (personal use is assumed). */
+@font-face {
+  font-family: "Hearth Stone";
+  src: url("../assets/fonts/Hearth-Stone.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

@@ -523,11 +523,27 @@
   border-radius: 50%;
 }
 .footer__monogram span {
-  font-family: "Campana Script", "Allura", Georgia, cursive;
-  font-size: clamp(3rem, 15vw, 4.4rem);
+  font-family: "Hearth Stone", "Allura", Georgia, cursive;   /* Hearth Stone, MPU's pick: lowercase s & n, with its big swashy ampersand */
+  text-transform: lowercase;
+  font-size: clamp(2.8rem, 16vw, 4.2rem);
   line-height: 1;
   color: var(--wine);
-  translate: -0.1765em 0.065em;   /* the script letters swing out to the right and sit high in their box, so they are nudged to the true middle of the disc */
+  translate: 0 -0.095em;   /* the letters sit low in their box, so they are nudged up to the true middle of the disc (measured for Hearth Stone) */
+}
+/* the monogram comes into focus as the closing section scrolls into view: it zooms in from a big blur and settles sharp.
+   Scroll-driven, so no script; browsers without it simply show the monogram as it is. */
+@keyframes mono-focus {
+  from { opacity: 0; transform: scale(2.2); filter: blur(18px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .footer__monogram span {
+      animation: mono-focus linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 38%;
+    }
+  }
 }
 /* the wine heart under the monogram: tap it to open a small menu (a native details element, so no script) */
 .footer__menu {
