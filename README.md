@@ -88,7 +88,7 @@ Pushing to `main` with changes inside `sadhaasivam-nithiya/` runs `.github/workf
 
 Check these before the site goes public or a merge to `main` goes live:
 
-- **Fonts from dafont.com.** Several are free for personal use only, one is a trial, and some downloads carry no licence text. Check each licence, or buy one, before public use. In the repo: Aurora, Nexa, Against, Amore Christmas, Cocogoose Pro (trial), Vogue, Type Machine, Campana Script, Butler Stencil (free version, read its EULA) and Adelia. Cinzel is open source. Google Fonts families load from the Google Fonts link in `index.html`.
+- **Fonts from dafont.com.** Several are free for personal use only, and some downloads carry no licence text. Check each licence, or buy one, before public use. In the repo: Aurora, Nexa, Against, Amore Christmas, Vogue, Type Machine, Campana Script, Butler Stencil (free version, read its EULA) and Adelia. Cinzel is open source. The Guestbook heading uses Lexend, which is open source (SIL OFL) and loads from the Google Fonts link in `index.html`, as do the other Google Fonts families.
 - **Music.** `assets/audio/background.mp3` is a short clip of a track that is not licensed for this use. Use only a track you are licensed to use, or switch music off in `config.js`.
 - **Gallery.** The gallery still holds placeholder pictures until the real photos are added.
 - **Share banner.** Set the full web address for `og:image` (and `og:url`) in `index.html` for the real domain.
