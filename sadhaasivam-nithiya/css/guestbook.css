@@ -38,7 +38,7 @@
 }
 .guestbook__head::before { left: calc(-1 * var(--p) - 14px); }
 .guestbook__head::after { right: calc(-1 * var(--p) - 14px); }
-.guestbook__head h2 { font-size: var(--step-4); line-height: 0.9; }
+.guestbook__head h2 { font-family: "Cocogoose Pro", var(--font-display); font-weight: 300; text-transform: uppercase; font-size: calc(var(--step-4) * 0.69192); line-height: 0.9; }   /* a wide font, so smaller to keep it on one line: 0.8 made 7% smaller, twice */
 .guestbook__head p { font-size: var(--step-0); color: var(--text); }
 
 .gb-form { display: grid; gap: var(--space-3); }

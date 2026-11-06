@@ -52,6 +52,36 @@
   font-display: swap;
 }
 
+/* Against (177Studio, from dafont.com): the countdown heading.
+   Demo font, free for PERSONAL use only; a commercial licence is sold at 177studio.com. */
+@font-face {
+  font-family: "Against";
+  src: url("../assets/fonts/Against-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Amore Christmas (Keithzo, from dafont.com): the countdown numbers.
+   Demo font from dafont.com; check its licence on the dafont page before any commercial use. */
+@font-face {
+  font-family: "Amore Christmas";
+  src: url("../assets/fonts/Amore-Christmas.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Cocogoose Pro Light, trial (Zetafonts, from dafont.com): the Guestbook heading.
+   Trial font, PERSONAL USE ONLY; a commercial licence is sold at zetafonts.com. */
+@font-face {
+  font-family: "Cocogoose Pro";
+  src: url("../assets/fonts/Cocogoose-Pro-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* editorial: one tall, tight display serif and a quiet grotesque */
 [data-font="editorial"] {
   --font-display: "Instrument Serif", Georgia, serif;
@@ -84,4 +114,24 @@
   --names-scale: 0.92;
   --names-leading: 0.95;
   --names-tracking: -0.03em;
+}
+
+/* Cream Cake (Ef Studio, from dafont.com): the "Reception" heading.
+   Free for PERSONAL use only; Ef Studio sells a commercial licence. */
+@font-face {
+  font-family: "Cream Cake";
+  src: url("../assets/fonts/Cream-Cake.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Vogue (Vladimir Nikolic, from dafont.com): the date and venue name on the Reception ticket.
+   Capitals; the dafont page gives no licence text, so check before launch. */
+@font-face {
+  font-family: "Vogue";
+  src: url("../assets/fonts/Vogue-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }

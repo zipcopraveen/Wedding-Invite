@@ -17,11 +17,12 @@
   .footer__names { font-size: calc(20vw * var(--names-scale, 1)); }
   .hero__lead, .hero__invite { max-width: 24ch; }
 
-  .cd { justify-self: start; width: 100%; font-size: clamp(4.4rem, 24vw, 7rem); }
+  .cd { justify-self: center; width: 100%; font-size: clamp(1.425rem, 7.6vw, 2.28rem); }
 
   /* a phone shows the kolam a little larger than the screen is wide */
   .date__sticky { --ring: min(max(100vmin, 40rem), calc(100svh - var(--pad-top) - var(--pad-bottom))); }
 
+  .reception__title { text-align: center; }   /* the heading sits in the middle of the phone, over the centred ticket and map */
   .reception__actions { flex-direction: column; align-items: stretch; }
   .reception__actions .btn { width: 100%; }
   .reception__map { aspect-ratio: 4 / 5; }
@@ -50,7 +51,7 @@
   .hero__face { padding-block: 0.75rem 0.5rem; }
   .hero__stack { gap: 0.5rem; }
   .names { font-size: calc(min(14vw, 15svh) * var(--names-scale, 1)); }
-  .hero__invite { font-size: var(--step-0); }
+  .hero__invite { font-size: calc(var(--step-0) * 0.95); }
   .hero__cue { min-height: 2.5rem; }
   .date__title, .date__hint { display: none; }
   .date__sticky { --title-zone: 0rem; --ring: 26rem; }
