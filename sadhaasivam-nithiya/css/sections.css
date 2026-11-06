@@ -364,11 +364,9 @@
 .reception__title { font-family: "Type Machine", var(--font-display); font-weight: 400; font-size: calc(var(--step-4) * 0.8); line-height: 0.9; }   /* 20% smaller */
 
 /* the ticket: pearl stock, a karai strip along its top, a punched line between */
-.facts { display: grid; background: var(--surface); }
+.facts { display: grid; background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; }   /* soft rounded corners instead of sharp ones */
 .facts::before {
-  content: "";
-  height: 16px;
-  background: var(--karai) repeat-x center / auto 100%;
+  content: none;   /* the gold pattern strip under the Reception heading is removed */
 }
 .facts__row {
   display: grid;
@@ -382,7 +380,7 @@
 .facts__main {
   font-family: "Vogue", "Cinzel", var(--font-display);
   text-transform: uppercase;
-  font-size: calc(var(--step-2) * 0.8);
+  font-size: calc(var(--step-2) * 0.76);   /* 5% smaller */
   letter-spacing: 0.04em;
   line-height: 1.2;
   color: var(--name-ink);
@@ -392,6 +390,8 @@
 #rec-where .soft { max-width: 18ch; line-height: 1.42; }
 .is-pending { color: var(--text-soft); font-style: italic; }
 .reception__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+/* the buttons hug their text: compact pills that are still a comfortable 44px tall to tap */
+.reception__actions .btn { min-height: 2.75rem; padding: 0.5rem 1.5rem; font-size: var(--step--1); }
 /* the Google Calendar button is hidden at MPU's request; "Add to calendar" and "Get directions" remain, side by side */
 .reception__actions a[href*="calendar.google.com"] { display: none; }
 .reception__note { font-size: var(--step-0); }
@@ -456,16 +456,17 @@
   background: var(--scallop) repeat-x left bottom / 48px 24px;
 }
 .footer__karai { display: none; }   /* the gold pattern strip at the top of the closing section is removed */
-/* a round S & N monogram: a soft disc, a thin gold ring around it, the letters in gold script */
+/* a round S & N monogram: a peach disc, a thin gold ring around it, the letters in wine-red script */
 .footer__monogram {
   position: relative;
+  translate: 0 -5svh;   /* moved up 5% of the screen height */
   display: grid;
   place-items: center;
   width: min(46vw, 10.5rem);
   aspect-ratio: 1;
   margin: 0 auto var(--space-7);
   border-radius: 50%;
-  background: color-mix(in srgb, var(--text) 9%, var(--bg));
+  background: color-mix(in srgb, var(--zari) 40%, var(--pearl));   /* the exact peach of the site's buttons (Get directions, Open in Maps), with wine letters */
 }
 .footer__monogram::before {
   content: "";
@@ -475,12 +476,85 @@
   border-radius: 50%;
 }
 .footer__monogram span {
-  font-family: "Allura", "Instrument Serif", Georgia, cursive;
+  font-family: "Campana Script", "Allura", Georgia, cursive;
   font-size: clamp(3rem, 15vw, 4.4rem);
   line-height: 1;
-  color: var(--zari-hi);
-  padding-right: 0.06em;
+  color: var(--wine);
+  translate: -0.1765em 0.065em;   /* the script letters swing out to the right and sit high in their box, so they are nudged to the true middle of the disc */
 }
+/* the wine heart under the monogram: tap it to open a small menu (a native details element, so no script) */
+.footer__menu {
+  display: grid;
+  justify-items: center;
+  translate: 0 -5svh;
+  margin-top: calc(var(--space-7) * -1 + 1.75rem);
+  margin-bottom: var(--space-5);
+}
+.footer__heart {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  list-style: none;
+}
+.footer__heart-dot {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  background: var(--wine);
+  color: #fff;
+  transition: transform 0.2s var(--ease-expo), background-color 0.25s var(--ease-soft);
+}
+.footer__hint { font-size: 0.8125rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-soft); }
+.footer__menu[open] .footer__hint { display: none; }
+.footer__heart::-webkit-details-marker { display: none; }
+.footer__heart-dot svg { width: 1.4rem; height: 1.4rem; }
+.footer__heart:active .footer__heart-dot { transform: scale(0.94); }
+.footer__heart:focus-visible { outline: 2px solid var(--zari-hi); outline-offset: 6px; border-radius: 1.6rem; }
+.footer__menu[open] .footer__heart-dot { background: var(--zari-hi); color: var(--wine-deep); }
+/* while closed, the heart gently beats and a soft ring pulses out from it, so it invites a tap; "Tap here" sits under it */
+.footer__heart-dot { position: relative; }
+.footer__heart-dot svg { transform-origin: center; animation: footer-beat 1.8s ease-in-out infinite; }
+.footer__heart-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--zari-hi);
+  opacity: 0;
+  animation: footer-ring 1.8s ease-out infinite;
+  pointer-events: none;
+}
+.footer__menu[open] .footer__heart-dot svg, .footer__menu[open] .footer__heart-dot::after { animation: none; }
+@keyframes footer-beat { 0%, 100% { scale: 1; } 14% { scale: 1.22; } 28% { scale: 1; } 42% { scale: 1.14; } 56% { scale: 1; } }
+@keyframes footer-ring { 0% { opacity: 0.7; scale: 1; } 70%, 100% { opacity: 0; scale: 1.7; } }
+@media (prefers-reduced-motion: reduce) { .footer__heart-dot svg, .footer__heart-dot::after { animation: none; } }
+.footer__message { display: grid; justify-items: center; gap: var(--space-5); margin-top: calc(var(--space-5) + 10svh); text-align: center; }   /* the message and the names pulled down by 10% of the screen height */
+.footer__msg { font-family: "Butler Stencil", var(--font-display); font-weight: 300; font-size: min(1.75rem, calc((100vw - 2.5rem) / 20.4)); line-height: 1.4; white-space: nowrap; color: var(--text); }   /* two rows: sized so the long first row always fits between the page margins */
+.footer__sign { font-family: "Adelia", "Allura", Georgia, cursive; font-size: min(1.1115rem, calc((100vw - 2.5rem) / 19.16)); line-height: 1.2; white-space: nowrap; color: var(--zari-hi); }   /* 50% smaller, then 10% and 5% smaller again */
+.footer__menu[open] .footer__message { animation: footer-menu-in 0.6s var(--ease-soft); }
+@keyframes footer-menu-in { from { opacity: 0; transform: translateY(-0.5rem); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .footer__menu[open] .footer__message { animation: none; } .footer__heart-dot { transition: none; } }
+/* twinkling stars: small four-point sparkles flash on and off over the monogram (CSS only) */
+.footer__star {
+  position: absolute;
+  width: calc(var(--s, 5%) * 1.6);   /* sparkles scaled up so they read on the small disc */
+  aspect-ratio: 1;
+  background: #d1a24b;   /* rich gold sparkles, visible on the peach disc */
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  opacity: 0;
+  pointer-events: none;
+  animation: footer-twinkle 2.4s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+@keyframes footer-twinkle {
+  0%, 100% { opacity: 0; scale: 0.2; rotate: 0deg; }
+  45% { opacity: 1; scale: 1; rotate: 45deg; }
+  70% { opacity: 0; scale: 0.3; rotate: 90deg; }
+}
+@media (prefers-reduced-motion: reduce) { .footer__star { animation: none; opacity: 0; } }
 .footer__top {
   display: flex;
   flex-wrap: wrap;

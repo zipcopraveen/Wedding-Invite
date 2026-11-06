@@ -135,3 +135,33 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* Campana Script (Måns Grebäck, from dafont.com): the S & N monogram in the closing section.
+   PERSONAL USE ONLY: a licence is required for public use (mansgreback.com/fonts/campana-script). */
+@font-face {
+  font-family: "Campana Script";
+  src: url("../assets/fonts/Campana-Script.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Butler Stencil Light (Fabian De Smet, from dafont.com): the thank-you message in the closing section.
+   Butler FREE: check its end-user licence (EULA in the download) before public use. */
+@font-face {
+  font-family: "Butler Stencil";
+  src: url("../assets/fonts/Butler-Stencil-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Adelia (Carroline Typography, from dafont.com): the names signed under the thank-you message.
+   Check the licence on the dafont page before public use. */
+@font-face {
+  font-family: "Adelia";
+  src: url("../assets/fonts/Adelia.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
