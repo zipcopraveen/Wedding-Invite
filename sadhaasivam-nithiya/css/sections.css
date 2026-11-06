@@ -79,13 +79,13 @@
   width: 100%;
   text-align: center;
 }
-.hero__lead { translate: 0 -5svh; max-width: 28ch; font-size: var(--step-0); font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-soft); }
+.hero__lead { translate: 0 -7svh; max-width: 28ch; font-size: calc(var(--step-0) * 0.95); font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-soft); }
 /* same look as the first line: bold body font */
 .hero__invite {
   translate: 0 14.5svh;
   max-width: 34ch;
   font-family: var(--font-body);
-  font-size: var(--step-0);
+  font-size: calc(var(--step-0) * 0.95);
   font-style: normal;
   font-weight: 400;
   text-transform: uppercase;
@@ -111,7 +111,7 @@
 .names__amp {
   margin-block: 1.4em;   /* room above and below the "&" so each name stands apart */
   font-family: var(--font-display);
-  font-size: 0.408em;   /* 2% larger */
+  font-size: 0.4182em;   /* 2.5% larger than before (0.408em) */
   font-style: italic;
   line-height: 1;
   letter-spacing: 0;
@@ -202,7 +202,7 @@
   text-align: center;
   /* same look as the hero's first line: bold body font */
   font-family: "Cinzel", var(--font-body);
-  font-size: calc(var(--step-0) * 1.1025);   /* 10% larger in total (5% twice) */
+  font-size: calc(var(--step-0) * 1.21550625);   /* 21.6% larger in total (5% four times) */
   font-style: normal;
   font-weight: 700;
   text-transform: uppercase;
@@ -236,10 +236,13 @@
 }
 .date__event { display: none; }   /* "Wedding Reception" line removed at MPU's request */
 .date__day {
-  font-size: calc(var(--ring) * 0.17);
+  font-size: calc(var(--ring) * 0.156655);   /* 5% smaller again (0.17 -> 0.1649 -> 0.156655) */
   line-height: 0.9;
   color: var(--name-ink);
 }
+/* a small raised "th" after the day; the left padding keeps the "30" itself centred */
+.date__day .mask > span { padding-left: 0.31em; }
+.date__day .mask > span::after { content: "th"; font-size: 0.3em; vertical-align: 1.05em; margin-left: 0.03em; letter-spacing: 0; }
 .date__month { font-size: max(1.15rem, calc(var(--ring) * 0.045)); line-height: 1.1; }
 .date__time { font-family: "Nexa", var(--font-body); font-weight: 200; font-size: max(0.875rem, calc(var(--ring) * 0.026)); color: var(--text-soft); }
 /* the date and month use Aurora, the same font as the couple's names */
@@ -274,28 +277,53 @@
 @media (min-width: 60rem) {
   .countdown__grid { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); }
 }
-.countdown__head { display: grid; gap: var(--space-4); align-content: center; }
-.countdown__head h2 { font-size: var(--step-3); }
+.countdown__head { display: grid; gap: var(--space-4); align-content: center; container-type: inline-size; }
+/* one line, sized to the width of its box so it fits any screen */
+.countdown__head h2 {
+  font-family: "Against", var(--font-display);
+  font-weight: 400;
+  font-size: min(var(--step-3), 6cqi);
+  white-space: nowrap;
+}
+.countdown__sub {
+  font-size: calc(var(--step-0) * 0.8924);   /* 3% smaller than 0.92 */
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  text-align: center;   /* centred on phones; left-aligned again on wide screens below */
+}
+@media (min-width: 60rem) {
+  .countdown__sub { text-align: left; }
+}
 .countdown__note { font-size: var(--step-0); color: var(--text-soft); max-width: 30ch; }
 
+/* Kolam-framed medallions: four gold rings in a row, the figure inside each, its word below. */
 .cd {
-  display: grid;
-  gap: clamp(0.25rem, 1vw, 0.75rem);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(0.4rem, 2vw, 1.1rem);
   justify-self: start;
   width: min(100%, 36rem);
-  font-size: clamp(4.25rem, 12vw, 11rem);         /* the figures set the scale of each row */
+  font-size: clamp(1.805rem, 3.8vw, 2.85rem);          /* the figures set the scale of each ring */
 }
 @media (min-width: 60rem) { .cd { justify-self: end; } }
 .cd__unit {
   display: grid;
-  grid-template-columns: 1.5em minmax(0, 1fr);       /* room for three digits of days */
-  align-items: end;
-  column-gap: clamp(0.9rem, 2vw, 1.5rem);
+  justify-items: center;
+  row-gap: 0.7rem;
 }
 .cd__digits {
+  position: relative;
+  box-sizing: border-box;
+  width: 2.35em;
+  aspect-ratio: 1;
+  align-items: center;
+  border: 1.5px solid var(--ornament-ink);
+  border-radius: 50%;
   display: flex;
-  justify-content: flex-end;
-  font-family: var(--font-display);
+  justify-content: center;
+  font-family: "Amore Christmas", var(--font-display);
   font-size: 1em;
   line-height: 1;
   letter-spacing: -0.04em;
@@ -310,7 +338,16 @@
   transition: transform 0.9s var(--ease-expo);
 }
 .cd__roll span { display: block; height: 1em; }
-.cd__label { padding-bottom: 0.2em; color: var(--text); font-size: var(--step-0); line-height: 1.2; }
+/* the dotted inner ring of the kolam frame */
+.cd__digits::after {
+  content: "";
+  position: absolute;
+  inset: 0.2em;
+  border: 1px dotted var(--ornament-ink);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.cd__label { color: var(--text-soft); font-size: 0.665rem; letter-spacing: 0.2em; text-transform: uppercase; line-height: 1.2; }
 .cd[data-state="pending"] .cd__digits { opacity: 0.28; }
 
 /* Reception: details on a ticket ------------------------------------------------ */
@@ -324,7 +361,7 @@
   .reception__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; }
 }
 .reception__info { display: grid; gap: var(--space-6); align-content: start; }
-.reception__title { font-size: var(--step-4); line-height: 0.9; }
+.reception__title { font-family: "Cream Cake", var(--font-display); font-weight: 400; font-size: var(--step-4); line-height: 0.9; }
 
 /* the ticket: pearl stock, a karai strip along its top, a punched line between */
 .facts { display: grid; background: var(--surface); }
@@ -343,14 +380,20 @@
 .facts dt { color: var(--text-soft); font-size: var(--step-0); padding-top: 0.5em; }
 .facts dd { display: grid; gap: 0.25rem; font-size: var(--step-0); }
 .facts__main {
-  font-family: var(--font-display);
-  font-size: var(--step-2);
-  line-height: 1.1;
+  font-family: "Vogue", "Cinzel", var(--font-display);
+  text-transform: uppercase;
+  font-size: calc(var(--step-2) * 0.8);
+  letter-spacing: 0.04em;
+  line-height: 1.2;
   color: var(--name-ink);
 }
 .facts dd .soft { color: var(--text); }
+/* the address breaks after "Near Kattur Bus Stop," with a little air before "Trichy - 19" */
+#rec-where .soft { max-width: 18ch; line-height: 1.42; }
 .is-pending { color: var(--text-soft); font-style: italic; }
 .reception__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+/* the Google Calendar button is hidden at MPU's request; "Add to calendar" and "Get directions" remain, side by side */
+.reception__actions a[href*="calendar.google.com"] { display: none; }
 .reception__note { font-size: var(--step-0); }
 
 /* the map sits in an arch, like the mehrab of a hall; a kolam line (reception.js) runs round it */
@@ -370,6 +413,16 @@
   border: 0;
   border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
   background: var(--surface);
+}
+/* the map's own "Open in Maps" card sat in the arch's top corner and was cut off, so the map is nudged up and cropped
+   to hide it; the link now lives under the picture, centred */
+.reception__mapcol { display: grid; justify-items: center; }
+.reception__maplink { margin-top: -0.75rem; }
+.reception__map iframe {
+  top: -3.5rem;
+  height: calc(100% + 3.5rem);
+  border-radius: 0;
+  clip-path: inset(3.5rem 0 0 0 round 50% 50% 0 0 / 37.5% 37.5% 0 0);
 }
 .map__kolam { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .map__kolam path { fill: none; stroke: var(--ornament-ink); stroke-width: 1.5; stroke-linecap: round; }

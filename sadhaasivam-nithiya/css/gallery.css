@@ -8,14 +8,24 @@
 .gallery { padding-block: var(--section-pad); overflow-x: clip; }
 .gallery__head {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
+  flex-direction: column;       /* heading centred in the frame, the hint centred under it */
+  align-items: center;
+  text-align: center;
   gap: var(--space-4);
   margin-bottom: clamp(2rem, 5vw, 3.5rem);
 }
-.gallery__head h2 { font-size: var(--step-4); line-height: 0.9; }
-.gallery__head p { max-width: 30ch; font-size: var(--step-0); color: var(--text); }
+.gallery__head h2 { font-family: "Aurora", "Instrument Serif", Georgia, serif; font-weight: 400; text-transform: uppercase; font-size: calc(var(--step-4) * 0.312585); line-height: 0.9; }   /* 0.2977 made 5% larger */   /* Aurora, the same font as the couple's names */
+/* "G A L L E R Y" under the heading: capitals, widely spaced; the left padding balances the trailing space so it stays centred */
+.gallery__head .gallery__sub {
+  margin-top: calc(var(--space-4) * -0.6);
+  padding-left: 0.5em;
+  translate: 0 1svh;   /* up 3% of the screen height, then down 2% twice */
+  font-size: 0.924rem;   /* 0.88rem made 5% larger */
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.gallery__head p { max-width: 30ch; font-size: calc(var(--step-0) * 0.98); translate: 0 3svh; color: var(--text); }   /* 2% smaller, moved down by 3% of the screen height */
 
 .slideshow { display: grid; justify-items: center; gap: var(--space-3); }
 
