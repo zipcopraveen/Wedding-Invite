@@ -18,6 +18,8 @@
   gap: var(--space-6);
   padding: var(--p);
   background: var(--surface);
+  container-type: inline-size;   /* the heading below is sized to this card, so it can never push the form out of it */
+  min-width: 0;
   border-radius: var(--radius-lg);   /* soft rounded corners instead of sharp ones */
 }
 .guestbook__head {
@@ -39,7 +41,7 @@
 }
 .guestbook__head::before { left: calc(-1 * var(--p) - 14px); }
 .guestbook__head::after { right: calc(-1 * var(--p) - 14px); }
-.guestbook__head h2 { font-family: "Cocogoose Pro", var(--font-display); font-weight: 300; text-transform: uppercase; font-size: calc(var(--step-4) * 0.69192); line-height: 0.9; }   /* a wide font, so smaller to keep it on one line: 0.8 made 7% smaller, twice */
+.guestbook__head h2 { font-family: "Cocogoose Pro", var(--font-display); font-weight: 300; text-transform: uppercase; font-size: min(calc(var(--step-4) * 0.69192), 14.2cqi); line-height: 0.9; }   /* a wide font, so smaller to keep it on one line: 0.8 made 7% smaller, twice */
 .guestbook__head p { font-size: var(--step-0); color: var(--text); }
 
 .gb-form { display: grid; gap: var(--space-3); }
@@ -72,6 +74,7 @@ textarea.gb-field { min-height: 9rem; resize: vertical; }
 .guestbook__main { display: grid; gap: var(--space-4); justify-items: stretch; }
 .gb-note {
   padding: 0.8rem 1.1rem;
+  margin-inline-end: 0.5rem;   /* lines up with the message cards, which leave room for the scrollbar */
   border-radius: var(--radius-lg);
   background: color-mix(in srgb, var(--zari) 30%, transparent);
   color: var(--ink);
