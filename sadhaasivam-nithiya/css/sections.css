@@ -410,14 +410,14 @@
 /* Our story: a calm centred page between the countdown and the gallery, headed like the Gallery page */
 .story { padding-block: var(--section-pad); }
 .story__wrap { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-4); }
-.story h2 { font-family: "Aurora", "Instrument Serif", Georgia, serif; font-weight: 400; text-transform: uppercase; font-size: calc(var(--step-4) * 0.312585); line-height: 0.9; }
+.story h2 { font-family: "Aurora", "Instrument Serif", Georgia, serif; font-weight: 400; text-transform: uppercase; font-size: calc(var(--step-4) * 0.312585); line-height: 0.9; translate: 0 -4svh; }
 .story__sub { margin-top: calc(var(--space-4) * -0.6); padding-left: 0.5em; font-size: 0.924rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--text-soft); }
 .story__head { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); }
 .story__road { position: relative; width: min(42rem, 100%); margin-top: var(--space-6); }
 /* the winding road: a dotted gold path that runs behind the chapters and joins them */
 .story__path { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.story__path path { fill: none; stroke: var(--ornament-ink); stroke-width: 1.4; stroke-dasharray: 2 7; stroke-linecap: round; }
-.story__chapters { position: relative; list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(1.6rem, 6vw, 2.6rem); }
+.story__path path { fill: none; stroke: var(--ornament-ink); stroke-width: 2; stroke-dasharray: 3 8; stroke-linecap: round; }
+.story__chapters { position: relative; list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(6.6rem, 24.2vw, 8.8rem); }
 /* each chapter hangs from a thin gold line with a small dot, like beads on a thread */
 .story__chapter { position: relative; display: grid; gap: var(--space-3); width: 84%; padding: 3.4rem 1.2rem 1.5rem; background: #fffaf1; border-radius: var(--radius-lg, 1rem); box-shadow: 0 2px 14px color-mix(in srgb, var(--wine) 12%, transparent); text-align: center; }
 .story__chapter:nth-child(even) { margin-left: auto; }
@@ -431,9 +431,12 @@
 }
 @keyframes story-float { 50% { transform: translateY(-6px); } }
 .story__chapter h3 { font-family: "Tenor Sans", var(--font-body); font-weight: 400; font-size: calc(var(--step-0) * 1.1); letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.35; color: var(--wine); text-wrap: balance; }
+.story__chapter h3 .story__kicker { display: block; font-size: 0.78em; letter-spacing: 0.16em; color: var(--ink-soft, #5f423f); }
+.story__chapter h3 .story__place { display: block; margin-top: 0.3em; font-size: 1.24em; letter-spacing: 0.1em; line-height: 1.1; }
+.story__chapter h3 .story__place--date { font-size: 0.99em; }
 .story__chapter p { font-size: calc(var(--step-0) * 1.02); line-height: 1.75; color: var(--text); text-wrap: pretty; }
 .story__chapter .story__last { font-family: "Josefin Sans", var(--font-body); font-weight: 300; font-size: calc(var(--step-0) * 1.1); letter-spacing: 0.03em; color: var(--wine); margin-top: var(--space-3); }
-.story__sign { margin-top: var(--space-4); font-family: "Hearth Stone", "Allura", Georgia, cursive; font-size: var(--step-2); color: var(--wine); }
+.story__sign { margin-top: calc(var(--space-4) + 5svh); font-family: "Hearth Stone", "Allura", Georgia, cursive; font-size: var(--step-2); color: var(--wine); }
 
 /* Kolam-framed medallions: four gold rings in a row, the figure inside each, its word below. */
 .cd {
