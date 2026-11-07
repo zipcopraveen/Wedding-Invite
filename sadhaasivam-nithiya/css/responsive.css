@@ -65,3 +65,14 @@
 @media (max-height: 50rem) {
   .date__event { display: none; }
 }
+
+/* Desktop and laptop screens (wide, landscape) -------------------------------
+   On a phone the hero lines are spaced with screen-height moves, which suits a tall screen.
+   On a wide, short screen those same moves pushed the first line off the top and the invitation
+   line onto "Scroll". Here the lines simply stack in order, with room for the SN circle.
+   Phones and portrait tablets are not affected. */
+@media (min-width: 48rem) and (min-height: 30.01rem) and (min-aspect-ratio: 5/4) {
+  .hero__lead { translate: none; margin-bottom: calc(6.6rem + 3svh); }
+  .hero__invite { translate: none; }
+  .names { translate: none; font-size: calc(clamp(3.4rem, min(14vw, 17.5svh), 13rem) * var(--names-scale, 1)); }
+}
