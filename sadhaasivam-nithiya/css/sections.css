@@ -126,10 +126,55 @@
   width: 100%;
   text-align: center;
 }
-.hero__lead { translate: 0 -7svh; max-width: 34ch; font-family: "Tenor Sans", var(--font-body); font-size: calc(var(--step-0) * 0.912);   /* 4% smaller (was 0.95) */ font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-soft); }
+.hero__lead { translate: 0 -20svh;   /* moved up again: 8% then 5% of the screen height (was -7svh) */ max-width: 34ch; font-family: "Tenor Sans", var(--font-body); font-size: calc(var(--step-0) * 0.8664);   /* 4% then 5% smaller (was 0.95) */ font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-soft); }
+/* one thin gold circle just below the first line (drawn with CSS, takes no space, so nothing else moves) */
+.hero__lead { position: relative; }
+/* a tiny heart with a short line on each side of the first line (option 16 of the demo); it takes no space and uses the page's gold */
+.hero__lead::before {
+  content: "";
+  position: absolute;
+  inset: 0 -3rem;
+  pointer-events: none;
+  background: var(--ornament-ink);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 38px 24px;
+  mask-size: 38px 24px;
+  -webkit-mask-position: left center, right center;
+  mask-position: left center, right center;
+  -webkit-mask-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 24' fill='none' stroke='%23000' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12H18'/%3E%3Cpath d='M30 19C20 13 22 5 27 6C29 6 30 8 30 9C30 8 31 6 33 6C38 5 40 13 30 19Z'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 24' fill='none' stroke='%23000' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg transform='translate(40 0) scale(-1 1)'%3E%3Cpath d='M2 12H18'/%3E%3Cpath d='M30 19C20 13 22 5 27 6C29 6 30 8 30 9C30 8 31 6 33 6C38 5 40 13 30 19Z'/%3E%3C/g%3E%3C/svg%3E");
+  mask-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 24' fill='none' stroke='%23000' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12H18'/%3E%3Cpath d='M30 19C20 13 22 5 27 6C29 6 30 8 30 9C30 8 31 6 33 6C38 5 40 13 30 19Z'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 24' fill='none' stroke='%23000' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg transform='translate(40 0) scale(-1 1)'%3E%3Cpath d='M2 12H18'/%3E%3Cpath d='M30 19C20 13 22 5 27 6C29 6 30 8 30 9C30 8 31 6 33 6C38 5 40 13 30 19Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+.hero__lead::after {
+  content: "";
+  position: absolute;
+  top: calc(100% + 1.4rem + 3svh);   /* moved down 10%, then back up 5% and 2% of the screen height */
+  left: 50%;
+  translate: -50% 0;
+  width: 4.635rem;   /* 3% larger than 4.5rem */
+  aspect-ratio: 1;
+  background: #f2cba8;   /* solid peach, the colour of the soft splash patches on this page */
+  content: "SN";   /* the S N logo (option 16 of the logo demo): Cinzel Decorative letters, wine on peach */
+  display: grid;
+  place-items: center;
+  font-family: "Cinzel Decorative", Georgia, serif;
+  font-size: 1.93rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--wine);
+  border-radius: 50%;
+  outline: 1.5px solid var(--ornament-ink);   /* a thin gold ring around the disc, with a small gap */
+  outline-offset: 0.45rem;
+}
 /* same look as the first line: bold body font */
 .hero__invite {
-  translate: 0 14.5svh;
+  translate: 0 19.5svh;   /* moved down 10% then back up 5% of the screen height (was 14.5svh) */
   max-width: 34ch;
   font-family: "Tenor Sans", var(--font-body);   /* Tenor Sans, MPU's pick (free Google font) */
   font-size: calc(var(--step-0) * 0.9025);   /* 5% smaller (was 0.95) */
@@ -142,7 +187,7 @@
 }
 
 .names {
-  translate: 0 3.65svh;   /* centres the whole names block (both names and the &) on the kolam */
+  translate: 0 6.9svh;   /* moved down 5%, then back up 2.5% of the screen height (was 4.4svh). Before that: centres the whole names block (both names and the &) in the middle of the first page (was 3.65svh, which centred it on the kolam) */
   display: grid;
   justify-items: center;
   font-family: var(--font-names);
@@ -156,9 +201,9 @@
 }
 .names__line { display: block; }
 .names__amp {
-  margin-block: 1.3333em;   /* room above and below the "&" so each name stands apart (re-scaled so the gap stays the same as the "&" grows) */
+  margin-block: 1.2698em;   /* room above and below the "&" so each name stands apart (re-scaled so the gap stays the same as the "&" grows) */
   font-family: var(--font-display);
-  font-size: 0.4391em;   /* 5% larger than before (0.4182em) */
+  font-size: 0.4611em;   /* 5% larger again (was 0.4391em, before that 0.4182em) */
   font-style: italic;
   line-height: 1;
   letter-spacing: 0;
@@ -175,6 +220,24 @@
 .hero.is-ready .ch {
   transform: none;
   transition: transform 1.2s var(--ease-expo) calc(250ms + var(--i) * 45ms);
+}
+
+/* glitter weave: once the names have risen, a band of gold light travels through the letters one after another, then rests, and again */
+@media (prefers-reduced-motion: no-preference) {
+  .hero.is-ready .ch {
+    background-image: linear-gradient(105deg, var(--name-ink) 0 40%, #e6c888 47%, #fff3d0 50%, #e6c888 53%, var(--name-ink) 60% 100%);
+    background-size: 300% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: glitter-weave 5.5s ease-in-out infinite calc(2.6s + var(--i) * 140ms);
+  }
+}
+@keyframes glitter-weave {
+  0%       { background-position: 100% 0; }
+  35%, 100% { background-position: 0% 0; }
 }
 
 /* supporting lines arrive just after the names: opacity only */
@@ -343,6 +406,34 @@
   .countdown__sub { text-align: left; }
 }
 .countdown__note { font-size: var(--step-0); color: var(--text-soft); max-width: 30ch; }
+
+/* Our story: a calm centred page between the countdown and the gallery, headed like the Gallery page */
+.story { padding-block: var(--section-pad); }
+.story__wrap { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-4); }
+.story h2 { font-family: "Aurora", "Instrument Serif", Georgia, serif; font-weight: 400; text-transform: uppercase; font-size: calc(var(--step-4) * 0.312585); line-height: 0.9; }
+.story__sub { margin-top: calc(var(--space-4) * -0.6); padding-left: 0.5em; font-size: 0.924rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--text-soft); }
+.story__head { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); }
+.story__road { position: relative; width: min(42rem, 100%); margin-top: var(--space-6); }
+/* the winding road: a dotted gold path that runs behind the chapters and joins them */
+.story__path { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.story__path path { fill: none; stroke: var(--ornament-ink); stroke-width: 1.4; stroke-dasharray: 2 7; stroke-linecap: round; }
+.story__chapters { position: relative; list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(1.6rem, 6vw, 2.6rem); }
+/* each chapter hangs from a thin gold line with a small dot, like beads on a thread */
+.story__chapter { position: relative; display: grid; gap: var(--space-3); width: 84%; padding: 3.4rem 1.2rem 1.5rem; background: #fffaf1; border-radius: var(--radius-lg, 1rem); box-shadow: 0 2px 14px color-mix(in srgb, var(--wine) 12%, transparent); text-align: center; }
+.story__chapter:nth-child(even) { margin-left: auto; }
+@media (min-width: 40rem) { .story__chapter { width: 64%; } }
+/* each chapter carries its own small icon, floating gently */
+.story__icon { position: absolute; top: -1.7rem; left: 50%; translate: -50% 0; display: grid; place-items: center; width: 3.4rem; aspect-ratio: 1; border-radius: 50%; background: var(--cream, #f8efe2); border: 1px solid var(--ornament-ink); color: var(--wine); }
+.story__icon svg { width: 1.9rem; height: 1.9rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+@media (prefers-reduced-motion: no-preference) {
+  .story__icon { animation: story-float 3.4s ease-in-out infinite; }
+  .story__chapter:nth-child(even) .story__icon { animation-delay: -1.3s; }
+}
+@keyframes story-float { 50% { transform: translateY(-6px); } }
+.story__chapter h3 { font-family: "Tenor Sans", var(--font-body); font-weight: 400; font-size: calc(var(--step-0) * 1.1); letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.35; color: var(--wine); text-wrap: balance; }
+.story__chapter p { font-size: calc(var(--step-0) * 1.02); line-height: 1.75; color: var(--text); text-wrap: pretty; }
+.story__chapter .story__last { font-family: "Josefin Sans", var(--font-body); font-weight: 300; font-size: calc(var(--step-0) * 1.1); letter-spacing: 0.03em; color: var(--wine); margin-top: var(--space-3); }
+.story__sign { margin-top: var(--space-4); font-family: "Hearth Stone", "Allura", Georgia, cursive; font-size: var(--step-2); color: var(--wine); }
 
 /* Kolam-framed medallions: four gold rings in a row, the figure inside each, its word below. */
 .cd {
