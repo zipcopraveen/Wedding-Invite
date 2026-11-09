@@ -1,160 +1,211 @@
 /* ==========================================================================
    envelope.css  |  the screen a personalised link opens on (js/envelope.js)
 
-   The page is the invitation, so first it arrives in its envelope: wine paper
-   with the flap shut, a seal made from the kolam's lotus, and the guest's own
-   name written on the front. Opening lifts the flap and the cream card rises
-   to become the page. Flat shapes only: tone steps, no lines, no shadows.
+   A real envelope on the dark wine ground: a wine body with a V front, a lighter
+   flap, and a gold round with a heart in it and the word "Open" under it.
+   Tapping the heart opens it: the round lets go, the
+   flap turns up, and the letter rises out turning one full circle ("spin up"),
+   then settles large enough to read. The letter greets the guest by name.
+   Then its cream spreads over the whole screen and dissolves into the hero.
+   One action only: the guest taps the heart (it beats to invite the tap) and the
+   rest plays.
+   Flat shapes and tone steps only: no outlines, no gradients, no glows, no shadows.
+
+   Sizes all come from one number, --ew (the envelope's width), so the envelope,
+   the round and the letter's type scale together at every screen size.
    ========================================================================== */
 
 .envelope {
-  --flap-h: clamp(10rem, 38svh, 28rem);
-  --seal: clamp(5.25rem, 13svh, 7.5rem);
+  --ew: min(88vw, 36rem, 62svh);                /* the envelope's width */
+  --env-flap: #6e2a30;                          /* the flap: a step lighter than the body */
+  --env-back: color-mix(in srgb, var(--wine-deep) 55%, #000);
+  --round: max(2.75rem, calc(var(--ew) * 0.115));   /* the gold round with the heart: never smaller than a thumb */
   position: fixed;
   inset: 0;
   z-index: var(--z-envelope);
+  display: grid;
+  place-items: center;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
-  transition: opacity 0.7s var(--ease-soft), visibility 0s linear 0.7s;
+  transition: background-color 0.9s var(--ease-soft), opacity 0.9s var(--ease-soft), visibility 0s linear 0.9s;
 }
 .envelope.is-leaving { opacity: 0; visibility: hidden; }
 
-/* the paper: two folds rising from the bottom corners, and the flap shut over the top */
-.envelope__fold {
-  position: fixed;
-  bottom: 0;
-  z-index: 0;
-  width: 50%;
-  height: clamp(9rem, 34svh, 26rem);
-  background: var(--surface);
-  transition: opacity 0.4s var(--ease-soft);
-}
-.envelope__fold--l { left: 0; clip-path: polygon(0 0, 100% 100%, 0 100%); }
-.envelope__fold--r { right: 0; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
-
-.envelope__flap {
-  position: absolute;
-  inset: 0 0 auto 0;
-  z-index: 1;
-  height: var(--flap-h);
-  background: var(--surface);
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  transform-origin: 50% 0;
-  transform: perspective(1400px) rotateX(0deg);
-  transition: transform 0.85s var(--ease-wipe);
-}
-
-/* the seal sits on the flap's tip; it breathes until the envelope is opened */
-.envelope__seal {
-  position: absolute;
-  left: 50%;
-  top: var(--flap-h);
-  z-index: 2;
-  width: var(--seal);
-  height: var(--seal);
-  translate: -50% -50%;
-  animation: seal-breathe 3.4s var(--ease-soft) infinite;
-  transition: opacity 0.3s var(--ease-soft), scale 0.4s var(--ease-expo);
-}
-.envelope__petal { fill: var(--zari-hi); }
-.envelope__petal--in { fill: var(--zari); }
-.envelope__core { fill: var(--wine); }
-.envelope__initials {
-  fill: var(--zari-hi);
-  font-family: var(--font-display);
-  font-size: 36px;
-  letter-spacing: -0.02em;
-}
-
-/* what is written on the front */
-.envelope__front {
-  position: relative;
-  z-index: 2;
-  min-height: 100%;
+/* the envelope, centred on the screen; the equal room above and below is where the letter rises and the envelope sits */
+.envelope__stage {
   display: grid;
   justify-items: center;
-  align-content: center;
-  gap: clamp(0.6rem, 2svh, 1.25rem);
-  text-align: center;
-  padding:
-    calc(var(--flap-h) + var(--seal) / 2 + clamp(1rem, 3svh, 2rem))
-    var(--gutter)
-    calc(16px + clamp(1.25rem, 4svh, 2.5rem) + env(safe-area-inset-bottom));
-  transition: opacity 0.4s var(--ease-soft), translate 0.5s var(--ease-expo);
+  padding: calc(var(--ew) * 0.36) 0;
 }
-.envelope__front > * { animation: card-in 1s var(--ease-expo) calc(150ms + var(--i, 0) * 90ms) both; }
 
+.envelope__env {
+  position: relative;
+  width: var(--ew);
+  aspect-ratio: 13 / 8.2;
+  perspective: 1400px;
+}
+
+/* ---- the envelope ----------------------------------------------------------- */
+.envelope__back,
+.envelope__front,
+.envelope__flap { position: absolute; }
+.envelope__back,
+.envelope__front { transition: opacity 0.7s var(--ease-soft); }
+
+.envelope__back {
+  inset: 0;
+  background: var(--env-back);
+  border-radius: calc(var(--ew) * 0.03);
+}
+.envelope__front {
+  inset: 0;
+  z-index: 2;
+  background: var(--wine);
+  border-radius: calc(var(--ew) * 0.03);
+  clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%);   /* the V where the flap closes */
+}
+/* the gopuram: a gold line drawing of the temple tower, pressed into the bottom right of the front like a relief. The picture is the
+   tower's own line art (white lines on clear); the <i> shows it as a mask in gold, and the light and dark edges on the wrapper
+   make the raised look. The front's own clip (the V and the rounded corners) cuts it. */
+.envelope__gopuram {
+  position: absolute;
+  right: 3%;
+  bottom: -1%;
+  width: 32%;
+  aspect-ratio: 640 / 604;
+  pointer-events: none;
+  filter:
+    drop-shadow(calc(var(--ew) * 0.002) calc(var(--ew) * 0.002) 0 rgba(30, 6, 10, 0.7)) /* taste-skill-ignore: the embossed relief the owner asked for */
+    drop-shadow(calc(var(--ew) * -0.002) calc(var(--ew) * -0.002) 0 rgba(255, 236, 190, 0.35)); /* taste-skill-ignore: the light edge of the same relief */
+}
+.envelope__gopuram i {
+  position: absolute;
+  inset: 0;
+  background: var(--zari);
+  opacity: 0.85;
+  -webkit-mask: url("../assets/images/envelope/gopuram.png") center / 100% 100% no-repeat;
+  mask: url("../assets/images/envelope/gopuram.png") center / 100% 100% no-repeat;
+}
+.envelope__flap {
+  inset: 0 0 auto 0;
+  z-index: 3;
+  height: 60%;
+  background: var(--env-flap);
+  clip-path: polygon(0 0, 100% 0, 50% 93%);
+  transform-origin: 50% 0;
+  transition: transform 0.9s cubic-bezier(0.5, 0, 0.2, 1), z-index 0s linear 0.45s, opacity 0.7s var(--ease-soft);
+}
+/* the one thing to tap: the round (with the heart) and the word "Open" under it. The button is centred on the round, so the
+   round sits where the flap's point meets the front; the word hangs below it on the wine front. */
+.envelope__open {
+  position: absolute;
+  left: 50%;
+  top: calc(52% - var(--round) / 2 - 0.5rem);   /* the round's centre sits at 52% down the envelope */
+  z-index: 5;
+  display: grid;
+  justify-items: center;
+  gap: calc(var(--ew) * 0.02);
+  translate: -50% 0;
+  padding: 0.5rem 0.9rem 0.6rem;                  /* a roomy hit area around the round and the word */
+  border: 0;
+  background: none;
+  color: var(--pearl);
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.5s var(--ease-soft);
+}
+.envelope, .envelope__open { outline: none; }                       /* no rectangle round the button or the screen */
+.envelope__open:focus-visible .envelope__seal { outline: 2px solid var(--zari-hi); outline-offset: 5px; }   /* keyboard focus: a round ring on the gold round only */
+.envelope__seal {
+  display: grid;
+  place-items: center;
+  width: var(--round);
+  height: var(--round);
+  border-radius: 50%;
+  background: var(--zari-hi);
+  transition: scale 0.5s var(--ease-expo);
+}
+.envelope__heart { width: 52%; height: 52%; fill: var(--wine); animation: envelope-beat 1.9s var(--ease-soft) infinite; }   /* it beats until opened: that is the invitation to tap */
+.envelope__open-word {
+  font-family: var(--font-body);
+  font-size: max(0.95rem, calc(var(--ew) * 0.034));
+  line-height: 1;
+}
+@keyframes envelope-beat { 0%, 52%, 100% { scale: 1; } 14% { scale: 1.2; } 28% { scale: 1; } 42% { scale: 1.12; } }
+
+/* ---- the letter: it greets the guest ----------------------------------------- */
+.envelope__letter {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 9%;
+  bottom: 9%;
+  z-index: 1;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 2.6cqw;
+  padding: 3cqw 5cqw;
+  container-type: inline-size;
+  background: var(--pearl);
+  border-radius: calc(var(--ew) * 0.015);
+  color: var(--wine);
+  text-align: center;
+  visibility: hidden;                           /* shut inside the envelope until it opens */
+  transform: perspective(1400px) translateY(0) rotateY(0deg) scale(1);
+}
 .envelope__dear {
   font-family: var(--font-display);
-  font-size: var(--step-1);
   font-style: italic;
+  font-size: 4.6cqw;
   line-height: 1;
-  color: var(--accent);
 }
 .envelope__guest {
   max-width: 100%;
-  font-size: clamp(3rem, min(11vw, 13svh), 8rem);
+  font-size: 10cqw;
   line-height: 0.95;
   letter-spacing: -0.03em;
-  color: var(--text);
   overflow-wrap: anywhere;
 }
-.envelope__lead { margin-top: clamp(0.25rem, 1.5svh, 1rem); font-size: var(--step-0); color: var(--text); }
+.envelope__lead { font-size: 3.9cqw; line-height: 1.3; margin-top: 0.8cqw; }
 .envelope__names {
   font-family: var(--font-names);
-  font-size: calc(var(--step-2) * var(--names-scale, 1));
+  font-size: calc(5.6cqw * var(--names-scale, 1));
   font-style: var(--names-style, normal);
   line-height: 1.1;
-  color: var(--accent);
 }
-.envelope__open { margin-top: clamp(0.5rem, 2svh, 1.25rem); }
+/* ---- opening ------------------------------------------------------------------- */
+.envelope.is-opening .envelope__open { opacity: 0; pointer-events: none; }
+.envelope.is-opening .envelope__seal { scale: 1.7; }
+.envelope.is-opening .envelope__heart { animation: none; }
+.envelope.is-opening .envelope__flap { transform: perspective(1400px) rotateX(-180deg); z-index: 0; }
 
-/* the woven border runs along the bottom edge */
-.envelope__karai {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 3;
-  height: 16px;
-  background: var(--karai) repeat-x center / auto 100%;
+/* spin up: the letter rises turning one full circle, steps in front of the envelope, and grows to a size that can be read */
+.envelope.is-opening .envelope__letter {
+  visibility: visible;
+  animation: letter-up 2.4s cubic-bezier(0.3, 0.7, 0.2, 1) 0.55s both;
 }
-
-/* the cream card, waiting below the screen; its top matches the page's own header */
-.envelope__card {
-  position: fixed;
-  inset: 0;
-  z-index: 4;
-  padding-top: var(--nav-h);
-  background: var(--pearl);
-  transform: translate3d(0, 101%, 0);
-  transition: transform 0.95s var(--ease-expo) 0.5s;
-  pointer-events: none;
-}
-/* the strip that matched the page's top border is gone, so the card's top is plain too */
-.envelope__card::before {
-  content: "";
-  display: block;
-  height: 0;
+@keyframes letter-up {
+  0%   { transform: perspective(1400px) translateY(0) rotateY(0deg) scale(1); z-index: 1; animation-timing-function: cubic-bezier(0.3, 0.7, 0.2, 1); }
+  55%  { transform: perspective(1400px) translateY(-68%) rotateY(360deg) scale(1); z-index: 1; animation-timing-function: ease-in-out; }
+  60%  { z-index: 4; }
+  100% { transform: perspective(1400px) translateY(-34%) rotateY(360deg) scale(1.22); z-index: 4; }
 }
 
-/* Opening: flap lifts, seal lets go, the writing clears, the card rises ------ */
-.envelope.is-opening .envelope__flap { transform: perspective(1400px) rotateX(180deg); }
-.envelope.is-opening .envelope__seal { opacity: 0; scale: 0.6; animation: none; }
-.envelope.is-opening .envelope__front { opacity: 0; translate: 0 -1rem; }
-.envelope.is-opening .envelope__fold { opacity: 0; }
-.envelope.is-opening .envelope__card { transform: none; }
+/* going on to the page: the envelope and the words melt away while the ground turns to the letter's own cream, so the letter
+   seems to spread over the whole screen; then the cream itself fades to show the hero */
+.envelope__letter > * { transition: opacity 0.5s var(--ease-soft); }
+.envelope.is-melting { background-color: var(--pearl); }
+.envelope.is-melting .envelope__back,
+.envelope.is-melting .envelope__front,
+.envelope.is-melting .envelope__flap { opacity: 0; }
+.envelope.is-melting .envelope__letter > * { opacity: 0; }
 
-/* short windows and phones turned sideways: a flatter flap so everything fits */
-@media (max-height: 36rem) {
-  .envelope { --flap-h: 6.5rem; --seal: 3.75rem; }
-  .envelope__front {
-    gap: 0.4rem;
-    padding-top: calc(var(--flap-h) + var(--seal) / 2 + 0.5rem);
-    padding-bottom: calc(16px + 0.5rem + env(safe-area-inset-bottom));
-  }
-  .envelope__guest { font-size: clamp(2.4rem, 12svh, 4.5rem); }
-  .envelope__lead { margin-top: 0; }
-  .envelope__open { margin-top: 0.4rem; }
+/* reduced motion: nothing travels; the letter just arrives settled */
+@media (prefers-reduced-motion: reduce) {
+  .envelope__flap, .envelope__seal, .envelope__open { transition-duration: 0.01s; transition-delay: 0s; }
+  .envelope__heart { animation: none; }
+  .envelope.is-opening .envelope__letter { animation-duration: 0.01s; animation-delay: 0s; }
 }
