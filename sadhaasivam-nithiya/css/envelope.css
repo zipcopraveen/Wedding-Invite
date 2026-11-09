@@ -1,7 +1,7 @@
 /* ==========================================================================
    envelope.css  |  the screen a personalised link opens on (js/envelope.js)
 
-   A real envelope on a dark ground: an oxblood (deep red wine) body with a V front, a lighter
+   A real envelope on a cream ground (the hero page's own cream with soft peach glows): a wine body with a V front, a lighter
    flap, and a gold round with a heart in it and the word "Open" under it.
    Tapping the heart opens it: the round lets go, the
    flap turns up, and the letter rises out turning one full circle ("spin up"),
@@ -17,13 +17,13 @@
 
 .envelope {
   --ew: min(88vw, 36rem, 62svh);                /* the envelope's width */
-  /* the colour theme: Oxblood, a deeper, redder wine with a gold seal. Change these six to re-colour the whole envelope. */
-  --env-ground: #2e0a0d;                        /* the dark ground behind the envelope */
-  --env-body: #6b1a1f;                          /* the front of the envelope */
-  --env-flap: #782f33;                          /* the flap: a step lighter than the body */
-  --env-back: #360d10;                          /* the inside, seen when the flap is up */
-  --env-seal: #e6c888;                          /* the gold round */
-  --env-heart: #6b1a1f;                         /* the heart in the round */
+  /* the colour theme: wine on the hero's cream, with a champagne seal. Change these six to re-colour the whole envelope. */
+  --env-ground: #f8efe2;                        /* the ground behind the envelope: the hero page's cream */
+  --env-body: #5b2327;                          /* the front of the envelope */
+  --env-flap: #74303a;                          /* the flap: a step lighter than the body */
+  --env-back: #3a1218;                          /* the inside, seen when the flap is up */
+  --env-seal: #ecd9b5;                          /* the round: champagne, like the SN circle */
+  --env-heart: #5b2327;                         /* the heart in the round */
   --round: max(2.75rem, calc(var(--ew) * 0.115));   /* the gold round with the heart: never smaller than a thumb */
   position: fixed;
   inset: 0;
@@ -41,7 +41,7 @@
 /* the envelope, centred on the screen; the equal room above and below is where the letter rises and the envelope sits */
 /* the background: a warm halo behind the envelope that slowly breathes, and fine gold dust that twinkles across the ground. The halo swells
    as the envelope opens; everything fades as the cream spreads over the screen. Both are decoration the owner asked for. */
-.envelope__fx { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; transition: opacity 0.7s var(--ease-soft); }
+.envelope__fx { position: absolute; inset: 0; z-index: 0; background: radial-gradient(circle at 85% 85%, #f3d0b0 0, transparent 50%), radial-gradient(circle at 10% 15%, #f4dcc4 0, transparent 45%); overflow: hidden; pointer-events: none; transition: opacity 0.7s var(--ease-soft); }
 .envelope__halo {
   position: absolute;
   left: 50%;
@@ -49,7 +49,7 @@
   width: calc(var(--ew) * 1.9);
   height: calc(var(--ew) * 1.45);
   translate: -50% -50%;
-  background: radial-gradient(closest-side, rgba(230, 200, 136, 0.5), rgba(230, 200, 136, 0.16) 55%, transparent); /* taste-skill-ignore: the warm halo the owner asked for */
+  background: radial-gradient(closest-side, rgba(242, 203, 168, 0.7), rgba(242, 203, 168, 0.25) 55%, transparent); /* taste-skill-ignore: the warm halo the owner asked for */
   animation: envelope-breathe 5s ease-in-out infinite;
   transition: opacity 1.2s var(--ease-soft), scale 1.4s var(--ease-expo);
 }
@@ -58,7 +58,7 @@
 .envelope__dust i {
   position: absolute;
   border-radius: 50%;
-  background: var(--c);
+  background: #b98d4a;   /* fine gold dust, deep enough to show on cream (the specks' own colours were pale gold for a dark ground) */
   opacity: 0;
   animation: envelope-twinkle var(--t) ease-in-out infinite;
   animation-delay: var(--d);
@@ -77,6 +77,7 @@
   width: var(--ew);
   aspect-ratio: 13 / 8.2;
   perspective: 1400px;
+  filter: drop-shadow(0 0.6rem 1.1rem rgba(91, 35, 39, 0.28));   /* a soft shadow so the envelope lifts off the cream */
 }
 
 /* ---- the envelope ----------------------------------------------------------- */
@@ -178,6 +179,7 @@
   container-type: inline-size;
   background: var(--pearl);
   border-radius: calc(var(--ew) * 0.015);
+  box-shadow: 0 0 0 1px #e6d3a8, 0 0.4rem 1.2rem rgba(91, 35, 39, 0.16);   /* a fine champagne edge so the letter shows against the cream ground */
   color: var(--wine);
   text-align: center;
   visibility: hidden;                           /* shut inside the envelope until it opens */
