@@ -1,7 +1,8 @@
 /* ==========================================================================
    reception.js  |  event details, add to calendar, directions, map
-   - .ics is the primary calendar action (works on iPhone); Google Calendar
-     link is secondary.
+   - One "Add to calendar" button that picks by device: on Android it opens
+     Google Calendar; on iPhone, iPad and everything else it downloads an .ics
+     file (which opens Apple Calendar on Apple devices).
    - All values come from config.js. Missing values show a calm placeholder
      instead of an empty gap.
    ========================================================================== */
@@ -117,15 +118,12 @@
     add.className = "btn btn--solid";
     add.id = "rec-ics";
     add.textContent = "Add to calendar";
-    add.addEventListener("click", downloadICS);
-
-    const g = document.createElement("a");
-    g.className = "btn";
-    g.href = googleCalendarURL();
-    g.target = "_blank";
-    g.rel = "noopener";
-    g.textContent = "Google Calendar";
-    actions.append(add, g);
+    const isAndroid = /android/i.test(navigator.userAgent);
+    add.addEventListener("click", () => {
+      if (isAndroid) window.open(googleCalendarURL(), "_blank", "noopener");
+      else downloadICS();
+    });
+    actions.append(add);
   }
   if (ev.mapLinkUrl) {
     const dir = document.createElement("a");

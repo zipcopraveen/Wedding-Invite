@@ -579,8 +579,6 @@
 .reception__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 /* the buttons hug their text: compact pills that are still a comfortable 44px tall to tap */
 .reception__actions .btn { min-height: 2.75rem; padding: 0.5rem 1.5rem; font-size: var(--step--1); }
-/* the Google Calendar button is hidden at MPU's request; "Add to calendar" and "Get directions" remain, side by side */
-.reception__actions a[href*="calendar.google.com"] { display: none; }
 .reception__note { font-size: var(--step-0); }
 
 /* the map sits in an arch, like the mehrab of a hall; a kolam line (reception.js) runs round it */
