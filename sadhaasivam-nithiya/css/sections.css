@@ -178,28 +178,46 @@
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 24' fill='none' stroke='%23000' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12H18'/%3E%3Cpath d='M30 19C20 13 22 5 27 6C29 6 30 8 30 9C30 8 31 6 33 6C38 5 40 13 30 19Z'/%3E%3C/svg%3E"),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 24' fill='none' stroke='%23000' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg transform='translate(40 0) scale(-1 1)'%3E%3Cpath d='M2 12H18'/%3E%3Cpath d='M30 19C20 13 22 5 27 6C29 6 30 8 30 9C30 8 31 6 33 6C38 5 40 13 30 19Z'/%3E%3C/g%3E%3C/svg%3E");
 }
-.hero__lead::after {
+/* the SN seal below the first line: a peach disc, wine letters, a thin gold ring, and a faint light that sweeps across the disc
+   (a real element so it can carry the sweep; it is positioned absolutely, so it takes no space and nothing else moves) */
+.hero__seal {
   position: absolute;
-  top: calc(100% + 1.4rem + 3svh);   /* moved down 10%, then back up 5% and 2% of the screen height */
+  top: calc(100% + 1.4rem + 5svh);   /* moved down 10%, back up 5% and 2%, then down 2% of the screen height */
   left: 50%;
   translate: -50% 0;
-  width: 4.635rem;   /* 3% larger than 4.5rem */
+  width: 4.635rem;
   aspect-ratio: 1;
-  background: #f2cba8;   /* solid peach, the colour of the soft splash patches on this page */
-  content: "SN";   /* the S N logo (option 16 of the logo demo): Cinzel Decorative letters, wine on peach */
   display: grid;
   place-items: center;
+  isolation: isolate;
+  border-radius: 50%;
+  background: #ecd9b5;   /* champagne */
+  color: var(--wine);
   font-family: "Cinzel Decorative", Georgia, serif;
   font-size: 1.93rem;
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0;
   text-transform: none;
-  color: var(--wine);
-  border-radius: 50%;
-  outline: 1.5px solid var(--ornament-ink);   /* a thin gold ring around the disc, with a small gap */
+  outline: 1.5px solid #a77b3f;   /* a thin gold ring around the disc, with a small gap */
   outline-offset: 0.45rem;
 }
+.hero__seal b { position: relative; z-index: 2; font-weight: 400; }
+.hero__seal::after {   /* the light that passes across the disc */
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 50%;
+  background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 67%) 50%, transparent 65%);
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero.is-ready .hero__seal::after { opacity: 1; animation: seal-sweep 4s ease-in-out infinite; }
+}
+@keyframes seal-sweep { 0% { background-position: 100% 0; } 50%, 100% { background-position: 0 0; } }
 /* same look as the first line: bold body font */
 .hero__invite {
   translate: 0 19.5svh;   /* moved down 10% then back up 5% of the screen height (was 14.5svh) */
