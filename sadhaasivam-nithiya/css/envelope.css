@@ -1,7 +1,7 @@
 /* ==========================================================================
    envelope.css  |  the screen a personalised link opens on (js/envelope.js)
 
-   A real envelope on the dark wine ground: a wine body with a V front, a lighter
+   A real envelope on a dark ground: an oxblood (deep red wine) body with a V front, a lighter
    flap, and a gold round with a heart in it and the word "Open" under it.
    Tapping the heart opens it: the round lets go, the
    flap turns up, and the letter rises out turning one full circle ("spin up"),
@@ -17,8 +17,13 @@
 
 .envelope {
   --ew: min(88vw, 36rem, 62svh);                /* the envelope's width */
-  --env-flap: #6e2a30;                          /* the flap: a step lighter than the body */
-  --env-back: color-mix(in srgb, var(--wine-deep) 55%, #000);
+  /* the colour theme: Oxblood, a deeper, redder wine with a gold seal. Change these six to re-colour the whole envelope. */
+  --env-ground: #2e0a0d;                        /* the dark ground behind the envelope */
+  --env-body: #6b1a1f;                          /* the front of the envelope */
+  --env-flap: #782f33;                          /* the flap: a step lighter than the body */
+  --env-back: #360d10;                          /* the inside, seen when the flap is up */
+  --env-seal: #e6c888;                          /* the gold round */
+  --env-heart: #6b1a1f;                         /* the heart in the round */
   --round: max(2.75rem, calc(var(--ew) * 0.115));   /* the gold round with the heart: never smaller than a thumb */
   position: fixed;
   inset: 0;
@@ -30,10 +35,38 @@
   overscroll-behavior: contain;
   transition: background-color 0.9s var(--ease-soft), opacity 0.9s var(--ease-soft), visibility 0s linear 0.9s;
 }
+.envelope.on-wine { background-color: var(--env-ground); }   /* the theme's own ground, in place of the page's wine */
 .envelope.is-leaving { opacity: 0; visibility: hidden; }
 
 /* the envelope, centred on the screen; the equal room above and below is where the letter rises and the envelope sits */
+/* the background: a warm halo behind the envelope that slowly breathes, and fine gold dust that twinkles across the ground. The halo swells
+   as the envelope opens; everything fades as the cream spreads over the screen. Both are decoration the owner asked for. */
+.envelope__fx { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; transition: opacity 0.7s var(--ease-soft); }
+.envelope__halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--ew) * 1.9);
+  height: calc(var(--ew) * 1.45);
+  translate: -50% -50%;
+  background: radial-gradient(closest-side, rgba(230, 200, 136, 0.5), rgba(230, 200, 136, 0.16) 55%, transparent); /* taste-skill-ignore: the warm halo the owner asked for */
+  animation: envelope-breathe 5s ease-in-out infinite;
+  transition: opacity 1.2s var(--ease-soft), scale 1.4s var(--ease-expo);
+}
+@keyframes envelope-breathe { 0%, 100% { opacity: 0.6; scale: 0.94; } 50% { opacity: 1; scale: 1.07; } }
+.envelope.is-opening .envelope__halo { animation: none; opacity: 1; scale: 1.12; }
+.envelope__dust i {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--c);
+  opacity: 0;
+  animation: envelope-twinkle var(--t) ease-in-out infinite;
+  animation-delay: var(--d);
+}
+@keyframes envelope-twinkle { 0%, 100% { opacity: 0; scale: 0.3; } 45% { opacity: var(--o); scale: 1.15; } 60% { opacity: calc(var(--o) * 0.6); scale: 0.9; } }
 .envelope__stage {
+  position: relative;
+  z-index: 1;
   display: grid;
   justify-items: center;
   padding: calc(var(--ew) * 0.36) 0;
@@ -61,32 +94,26 @@
 .envelope__front {
   inset: 0;
   z-index: 2;
-  background: var(--wine);
+  background: var(--env-body);
   border-radius: calc(var(--ew) * 0.03);
   clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%);   /* the V where the flap closes */
 }
-/* the gopuram: a gold line drawing of the temple tower, pressed into the bottom right of the front like a relief. The picture is the
-   tower's own line art (white lines on clear); the <i> shows it as a mask in gold, and the light and dark edges on the wrapper
-   make the raised look. The front's own clip (the V and the rounded corners) cuts it. */
-.envelope__gopuram {
+/* foil glint: a soft skewed band of light crosses the front every few seconds, like light catching gold foil. It lives inside the front,
+   so the V and the rounded corners cut it. It stops when the envelope is opened. */
+.envelope__glint {
   position: absolute;
-  right: 3%;
-  bottom: -1%;
-  width: 32%;
-  aspect-ratio: 640 / 604;
+  top: -10%;
+  bottom: -10%;
+  left: -30%;
+  width: 16%;
+  background: rgba(255, 238, 205, 0.2);
+  transform: skewX(-22deg);
+  filter: blur(calc(var(--ew) * 0.006));
   pointer-events: none;
-  filter:
-    drop-shadow(calc(var(--ew) * 0.002) calc(var(--ew) * 0.002) 0 rgba(30, 6, 10, 0.7)) /* taste-skill-ignore: the embossed relief the owner asked for */
-    drop-shadow(calc(var(--ew) * -0.002) calc(var(--ew) * -0.002) 0 rgba(255, 236, 190, 0.35)); /* taste-skill-ignore: the light edge of the same relief */
+  animation: envelope-glint 6s ease-in-out infinite;
 }
-.envelope__gopuram i {
-  position: absolute;
-  inset: 0;
-  background: var(--zari);
-  opacity: 0.85;
-  -webkit-mask: url("../assets/images/envelope/gopuram.png") center / 100% 100% no-repeat;
-  mask: url("../assets/images/envelope/gopuram.png") center / 100% 100% no-repeat;
-}
+@keyframes envelope-glint { 0%, 55% { left: -30%; } 78%, 100% { left: 130%; } }
+.envelope.is-opening .envelope__glint { animation: none; opacity: 0; }
 .envelope__flap {
   inset: 0 0 auto 0;
   z-index: 3;
@@ -124,10 +151,10 @@
   width: var(--round);
   height: var(--round);
   border-radius: 50%;
-  background: var(--zari-hi);
+  background: var(--env-seal);
   transition: scale 0.5s var(--ease-expo);
 }
-.envelope__heart { width: 52%; height: 52%; fill: var(--wine); animation: envelope-beat 1.9s var(--ease-soft) infinite; }   /* it beats until opened: that is the invitation to tap */
+.envelope__heart { width: 52%; height: 52%; fill: var(--env-heart); animation: envelope-beat 1.9s var(--ease-soft) infinite; }   /* it beats until opened: that is the invitation to tap */
 .envelope__open-word {
   font-family: var(--font-body);
   font-size: max(0.95rem, calc(var(--ew) * 0.034));
@@ -198,6 +225,7 @@
    seems to spread over the whole screen; then the cream itself fades to show the hero */
 .envelope__letter > * { transition: opacity 0.5s var(--ease-soft); }
 .envelope.is-melting { background-color: var(--pearl); }
+.envelope.is-melting .envelope__fx { opacity: 0; }
 .envelope.is-melting .envelope__back,
 .envelope.is-melting .envelope__front,
 .envelope.is-melting .envelope__flap { opacity: 0; }
@@ -206,6 +234,8 @@
 /* reduced motion: nothing travels; the letter just arrives settled */
 @media (prefers-reduced-motion: reduce) {
   .envelope__flap, .envelope__seal, .envelope__open { transition-duration: 0.01s; transition-delay: 0s; }
-  .envelope__heart { animation: none; }
+  .envelope__heart, .envelope__glint, .envelope__halo { animation: none; }
   .envelope.is-opening .envelope__letter { animation-duration: 0.01s; animation-delay: 0s; }
+  .envelope__halo { opacity: 0.8; }
+  .envelope__dust i { animation: none; opacity: 0.5; }
 }

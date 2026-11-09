@@ -72,6 +72,35 @@
 /* TEMPORARY: the first-page kolam is hidden for now. To bring it back, delete the next line; to remove it for good, tell Claude. */
 .hero__mandala { display: none; }
 
+/* the Srirangam gopuram: a line drawing of the temple tower printed faint in antique bronze on the right of the page, behind the names.
+   It is the same artwork as on the guest envelope (white lines on clear, shown here as a mask). It rises from the bottom edge,
+   arrives just after the names, and is lighter on a phone, where the names cross it. */
+.hero__gopuram {
+  position: absolute;
+  z-index: 0;
+  right: -24.3vw;                                /* the tower sits towards the right and runs off the right edge; its left edge stays at 71vw */
+  bottom: 0;                                     /* the hero's own bottom edge, so it runs down behind the date arch with no gap */
+  width: clamp(21.5rem, 53.1vw, 63.25rem);
+  aspect-ratio: 640 / 604;
+  translate: 0% 10%;                             /* moved down by a tenth of its own height (and not shifted sideways: it was moved back left by a tenth of its width) */
+  pointer-events: none;
+  opacity: 0;
+}
+.hero.is-ready .hero__gopuram { opacity: 1; transition: opacity 1.8s var(--ease-soft) 1.3s; }
+.hero__gopuram i {
+  position: absolute;
+  inset: 0;
+  background: var(--zari-ink);                   /* antique bronze, the theme's darker gold */
+  opacity: 0.38;
+  -webkit-mask: url("../assets/images/envelope/gopuram.png") center / 100% 100% no-repeat;
+  mask: url("../assets/images/envelope/gopuram.png") center / 100% 100% no-repeat;
+}
+@media (max-width: 40rem) {
+  .hero__gopuram { right: -40.5vw; width: 98.7vw; }
+  .hero__gopuram i { opacity: 0.28; }
+}
+@media (prefers-reduced-motion: reduce) { .hero.is-ready .hero__gopuram { transition: none; } }
+
 /* incense haze (MPU's pick, option 6): soft saffron and peach smoke rises slowly and curls, like temple incense */
 .hero__haze { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 .wisp {
