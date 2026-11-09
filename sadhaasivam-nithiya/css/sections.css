@@ -623,19 +623,68 @@
   color: var(--wine);
   translate: 0 -0.095em;   /* the letters sit low in their box, so they are nudged up to the true middle of the disc (measured for Hearth Stone) */
 }
-/* the monogram comes into focus as the closing section scrolls into view: it zooms in from a big blur and settles sharp.
-   Scroll-driven, so no script; browsers without it simply show the monogram as it is. */
-@keyframes mono-focus {
-  from { opacity: 0; transform: scale(2.2); filter: blur(18px); }
-  to { opacity: 1; transform: none; filter: blur(0); }
+/* two lights meet: as the closing section scrolls into view, two small gold flames drift in from either side, join in the middle
+   and bloom; the peach disc, its ring and the letters then come into focus out of that glow.
+   Scroll-driven, so no script; browsers without it (or with reduced motion) simply show the finished monogram. */
+.footer__light { display: none; }
+@keyframes mono-light-l {
+  0% { translate: -5.2rem 2.4rem; opacity: 0; scale: 1; }
+  12% { opacity: 1; }
+  50% { translate: 0 0; opacity: 1; scale: 1; }
+  62% { translate: 0 0; opacity: 0; scale: 6; }
+  100% { translate: 0 0; opacity: 0; scale: 6; }
+}
+@keyframes mono-light-r {
+  0% { translate: 5.2rem -2.4rem; opacity: 0; scale: 1; }
+  12% { opacity: 1; }
+  50% { translate: 0 0; opacity: 1; scale: 1; }
+  62% { translate: 0 0; opacity: 0; scale: 6; }
+  100% { translate: 0 0; opacity: 0; scale: 6; }
+}
+@keyframes mono-disc {
+  0%, 48% { background-color: transparent; }
+  75%, 100% { background-color: color-mix(in srgb, var(--zari) 40%, var(--pearl)); }
+}
+@keyframes mono-ring {
+  0%, 52% { opacity: 0; scale: 0.7; }
+  85%, 100% { opacity: 1; scale: 1; }
+}
+@keyframes mono-letters {
+  0%, 50% { opacity: 0; filter: blur(10px); }
+  80%, 100% { opacity: 1; filter: blur(0); }
 }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .footer__monogram span {
-      animation: mono-focus linear both;
+    .footer__light {
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 0.9rem;
+      height: 0.9rem;
+      margin: -0.45rem 0 0 -0.45rem;
+      border-radius: 50%;
+      background: radial-gradient(#fff6d6, var(--zari-hi) 55%, transparent 72%);
+      box-shadow: 0 0 1.1rem 0.4rem color-mix(in srgb, var(--zari-hi) 55%, transparent);
+      pointer-events: none;
       animation-timeline: view();
       animation-range: entry 10% cover 38%;
+      animation-timing-function: ease-in-out;
+      animation-fill-mode: both;
     }
+    .footer__light--l { animation-name: mono-light-l; }
+    .footer__light--r { animation-name: mono-light-r; }
+    .footer__monogram,
+    .footer__monogram::before,
+    .footer__monogram span {
+      animation-timeline: view();
+      animation-range: entry 10% cover 38%;
+      animation-timing-function: ease-in-out;
+      animation-fill-mode: both;
+    }
+    .footer__monogram { animation-name: mono-disc; }
+    .footer__monogram::before { animation-name: mono-ring; }
+    .footer__monogram span { animation-name: mono-letters; }
   }
 }
 /* the wine heart under the monogram: tap it to open a small menu (a native details element, so no script) */
