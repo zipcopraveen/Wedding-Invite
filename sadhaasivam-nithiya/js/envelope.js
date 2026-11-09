@@ -6,12 +6,11 @@
    - Everyone else (root address, unknown slug) gets true straight away.
    - One action only: the guest taps the heart in the gold round on the envelope
      (the word "Open" is written under it; the heart beats to invite the tap; it is
-     a real button for the keyboard and screen readers). The round lets go, the
-     flap turns up, and the letter rises out turning one full circle, then settles
-     large enough to read and greets the guest by name. After a short hold the
-     letter's cream spreads over the whole screen, the page behind starts, and the
-     cream dissolves into the hero. The letter's words are the placeholders in
-     LETTER below until the final content is written.
+     a real button for the keyboard and screen readers). The flap opens, the letter
+     rises turning one full circle and grows so it can be read, is held for a moment,
+     and then the cream spreads over the screen and fades to show the hero.
+     The letter's words are the placeholders in LETTER below until the final content
+     is written.
    - Looks: css/envelope.css.
    ========================================================================== */
 
@@ -81,13 +80,7 @@
   const front = make("div", "envelope__front");
   const flap = make("div", "envelope__flap");
   [back, front, flap].forEach((n) => n.setAttribute("aria-hidden", "true"));
-
-  /* The gopuram (the temple tower) is pressed into the right of the front as a gold relief; it lives inside the front so it
-     is clipped by the V and fades away with the envelope */
-  const gopuram = make("div", "envelope__gopuram");
-  gopuram.setAttribute("aria-hidden", "true");
-  gopuram.appendChild(make("i"));
-  front.appendChild(gopuram);
+  front.appendChild(make("i", "envelope__glint"));   // a soft band of light that sweeps over the front now and then, like light on gold foil
 
   /* The one thing to tap: a gold round with a heart in it, and the word "Open" under it */
   const NS = "http://www.w3.org/2000/svg";
@@ -117,8 +110,26 @@
 
   env.append(back, letter, front, flap, open);
 
+  /* The background: a warm halo behind the envelope and fine gold dust twinkling across the ground. Both sit behind the stage,
+     so they never cover the envelope, and both fade away as the cream takes over the screen. */
+  const fx = make("div", "envelope__fx");
+  fx.setAttribute("aria-hidden", "true");
+  fx.appendChild(make("i", "envelope__halo"));
+  const dust = make("div", "envelope__dust");
+  let seed = 7;                                          // a fixed seed, so the specks are in the same places every visit
+  const rnd = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const GOLD = ["#e6c888", "#fff2c4", "#f6ca8f", "#fff8ee"];
+  for (let i = 0; i < 90; i++) {
+    const speck = make("i");
+    const size = (1.5 + rnd() * 2.4).toFixed(1);
+    speck.style.cssText = `left:${(rnd() * 100).toFixed(1)}%;top:${(rnd() * 100).toFixed(1)}%;width:${size}px;height:${size}px;` +
+      `--c:${GOLD[Math.floor(rnd() * 4)]};--t:${(2 + rnd() * 3.5).toFixed(1)}s;--d:${(-rnd() * 6).toFixed(1)}s;--o:${(0.55 + rnd() * 0.45).toFixed(2)}`;
+    dust.appendChild(speck);
+  }
+  fx.appendChild(dust);
+
   stage.appendChild(env);
-  el.appendChild(stage);
+  el.append(fx, stage);
   document.body.appendChild(el);
   el.tabIndex = -1;                               // focus moves into the dialog without drawing a ring; Tab then reaches the heart
   el.focus({ preventScroll: true });
