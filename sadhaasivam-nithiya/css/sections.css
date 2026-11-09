@@ -596,46 +596,79 @@
   background: var(--scallop) repeat-x left bottom / 48px 24px;
 }
 .footer__karai { display: none; }   /* the gold pattern strip at the top of the closing section is removed */
-/* a round S & N monogram: a peach disc, a thin gold ring around it, the letters in wine-red script */
+/* the S N logo: an infinity loop (drawn in gold) with a capital S in one side and an N in the other. It is an inline SVG, so
+   the loop can draw itself and the letters can fade in. The lights meet exactly where the loop crosses. */
 .footer__monogram {
   position: relative;
   translate: 0 -5svh;   /* moved up 5% of the screen height */
   display: grid;
   place-items: center;
-  width: min(46vw, 10.5rem);
-  aspect-ratio: 1;
+  width: min(61.2vw, 12.92rem);
+  aspect-ratio: 19 / 12;
   margin: 0 auto var(--space-7);
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--zari) 40%, var(--pearl));   /* the exact peach of the site's buttons (Get directions, Open in Maps), with wine letters */
 }
-.footer__monogram::before {
-  content: "";
-  position: absolute;
-  inset: -0.6rem;
-  border: 1px solid var(--zari);
-  border-radius: 50%;
+.footer__mark { width: 100%; max-width: none; height: auto; overflow: visible; }
+.footer__loop { fill: none; stroke: var(--zari); stroke-width: 1.6; stroke-linecap: round; }
+.footer__mark text { font-family: "Cinzel", Georgia, serif; font-size: 34px; text-anchor: middle; }
+.footer__mark .footer__s { fill: var(--pearl); }
+.footer__mark .footer__n { fill: var(--pearl); }
+/* two lights meet: as the closing section scrolls into view, two small gold flames drift in from either side, join in the middle
+   and bloom where the loop crosses; the loop then draws itself and the letters come into focus out of that glow.
+   Scroll-driven, so no script; browsers without it (or with reduced motion) simply show the finished monogram. */
+.footer__light { display: none; }
+@keyframes mono-light-l {
+  0% { translate: -5.2rem 2.4rem; opacity: 0; scale: 1; }
+  12% { opacity: 1; }
+  50% { translate: 0 0; opacity: 1; scale: 1; }
+  62% { translate: 0 0; opacity: 0; scale: 6; }
+  100% { translate: 0 0; opacity: 0; scale: 6; }
 }
-.footer__monogram span {
-  font-family: "Hearth Stone", "Allura", Georgia, cursive;   /* Hearth Stone, MPU's pick: lowercase s & n, with its big swashy ampersand */
-  text-transform: lowercase;
-  font-size: clamp(2.8rem, 16vw, 4.2rem);
-  line-height: 1;
-  color: var(--wine);
-  translate: 0 -0.095em;   /* the letters sit low in their box, so they are nudged up to the true middle of the disc (measured for Hearth Stone) */
+@keyframes mono-light-r {
+  0% { translate: 5.2rem -2.4rem; opacity: 0; scale: 1; }
+  12% { opacity: 1; }
+  50% { translate: 0 0; opacity: 1; scale: 1; }
+  62% { translate: 0 0; opacity: 0; scale: 6; }
+  100% { translate: 0 0; opacity: 0; scale: 6; }
 }
-/* the monogram comes into focus as the closing section scrolls into view: it zooms in from a big blur and settles sharp.
-   Scroll-driven, so no script; browsers without it simply show the monogram as it is. */
-@keyframes mono-focus {
-  from { opacity: 0; transform: scale(2.2); filter: blur(18px); }
-  to { opacity: 1; transform: none; filter: blur(0); }
+@keyframes mono-draw {
+  0%, 52% { stroke-dashoffset: 1; opacity: 0; }
+  60% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+@keyframes mono-letters {
+  0%, 50% { opacity: 0; filter: blur(10px); }
+  80%, 100% { opacity: 1; filter: blur(0); }
 }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .footer__monogram span {
-      animation: mono-focus linear both;
+    .footer__light {
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 0.9rem;
+      height: 0.9rem;
+      margin: -0.45rem 0 0 -0.45rem;
+      border-radius: 50%;
+      background: radial-gradient(#fff6d6, var(--zari-hi) 55%, transparent 72%);
+      box-shadow: 0 0 1.1rem 0.4rem color-mix(in srgb, var(--zari-hi) 55%, transparent);
+      pointer-events: none;
       animation-timeline: view();
       animation-range: entry 10% cover 38%;
+      animation-timing-function: ease-in-out;
+      animation-fill-mode: both;
     }
+    .footer__light--l { animation-name: mono-light-l; }
+    .footer__light--r { animation-name: mono-light-r; }
+    .footer__loop,
+    .footer__mark text {
+      animation-timeline: view();
+      animation-range: entry 10% cover 38%;
+      animation-timing-function: ease-in-out;
+      animation-fill-mode: both;
+    }
+    .footer__loop { animation-name: mono-draw; }
+    .footer__mark text { animation-name: mono-letters; }
   }
 }
 /* the wine heart under the monogram: tap it to open a small menu (a native details element, so no script) */
@@ -693,24 +726,43 @@
 .footer__menu[open] .footer__message { animation: footer-menu-in 0.6s var(--ease-soft); }
 @keyframes footer-menu-in { from { opacity: 0; transform: translateY(-0.5rem); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .footer__menu[open] .footer__message { animation: none; } .footer__heart-dot { transition: none; } }
-/* twinkling stars: small four-point sparkles flash on and off over the monogram (CSS only) */
-.footer__star {
-  position: absolute;
-  width: calc(var(--s, 5%) * 1.6);   /* sparkles scaled up so they read on the small disc */
-  aspect-ratio: 1;
-  background: #d1a24b;   /* rich gold sparkles, visible on the peach disc */
-  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
-  opacity: 0;
-  pointer-events: none;
-  animation: footer-twinkle 2.4s ease-in-out infinite;
-  animation-delay: var(--d, 0s);
+/* edge-lit letters: ivory S and N with a thin gold rim that slowly brightens and fades (5s a cycle, the N two seconds behind the S).
+   The glow sits on a group round each letter, so it does not clash with the letters' own scroll-driven focus-in. */
+.footer__mark text { stroke: var(--zari-hi); stroke-width: 0.5; paint-order: stroke; }
+.footer__glow { animation: footer-glow 5s ease-in-out infinite; }
+.footer__glow--n { animation-delay: -2s; }
+@keyframes footer-glow {
+  0%, 100% { filter: drop-shadow(0 0 0.12rem color-mix(in srgb, var(--zari-hi) 50%, transparent)); }
+  50% { filter: drop-shadow(0 0 0.38rem var(--zari-hi)) drop-shadow(0 0 0.06rem #fff); }
 }
-@keyframes footer-twinkle {
-  0%, 100% { opacity: 0; scale: 0.2; rotate: 0deg; }
-  45% { opacity: 1; scale: 1; rotate: 45deg; }
-  70% { opacity: 0; scale: 0.3; rotate: 90deg; }
+@media (prefers-reduced-motion: reduce) { .footer__glow { animation: none; } }
+/* the comet: after the logo has appeared, one small bright spark runs round the infinity loop, lap after lap (4s a lap).
+   It stays hidden until the scroll reveal has finished drawing the loop, so it never runs along an empty line. */
+.footer__comet {
+  fill: none;
+  stroke: #fff6d6;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 0.07 0.93;
+  filter: drop-shadow(0 0 4px var(--zari-hi));
+  animation: footer-comet 4s linear infinite;
 }
-@media (prefers-reduced-motion: reduce) { .footer__star { animation: none; opacity: 0; } }
+@keyframes footer-comet { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1; } }
+@keyframes footer-comet-in { 0%, 78% { opacity: 0; } 100% { opacity: 1; } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .footer__comet {
+      animation-name: footer-comet, footer-comet-in;
+      animation-duration: 4s, auto;
+      animation-timing-function: linear, ease-in-out;
+      animation-iteration-count: infinite, 1;
+      animation-fill-mode: none, both;
+      animation-timeline: auto, view();
+      animation-range: normal, entry 10% cover 38%;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) { .footer__comet { display: none; } }
 .footer__top {
   display: flex;
   flex-wrap: wrap;

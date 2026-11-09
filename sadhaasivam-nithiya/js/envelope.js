@@ -1,12 +1,17 @@
 /* ==========================================================================
    envelope.js  |  the guest's own envelope, for personalised links
    - Sets window.__envelopeOpened (false while the envelope is shut) and fires
-     "envelope:ready" when it is opened. hero.js waits for that event, so the
-     names do not animate behind the envelope.
+     "envelope:ready" as the envelope melts into the page. hero.js waits for that
+     event, so the names do not animate behind the envelope.
    - Everyone else (root address, unknown slug) gets true straight away.
-   - Opening: the flap lifts, the seal lets go, the cream card rises to fill
-     the screen (it is the same cream as the hero), then the envelope fades.
-     With reduced motion the envelope simply goes.
+   - One action only: the guest taps the heart in the gold round on the envelope
+     (the word "Open" is written under it; the heart beats to invite the tap; it is
+     a real button for the keyboard and screen readers). The round lets go, the
+     flap turns up, and the letter rises out turning one full circle, then settles
+     large enough to read and greets the guest by name. After a short hold the
+     letter's cream spreads over the whole screen, the page behind starts, and the
+     cream dissolves into the hero. The letter's words are the placeholders in
+     LETTER below until the final content is written.
    - Looks: css/envelope.css.
    ========================================================================== */
 
@@ -15,7 +20,9 @@
   const cfg = window.WEDDING;
   const guestsRaw = window.WEDDING_GUESTS || {};
   const RESERVED = ["css", "js", "assets", "api", "index.html", "preview.html"];
-  const OPEN_MS = 1500;              // how long the opening plays before the page takes over
+  const SETTLE_MS = 3300;            // fallback: when the letter has settled, in case the animation event never comes
+  const HOLD_MS = 1700;              // how long the settled letter is held so the greeting can be read
+  const MELT_MS = 900;               // how long the cream takes to spread over the screen before the page starts
 
   const guests = {};
   Object.keys(guestsRaw).forEach((k) => { guests[k.toLowerCase()] = guestsRaw[k]; });
@@ -51,82 +58,101 @@
     return n;
   };
 
+  /* The words of the letter. Placeholders until the final content is written: change them here. */
+  const LETTER = {
+    greeting: "Dear",
+    lead: "You are warmly invited to the wedding reception of",
+    names: `${partner1.name} & ${partner2.name}`
+  };
+  const OPEN_WORD = "Open";                        // written under the round
+  const OPEN_LABEL = "Open the invitation";        // spoken to screen readers
+
   const el = make("div", "envelope on-wine");
   el.setAttribute("role", "dialog");
   el.setAttribute("aria-modal", "true");
-  el.setAttribute("aria-labelledby", "env-title");
+  el.setAttribute("aria-label", "Your invitation");
   el.setAttribute("data-lenis-prevent", "");
 
-  /* The envelope: two folds at the bottom, the flap at the top, the seal at its tip */
-  const foldL = make("div", "envelope__fold envelope__fold--l");
-  const foldR = make("div", "envelope__fold envelope__fold--r");
-  const flap = make("div", "envelope__flap");
-  [foldL, foldR, flap].forEach((n) => n.setAttribute("aria-hidden", "true"));
+  const stage = make("div", "envelope__stage");
+  const env = make("div", "envelope__env");
 
-  // The seal is the kolam's lotus: twelve long petals, twelve short, the initials in the middle.
-  const NS = "http://www.w3.org/2000/svg";
-  const seal = document.createElementNS(NS, "svg");
-  seal.setAttribute("class", "envelope__seal");
-  seal.setAttribute("viewBox", "-100 -100 200 200");
-  seal.setAttribute("aria-hidden", "true");
-  seal.setAttribute("focusable", "false");
-  const svgEl = (name, attrs) => {
-    const n = document.createElementNS(NS, name);
-    Object.keys(attrs).forEach((k) => n.setAttribute(k, attrs[k]));
-    return n;
-  };
-  for (let i = 0; i < 12; i++) {
-    seal.appendChild(svgEl("path", { class: "envelope__petal", d: "M0 0Q34 -52 0 -98Q-34 -52 0 0Z", transform: `rotate(${i * 30})` }));
-  }
-  for (let i = 0; i < 12; i++) {
-    seal.appendChild(svgEl("path", { class: "envelope__petal envelope__petal--in", d: "M0 0Q24 -36 0 -70Q-24 -36 0 0Z", transform: `rotate(${i * 30 + 15})` }));
-  }
-  seal.appendChild(svgEl("circle", { class: "envelope__core", r: "41" }));
-  const initials = svgEl("text", { class: "envelope__initials", "text-anchor": "middle", y: "12" });
-  initials.textContent = `${[...partner1.name][0]}&${[...partner2.name][0]}`;
-  seal.appendChild(initials);
-
-  /* What is written on the front */
+  /* The envelope: back, letter, front, flap, seal (layered by css) */
+  const back = make("div", "envelope__back");
   const front = make("div", "envelope__front");
-  const dear = make("p", "envelope__dear", "Dear");
+  const flap = make("div", "envelope__flap");
+  [back, front, flap].forEach((n) => n.setAttribute("aria-hidden", "true"));
+
+  /* The gopuram (the temple tower) is pressed into the right of the front as a gold relief; it lives inside the front so it
+     is clipped by the V and fades away with the envelope */
+  const gopuram = make("div", "envelope__gopuram");
+  gopuram.setAttribute("aria-hidden", "true");
+  gopuram.appendChild(make("i"));
+  front.appendChild(gopuram);
+
+  /* The one thing to tap: a gold round with a heart in it, and the word "Open" under it */
+  const NS = "http://www.w3.org/2000/svg";
+  const heart = document.createElementNS(NS, "svg");
+  heart.setAttribute("class", "envelope__heart");
+  heart.setAttribute("viewBox", "0 0 24 24");
+  heart.setAttribute("aria-hidden", "true");
+  heart.setAttribute("focusable", "false");
+  const heartPath = document.createElementNS(NS, "path");
+  heartPath.setAttribute("d", "M12 21.5 3.2 12.6A5.6 5.6 0 0 1 11.1 4.7L12 5.6l.9-.9a5.6 5.6 0 0 1 7.9 7.9z");
+  heart.appendChild(heartPath);
+  const seal = make("span", "envelope__seal");
+  seal.appendChild(heart);
+  const openWord = make("span", "envelope__open-word", OPEN_WORD);
+  const open = make("button", "envelope__open");
+  open.type = "button";
+  open.setAttribute("aria-label", OPEN_LABEL);
+  open.append(seal, openWord);
+
+  /* The letter: greets the guest by name */
+  const letter = make("div", "envelope__letter");
+  const dear = make("p", "envelope__dear", LETTER.greeting);
   const h = make("h2", "envelope__guest display", guestName);
-  h.id = "env-title";
-  const lead = make("p", "envelope__lead", "You are warmly invited to the wedding reception of");
-  const names = make("p", "envelope__names", `${partner1.name} & ${partner2.name}`);
-  const btn = make("button", "btn btn--solid envelope__open", "Open the invitation");
-  btn.type = "button";
-  const parts = [dear, h, lead, names, btn];
-  parts.forEach((n, i) => n.style.setProperty("--i", String(i)));
-  front.append(...parts);
+  const lead = make("p", "envelope__lead", LETTER.lead);
+  const names = make("p", "envelope__names", LETTER.names);
+  letter.append(dear, h, lead, names);
 
-  const band = make("div", "envelope__karai");
-  band.setAttribute("aria-hidden", "true");
+  env.append(back, letter, front, flap, open);
 
-  // the cream card that rises when the envelope opens
-  const card = make("div", "envelope__card");
-  card.setAttribute("aria-hidden", "true");
-
-  el.append(foldL, foldR, flap, seal, front, band, card);
+  stage.appendChild(env);
+  el.appendChild(stage);
   document.body.appendChild(el);
-  btn.focus({ preventScroll: true });
+  el.tabIndex = -1;                               // focus moves into the dialog without drawing a ring; Tab then reaches the heart
+  el.focus({ preventScroll: true });
 
   /* Opening ---------------------------------------------------------------------- */
+  let opened = false;
+  function openEnvelope() {
+    if (opened) return;
+    opened = true;
+    el.scrollTo(0, 0);
+    open.tabIndex = -1;
+    open.setAttribute("aria-hidden", "true");
+    el.classList.add("is-opening");
+    let settled = false;
+    const settle = () => {                        // the letter has landed: hold it, then go on to the page
+      if (settled) return;
+      settled = true;
+      setTimeout(melt, HOLD_MS);
+    };
+    letter.addEventListener("animationend", settle, { once: true });
+    setTimeout(settle, SETTLE_MS);
+  }
+  open.addEventListener("click", openEnvelope);   // a real button: Enter and Space work too
+
+  /* Going on to the page: the cream spreads over the screen (is-melting), then the page starts and the cream fades away */
+  function melt() {
+    el.classList.add("is-melting");
+    setTimeout(finish, MELT_MS);
+  }
   function finish() {
     el.classList.add("is-leaving");
     document.documentElement.classList.remove("is-locked");
     window.__envelopeOpened = true;
     window.dispatchEvent(new Event("envelope:ready"));
-    setTimeout(() => el.remove(), 800);
+    setTimeout(() => el.remove(), 900);
   }
-
-  let opened = false;
-  btn.addEventListener("click", () => {
-    if (opened) return;
-    opened = true;
-    el.scrollTo(0, 0);
-    const reduced = window.WeddingUtils && window.WeddingUtils.prefersReducedMotion();
-    if (reduced) { finish(); return; }
-    el.classList.add("is-opening");
-    setTimeout(finish, OPEN_MS);
-  });
 })();
