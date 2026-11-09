@@ -726,6 +726,16 @@
 .footer__menu[open] .footer__message { animation: footer-menu-in 0.6s var(--ease-soft); }
 @keyframes footer-menu-in { from { opacity: 0; transform: translateY(-0.5rem); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .footer__menu[open] .footer__message { animation: none; } .footer__heart-dot { transition: none; } }
+/* edge-lit letters: ivory S and N with a thin gold rim that slowly brightens and fades (5s a cycle, the N two seconds behind the S).
+   The glow sits on a group round each letter, so it does not clash with the letters' own scroll-driven focus-in. */
+.footer__mark text { stroke: var(--zari-hi); stroke-width: 0.5; paint-order: stroke; }
+.footer__glow { animation: footer-glow 5s ease-in-out infinite; }
+.footer__glow--n { animation-delay: -2s; }
+@keyframes footer-glow {
+  0%, 100% { filter: drop-shadow(0 0 0.12rem color-mix(in srgb, var(--zari-hi) 50%, transparent)); }
+  50% { filter: drop-shadow(0 0 0.38rem var(--zari-hi)) drop-shadow(0 0 0.06rem #fff); }
+}
+@media (prefers-reduced-motion: reduce) { .footer__glow { animation: none; } }
 /* the comet: after the logo has appeared, one small bright spark runs round the infinity loop, lap after lap (4s a lap).
    It stays hidden until the scroll reveal has finished drawing the loop, so it never runs along an empty line. */
 .footer__comet {
