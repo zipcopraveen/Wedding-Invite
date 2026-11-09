@@ -72,7 +72,7 @@
    line onto "Scroll". Here the lines simply stack in order, with room for the SN circle.
    Phones and portrait tablets are not affected. */
 @media (min-width: 48rem) and (min-height: 30.01rem) and (min-aspect-ratio: 5/4) {
-  .hero__lead { translate: none; margin-bottom: calc(6.6rem + 3svh); }
+  .hero__lead { translate: none; margin-bottom: calc(6.6rem + 5svh); }
   .hero__invite { translate: none; }
   .names { translate: none; font-size: calc(clamp(3.4rem, min(14vw, 17.5svh), 13rem) * var(--names-scale, 1)); }
 }
