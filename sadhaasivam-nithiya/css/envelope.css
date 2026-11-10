@@ -262,12 +262,17 @@
 .envelope__letter > * { transition: opacity 0.5s var(--ease-soft); }
 .envelope__letter { transition: opacity 0.85s var(--ease-soft); }   /* the letter dissolves into the page instead of being wiped by a cream sheet */
 .envelope.is-melting { background-color: var(--env-ground); }   /* the ground is already the hero's cream, so the envelope melts straight into the hero with no colour step */
-.envelope.is-melting .envelope__letter { opacity: 0; }
 .envelope.is-melting .envelope__fx { opacity: 0; }
 .envelope.is-melting .envelope__back,
 .envelope.is-melting .envelope__front,
 .envelope.is-melting .envelope__flap { opacity: 0; }
-.envelope.is-melting .envelope__letter > * { opacity: 0; }
+/* the letter stays still while the envelope fades away behind it, then dissolves where it stands into the hero.
+   Its words stay on it until it is gone. */
+.envelope.is-melting .envelope__letter { animation: letter-merge 1.7s ease-in-out both; }
+@keyframes letter-merge {
+  0%, 25% { transform: perspective(1400px) translateY(-34%) scale(1.22); opacity: 1; z-index: 4; }
+  100%    { transform: perspective(1400px) translateY(-34%) scale(1.22); opacity: 0; z-index: 4; }
+}
 /* slow cross-fade: as the page melts, the cream ground turns transparent so the hero shows through, while the envelope and the letter
    fade out slowly on top of it; for a moment both are visible together, then the envelope is gone */
 .envelope.is-melting { background-color: transparent; transition: background-color 1.6s var(--ease-soft), opacity 0.9s var(--ease-soft), visibility 0s linear 0.9s; }
@@ -275,14 +280,13 @@
 .envelope.is-melting .envelope__back,
 .envelope.is-melting .envelope__front,
 .envelope.is-melting .envelope__flap { transition: opacity 1.5s var(--ease-soft); }
-.envelope.is-melting .envelope__letter { transition: opacity 1.5s var(--ease-soft); }
-.envelope.is-melting .envelope__letter > * { transition: opacity 1.2s var(--ease-soft); }
 
 /* reduced motion: nothing travels; the letter just arrives settled */
 @media (prefers-reduced-motion: reduce) {
   .envelope__flap, .envelope__seal, .envelope__open { transition-duration: 0.01s; transition-delay: 0s; }
   .envelope__heart, .envelope__seal, .envelope__glint, .envelope__halo { animation: none; }
   .envelope.is-opening .envelope__letter { animation-duration: 0.01s; animation-delay: 0s; }
+  .envelope.is-melting .envelope__letter { animation-duration: 0.01s; }
   .envelope__halo { opacity: 0.8; }
   .envelope__dust, .envelope__dust i { animation: none; }
   .envelope__dust i { opacity: 0.5; }
