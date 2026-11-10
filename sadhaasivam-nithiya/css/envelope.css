@@ -4,7 +4,7 @@
    A real envelope on a cream ground (the hero page's own cream with soft peach glows): a wine body with a V front, a lighter
    flap, and a gold round with a heart in it and the word "Open" under it.
    Tapping the heart opens it: the round lets go, the
-   flap turns up, and the letter rises out turning one full circle ("spin up"),
+   flap turns up, and the letter rises out and settles ("gentle rise"),
    then settles large enough to read. The letter greets the guest by name.
    Then its cream spreads over the whole screen and dissolves into the hero.
    One action only: the guest taps the heart (it beats to invite the tap) and the
@@ -41,8 +41,9 @@
 /* the envelope, centred on the screen; the equal room above and below is where the letter rises and the envelope sits */
 /* the background: a warm halo behind the envelope that slowly breathes, and fine gold dust that twinkles across the ground. The halo swells
    as the envelope opens; everything fades as the cream spreads over the screen. Both are decoration the owner asked for. */
-.envelope__fx { position: absolute; inset: 0; z-index: 0; background: radial-gradient(circle at 85% 85%, #f3d0b0 0, transparent 50%), radial-gradient(circle at 10% 15%, #f4dcc4 0, transparent 45%); overflow: hidden; pointer-events: none; transition: opacity 0.7s var(--ease-soft); }
+.envelope__fx { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; transition: opacity 0.7s var(--ease-soft); }
 .envelope__halo {
+  display: none;   /* the soft peach glow behind the envelope is switched off: a plain cream ground */
   position: absolute;
   left: 50%;
   top: 50%;
@@ -55,6 +56,14 @@
 }
 @keyframes envelope-breathe { 0%, 100% { opacity: 0.6; scale: 0.94; } 50% { opacity: 1; scale: 1.07; } }
 .envelope.is-opening .envelope__halo { animation: none; opacity: 1; scale: 1.12; }
+/* the whole field of gold dust drifts very slowly up and sideways and back again, so the plain cream ground is gently alive.
+   It is a little larger than the screen so its edges never show while it moves. */
+.envelope__dust {
+  position: absolute;
+  inset: -8%;
+  animation: dust-drift 38s ease-in-out infinite alternate;
+}
+@keyframes dust-drift { from { translate: -2.5% 3%; } to { translate: 2.5% -4%; } }
 .envelope__dust i {
   position: absolute;
   border-radius: 50%;
@@ -79,6 +88,25 @@
   perspective: 1400px;
   filter: drop-shadow(0 0.6rem 1.1rem rgba(91, 35, 39, 0.28));   /* a soft shadow so the envelope lifts off the cream */
 }
+
+/* a line of welcome under the envelope. It is drawn here, in css, so the script is untouched; it fades as the envelope opens. */
+.envelope__stage::after {
+  content: "We\2019 d love to see you at our wedding reception.";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--ew) * 0.1);
+  padding: 0 1rem;
+  text-align: center;
+  text-wrap: balance;   /* if the line has to wrap, the two lines come out even */
+  font-family: "Marcellus", Georgia, serif;
+  font-size: max(1.1rem, calc(var(--ew) * 0.05));
+  line-height: 1.3;
+  color: var(--env-body);
+  transition: opacity 0.6s var(--ease-soft);
+  pointer-events: none;
+}
+.envelope.is-opening .envelope__stage::after { opacity: 0; }
 
 /* ---- the envelope ----------------------------------------------------------- */
 .envelope__back,
@@ -122,7 +150,7 @@
   background: var(--env-flap);
   clip-path: polygon(0 0, 100% 0, 50% 93%);
   transform-origin: 50% 0;
-  transition: transform 0.9s cubic-bezier(0.5, 0, 0.2, 1), z-index 0s linear 0.45s, opacity 0.7s var(--ease-soft);
+  transition: transform 1.7s cubic-bezier(0.45, 0, 0.25, 1), z-index 0s linear 0.85s, opacity 0.7s var(--ease-soft);
 }
 /* the one thing to tap: the round (with the heart) and the word "Open" under it. The button is centred on the round, so the
    round sits where the flap's point meets the front; the word hangs below it on the wine front. */
@@ -154,14 +182,16 @@
   border-radius: 50%;
   background: var(--env-seal);
   transition: scale 0.5s var(--ease-expo);
+  animation: seal-breathe 4s ease-in-out infinite;   /* the round breathes in and out with the heart */
 }
-.envelope__heart { width: 52%; height: 52%; fill: var(--env-heart); animation: envelope-beat 1.9s var(--ease-soft) infinite; }   /* it beats until opened: that is the invitation to tap */
+.envelope__heart { width: 52%; height: 52%; fill: var(--env-heart); animation: heart-breathe 4s ease-in-out infinite; }   /* the heart breathes slowly in and out until opened: that is the invitation to tap */
 .envelope__open-word {
   font-family: var(--font-body);
   font-size: max(0.95rem, calc(var(--ew) * 0.034));
   line-height: 1;
 }
-@keyframes envelope-beat { 0%, 52%, 100% { scale: 1; } 14% { scale: 1.2; } 28% { scale: 1; } 42% { scale: 1.12; } }
+@keyframes heart-breathe { 0%, 100% { scale: 0.92; } 50% { scale: 1.12; } }
+@keyframes seal-breathe { 0%, 100% { scale: 0.93; } 50% { scale: 1.1; } }
 
 /* ---- the letter: it greets the guest ----------------------------------------- */
 .envelope__letter {
@@ -186,19 +216,23 @@
   transform: perspective(1400px) translateY(0) rotateY(0deg) scale(1);
 }
 .envelope__dear {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 4.6cqw;
+  font-family: "Parisienne", cursive;   /* a friendly handwritten "Dear" above the name */
+  font-size: 9cqw;
   line-height: 1;
 }
 .envelope__guest {
   max-width: 100%;
-  font-size: 10cqw;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+  font-family: "Cinzel", Georgia, serif;   /* capitals, a regal look for the guest's name */
+  font-weight: 500;
+  font-size: 8.5cqw;
+  line-height: 1.05;
+  letter-spacing: 0.04em;
   overflow-wrap: anywhere;
 }
-.envelope__lead { font-size: 3.9cqw; line-height: 1.3; margin-top: 0.8cqw; }
+/* the line under the name. The words are drawn here in css (the script still holds its own placeholder line, hidden by the zero font size),
+   so the wording can change without touching the script. */
+.envelope__lead { font-size: 0; line-height: 1.3; margin-top: 0.8cqw; max-width: 82%; text-align: center; text-wrap: balance; }
+.envelope__lead::before { content: "Seeking your blessings, we joyfully invite you to the wedding reception of"; font-size: 3.7cqw; }
 .envelope__names {
   font-family: var(--font-names);
   font-size: calc(5.6cqw * var(--names-scale, 1));
@@ -207,37 +241,49 @@
 }
 /* ---- opening ------------------------------------------------------------------- */
 .envelope.is-opening .envelope__open { opacity: 0; pointer-events: none; }
-.envelope.is-opening .envelope__seal { scale: 1.7; }
+.envelope.is-opening .envelope__seal { scale: 1.7; animation: none; }
 .envelope.is-opening .envelope__heart { animation: none; }
 .envelope.is-opening .envelope__flap { transform: perspective(1400px) rotateX(-180deg); z-index: 0; }
 
-/* spin up: the letter rises turning one full circle, steps in front of the envelope, and grows to a size that can be read */
+/* gentle rise: the letter rises without turning, steps in front of the envelope, and grows to a size that can be read */
 .envelope.is-opening .envelope__letter {
   visibility: visible;
-  animation: letter-up 2.4s cubic-bezier(0.3, 0.7, 0.2, 1) 0.55s both;
+  animation: letter-up 3.4s cubic-bezier(0.45, 0, 0.25, 1) 0.9s both;   /* a slow rise: starts once the flap is well open and takes 3.4s, so the letter settles about 0.7s before the page melts */
 }
 @keyframes letter-up {
-  0%   { transform: perspective(1400px) translateY(0) rotateY(0deg) scale(1); z-index: 1; animation-timing-function: cubic-bezier(0.3, 0.7, 0.2, 1); }
-  55%  { transform: perspective(1400px) translateY(-68%) rotateY(360deg) scale(1); z-index: 1; animation-timing-function: ease-in-out; }
+  0%   { transform: perspective(1400px) translateY(0) scale(1); z-index: 1; animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1); }
+  55%  { transform: perspective(1400px) translateY(-68%) scale(1); z-index: 1; animation-timing-function: ease-in-out; }
   60%  { z-index: 4; }
-  100% { transform: perspective(1400px) translateY(-34%) rotateY(360deg) scale(1.22); z-index: 4; }
+  100% { transform: perspective(1400px) translateY(-34%) scale(1.22); z-index: 4; }
 }
 
 /* going on to the page: the envelope and the words melt away while the ground turns to the letter's own cream, so the letter
    seems to spread over the whole screen; then the cream itself fades to show the hero */
 .envelope__letter > * { transition: opacity 0.5s var(--ease-soft); }
-.envelope.is-melting { background-color: var(--pearl); }
+.envelope__letter { transition: opacity 0.85s var(--ease-soft); }   /* the letter dissolves into the page instead of being wiped by a cream sheet */
+.envelope.is-melting { background-color: var(--env-ground); }   /* the ground is already the hero's cream, so the envelope melts straight into the hero with no colour step */
+.envelope.is-melting .envelope__letter { opacity: 0; }
 .envelope.is-melting .envelope__fx { opacity: 0; }
 .envelope.is-melting .envelope__back,
 .envelope.is-melting .envelope__front,
 .envelope.is-melting .envelope__flap { opacity: 0; }
 .envelope.is-melting .envelope__letter > * { opacity: 0; }
+/* slow cross-fade: as the page melts, the cream ground turns transparent so the hero shows through, while the envelope and the letter
+   fade out slowly on top of it; for a moment both are visible together, then the envelope is gone */
+.envelope.is-melting { background-color: transparent; transition: background-color 1.6s var(--ease-soft), opacity 0.9s var(--ease-soft), visibility 0s linear 0.9s; }
+.envelope.is-melting .envelope__fx { transition: opacity 1.5s var(--ease-soft); }
+.envelope.is-melting .envelope__back,
+.envelope.is-melting .envelope__front,
+.envelope.is-melting .envelope__flap { transition: opacity 1.5s var(--ease-soft); }
+.envelope.is-melting .envelope__letter { transition: opacity 1.5s var(--ease-soft); }
+.envelope.is-melting .envelope__letter > * { transition: opacity 1.2s var(--ease-soft); }
 
 /* reduced motion: nothing travels; the letter just arrives settled */
 @media (prefers-reduced-motion: reduce) {
   .envelope__flap, .envelope__seal, .envelope__open { transition-duration: 0.01s; transition-delay: 0s; }
-  .envelope__heart, .envelope__glint, .envelope__halo { animation: none; }
+  .envelope__heart, .envelope__seal, .envelope__glint, .envelope__halo { animation: none; }
   .envelope.is-opening .envelope__letter { animation-duration: 0.01s; animation-delay: 0s; }
   .envelope__halo { opacity: 0.8; }
-  .envelope__dust i { animation: none; opacity: 0.5; }
+  .envelope__dust, .envelope__dust i { animation: none; }
+  .envelope__dust i { opacity: 0.5; }
 }
