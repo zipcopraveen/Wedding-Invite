@@ -150,7 +150,7 @@
   background: var(--env-flap);
   clip-path: polygon(0 0, 100% 0, 50% 93%);
   transform-origin: 50% 0;
-  transition: transform 1.7s cubic-bezier(0.45, 0, 0.25, 1), z-index 0s linear 0.85s, opacity 0.7s var(--ease-soft);
+  transition: transform 1s cubic-bezier(0.45, 0, 0.25, 1), z-index 0s linear 0.5s, opacity 0.7s var(--ease-soft);
 }
 /* the one thing to tap: the round (with the heart) and the word "Open" under it. The button is centred on the round, so the
    round sits where the flap's point meets the front; the word hangs below it on the wine front. */
@@ -248,7 +248,7 @@
 /* gentle rise: the letter rises without turning, steps in front of the envelope, and grows to a size that can be read */
 .envelope.is-opening .envelope__letter {
   visibility: visible;
-  animation: letter-up 3.4s cubic-bezier(0.45, 0, 0.25, 1) 0.9s both;   /* a slow rise: starts once the flap is well open and takes 3.4s, so the letter settles about 0.7s before the page melts */
+  animation: letter-up 2.2s cubic-bezier(0.45, 0, 0.25, 1) 0.5s both;   /* a quick rise: starts once the flap is open and takes 2.2s, so the whole opening, exit and hero take about 5s */
 }
 @keyframes letter-up {
   0%   { transform: perspective(1400px) translateY(0) scale(1); z-index: 1; animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1); }
@@ -268,18 +268,18 @@
 .envelope.is-melting .envelope__flap { opacity: 0; }
 /* the letter stays still while the envelope fades away behind it, then dissolves where it stands into the hero.
    Its words stay on it until it is gone. */
-.envelope.is-melting .envelope__letter { animation: letter-merge 1.7s ease-in-out both; }
+.envelope.is-melting .envelope__letter { animation: letter-merge 1.5s ease-in-out both; }
 @keyframes letter-merge {
   0%, 25% { transform: perspective(1400px) translateY(-34%) scale(1.22); opacity: 1; z-index: 4; }
   100%    { transform: perspective(1400px) translateY(-34%) scale(1.22); opacity: 0; z-index: 4; }
 }
 /* slow cross-fade: as the page melts, the cream ground turns transparent so the hero shows through, while the envelope and the letter
    fade out slowly on top of it; for a moment both are visible together, then the envelope is gone */
-.envelope.is-melting { background-color: transparent; transition: background-color 1.6s var(--ease-soft), opacity 0.9s var(--ease-soft), visibility 0s linear 0.9s; }
-.envelope.is-melting .envelope__fx { transition: opacity 1.5s var(--ease-soft); }
+.envelope.is-melting { background-color: transparent; transition: background-color 1.4s var(--ease-soft), opacity 0.9s var(--ease-soft), visibility 0s linear 0.9s; }
+.envelope.is-melting .envelope__fx { transition: opacity 1.3s var(--ease-soft); }
 .envelope.is-melting .envelope__back,
 .envelope.is-melting .envelope__front,
-.envelope.is-melting .envelope__flap { transition: opacity 1.5s var(--ease-soft); }
+.envelope.is-melting .envelope__flap { transition: opacity 1.3s var(--ease-soft); }
 
 /* reduced motion: nothing travels; the letter just arrives settled */
 @media (prefers-reduced-motion: reduce) {

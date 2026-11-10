@@ -19,9 +19,9 @@
   const cfg = window.WEDDING;
   const guestsRaw = window.WEDDING_GUESTS || {};
   const RESERVED = ["css", "js", "assets", "api", "index.html", "preview.html"];
-  const SETTLE_MS = 3300;            // fallback: when the letter has settled, in case the animation event never comes
-  const HOLD_MS = 1700;              // how long the settled letter is held so the greeting can be read
-  const MELT_MS = 900;               // how long the cream takes to spread over the screen before the page starts
+  const SETTLE_MS = 2800;            // fallback: when the letter has settled, in case the animation event never comes
+  const HOLD_MS = 500;               // how long the settled letter is held so the greeting can be read
+  const MELT_MS = 800;               // how long the cream takes to spread over the screen before the page starts
 
   const guests = {};
   Object.keys(guestsRaw).forEach((k) => { guests[k.toLowerCase()] = guestsRaw[k]; });
