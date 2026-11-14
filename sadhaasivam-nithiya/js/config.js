@@ -30,16 +30,16 @@ window.WEDDING = {
 
   // Gallery photos: { src, thumb, alt, focus }. focus is the CSS object-position
   // that keeps faces in frame when a photo is cropped, for example "50% 25%".
-  // These are placeholders: replace the files in assets/images/gallery.
+  // Each photo is 1200x1600 (3:4) with a 300x400 thumbnail, in assets/images/gallery.
   gallery: [
-    { src: "assets/images/gallery/photo-01.svg", thumb: "assets/images/gallery/photo-01.svg", alt: "Placeholder photo 1", focus: "50% 50%" },
-    { src: "assets/images/gallery/photo-02.svg", thumb: "assets/images/gallery/photo-02.svg", alt: "Placeholder photo 2", focus: "50% 40%" },
-    { src: "assets/images/gallery/photo-03.svg", thumb: "assets/images/gallery/photo-03.svg", alt: "Placeholder photo 3", focus: "50% 50%" },
-    { src: "assets/images/gallery/photo-04.svg", thumb: "assets/images/gallery/photo-04.svg", alt: "Placeholder photo 4", focus: "50% 50%" },
-    { src: "assets/images/gallery/photo-05.svg", thumb: "assets/images/gallery/photo-05.svg", alt: "Placeholder photo 5", focus: "50% 40%" },
-    { src: "assets/images/gallery/photo-06.svg", thumb: "assets/images/gallery/photo-06.svg", alt: "Placeholder photo 6", focus: "50% 50%" },
-    { src: "assets/images/gallery/photo-07.svg", thumb: "assets/images/gallery/photo-07.svg", alt: "Placeholder photo 7", focus: "50% 40%" },
-    { src: "assets/images/gallery/photo-08.svg", thumb: "assets/images/gallery/photo-08.svg", alt: "Placeholder photo 8", focus: "50% 50%" }
+    { src: "assets/images/gallery/photo-01.jpg", thumb: "assets/images/gallery/photo-01-thumb.jpg", alt: "The couple sitting together on temple steps, smiling at the camera", focus: "50% 30%" },
+    { src: "assets/images/gallery/photo-02.jpg", thumb: "assets/images/gallery/photo-02-thumb.jpg", alt: "The bride smiling up at the groom as he gently touches her chin, on temple steps", focus: "50% 35%" },
+    { src: "assets/images/gallery/photo-03.jpg", thumb: "assets/images/gallery/photo-03-thumb.jpg", alt: "Close-up of the bride resting her head on the groom's shoulder", focus: "50% 40%" },
+    { src: "assets/images/gallery/photo-04.jpg", thumb: "assets/images/gallery/photo-04-thumb.jpg", alt: "The bride smiling as the groom holds her hand at a temple doorway", focus: "50% 25%" },
+    { src: "assets/images/gallery/photo-05.jpg", thumb: "assets/images/gallery/photo-05-thumb.jpg", alt: "The groom smiling as he looks at the bride, with a hilltop behind them", focus: "50% 30%" },
+    { src: "assets/images/gallery/photo-06.jpg", thumb: "assets/images/gallery/photo-06-thumb.jpg", alt: "Black-and-white close-up of the couple's clasped hands and bangles", focus: "50% 50%" },
+    { src: "assets/images/gallery/photo-07.jpg", thumb: "assets/images/gallery/photo-07-thumb.jpg", alt: "The couple holding hands on temple steps", focus: "50% 35%" },
+    { src: "assets/images/gallery/photo-08.jpg", thumb: "assets/images/gallery/photo-08-thumb.jpg", alt: "The couple seen from behind, resting together, with their hands reaching toward each other", focus: "50% 60%" }
   ],
 
   // Background music. Keep enabled:false until you have a licensed track and
