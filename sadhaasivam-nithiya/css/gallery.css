@@ -57,8 +57,8 @@
   background: var(--pearl);
   cursor: pointer;
   transition:
-    transform 1100ms cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 1100ms cubic-bezier(0.4, 0, 0.2, 1);
+    transform 528ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 528ms cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform, opacity;
   -webkit-tap-highlight-color: transparent;
 }
