@@ -206,6 +206,12 @@
   margin-inline: clamp(0.5rem, 3vw, 5rem);
 }
 .lb__img {
+  /* Absolute inside the stage so max-height: 100% resolves against a definite
+     box (a % max-height inside a grid track is ignored, so the photo rendered at
+     full size and spilled out of the viewer). */
+  position: absolute;
+  inset: 0;
+  margin: auto;
   max-width: 100%;
   max-height: 100%;
   width: auto;
