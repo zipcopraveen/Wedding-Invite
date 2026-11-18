@@ -38,4 +38,9 @@ window.WEDDING_GUESTS = {
   "rifat": "Rifat",
   "janani": "Janani",
   "praveen-m": "Praveen M",
+  "shubhangi": "Shubhangi",
+  "sheik": "Sheik",
+  "anand": "Anand",
+  "mcde": "Mcde",
+  "praveen": "Praveen",
 };
